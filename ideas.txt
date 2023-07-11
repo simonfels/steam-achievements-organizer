@@ -1,0 +1,5 @@
+/index.php (lists all games)
+/fetch_game.php
+/dead-by-daylight
+/dead-by-daylight/fetch.php
+/dead-by-daylight/fetch_user_data.php
