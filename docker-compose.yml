@@ -8,6 +8,7 @@ services:
     build: ./
     volumes:
       - ./html:/var/www/html:z
+      - ./src:/var/www/src:z
     ports:
       - 3000:80
     depends_on:
@@ -17,6 +18,8 @@ services:
     restart: always
     volumes:
       - dbdata:/var/lib/mysql
+    ports:
+      - 3306:3306
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
   pma:
