@@ -1,6 +1,10 @@
 <h2>Index-View</h2>
-<ul>
+<ul class="list-disc">
   <?php foreach($games as $game): ?>
-    <li><?php echo "<a href='/games/show.php?appid={$game->app_id}'>{$game->name}</a>" ?></li>
+    <li>
+      <strong>
+        <?php echo "<a class='text-neutral-300 text-lg' href='/games/show.php?appid={$game->app_id}'>{$game->name}</a>" ?>
+      </strong>
+    </li>
   <?php endforeach;  ?>
 </ul>

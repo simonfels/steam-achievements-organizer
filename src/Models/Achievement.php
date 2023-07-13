@@ -14,7 +14,14 @@ class Achievement
   public bool $achieved;
   public ?string $unlocked_at;
 
-  public function formatted_unlocked_at():string {
-    return DateTime::createFromFormat( 'U', $this->unlocked_at )->format( 'c' );
+  public function formatted_unlocked_at():?string {
+    if(empty($this->unlocked_at)) return null;
+    return \DateTime::createFromFormat( 'U', $this->unlocked_at )->format( 'H:i \U\h\r d.m.Y' );
+  }
+
+  public function getVars() {
+    $array_of_vars = get_object_vars($this);
+    $array_of_vars["unlocked_at"] = $this->formatted_unlocked_at();
+    return json_encode($array_of_vars);
   }
 }

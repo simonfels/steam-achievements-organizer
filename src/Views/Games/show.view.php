@@ -1,25 +1,33 @@
-<h2><?php echo $game->name ?></h2>
-
-<div class="flex">
-    <div class="w-1/6 flex-none flex flex-col py-2 pl-2">
-        <span class="rounded-full border border-black px-1 py-0.5 text-xs text-center">SURVIVOR</span>
-        <span class="rounded-full border border-black px-1 py-0.5 text-xs mt-2 text-center bg-black text-yellow-100">KILLER</span>
-    </div>
-    <div id="achievementsContainer" class="flex flex-wrap p-1">
-      <?php foreach($achievements as $achievement): ?>
-          <div class="flex xl:w-1/4 md:w-1/3 w-full">
-              <div class="w-full bg-zinc-800 m-1 p-2">
-                  <div class="">
-                      <p class="text-lg font-bold line-clamp-1"><?php echo $achievement->display_name ?></p>
-                      <p class="text-sm line-clamp-2"><?php echo $achievement->description ?></p>
-                      <div class="flex mt-2 mb-2">
-                          <span class="rounded-full border border-black px-2 py-0.5 text-xs">SURVIVOR</span>
-                          <span class="rounded-full border border-black bg-black text-yellow-100 px-2 py-0.5 text-xs ml-1">KILLER</span>
-                      </div>
-                  </div>
-                  <div style="background-image: url('<?php echo ($achievement->achieved ? $achievement->icon : $achievement->icongray) ?>');width:50px;height:50px" class="bg-cover flex-none"></div>
-              </div>
-          </div>
-      <?php endforeach; ?>
-    </div>
+<div id="app">
+  <input type="checkbox" id="checkbox" v-model="checked" />
+  <h1 class="text-neutral-300 text-2xl mb-2 ml-2"><strong><?php echo $game->name ?></strong></h1>
+  <h2 class="text-neutral-300 text-lg mb-4 ml-2">Achievements</h2>
+  <div class="grid gap-2 grid-cols-2 md:grid-cols-3 xl:grid-cols-6">
+      <div class="flex flex-col justify-between w-full bg-neutral-800 p-2 rounded" :class="{ 'opacity-60': achievement.achieved }" v-for="achievement in achievements">
+        <div class="flex">
+            <div :style="{ 'background-image': 'url(' + (achievement.achieved ? achievement.icon : achievement.icongray) + ')', 'width': '50px', 'height': '50px' }" class="bg-cover flex-none mr-2"></div>
+            <div>
+                <p class="text-lg font-bold line-clamp-1 text-neutral-300">{{ achievement.display_name }}</p>
+                <p class="text-sm line-clamp-2 hover:line-clamp-none text-neutral-400">{{ achievement.description }}</p>
+            </div>
+        </div>
+        <div class="text-right text-sm text-neutral-100 mt-2">{{ achievement.unlocked_at }}</div>
+      </div>
+    <div>
+  </div>
 </div>
+<script>
+  const { createApp, ref, computed } = Vue
+  
+  createApp({
+    setup() {
+      const checked = ref(checked);
+      const achievements = computed(() => {
+        return [<?php echo implode(", ", array_map(function($achievement) { return $achievement->getVars(); }, $achievements)) ?>].filter((ach) => checked == 1 )
+      })
+      return {
+        achievements, checked
+      }
+    }
+  }).mount('#app')
+</script>
