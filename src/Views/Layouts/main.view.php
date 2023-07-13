@@ -8,8 +8,9 @@
 <body class="bg-zinc-950" style="padding: 0; margin: 0; font-family: sans-serif">
     <nav>
         <ul class="flex">
-            <li><a href="/games/index.php" class="text-neutral-300 inline-block p-2"><strong>Games</strong></a></li>
-            <li><a href="/fetch_data.php" class="text-neutral-300 inline-block p-2"><strong>Fetch Data</strong></a></li>
+            <li><a href="/games" class="text-neutral-300 inline-block p-2"><strong>Games</strong></a></li>
+            <li><a href="/users" class="text-neutral-300 inline-block p-2"><strong>Users</strong></a></li>
+            <li><a href="/" class="text-neutral-300 inline-block p-2"><strong>Fetch Data</strong></a></li>
         </ul>
     </nav>
     <div class="m-2">

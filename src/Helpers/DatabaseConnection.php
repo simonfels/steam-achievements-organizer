@@ -2,8 +2,10 @@
 
 namespace App\Helpers;
 
+use PDO;
+
 class DatabaseConnection {
-  private \PDO $pdo;
+  public PDO $pdo;
   public function __construct() {
     extract([
       'servername' => 'db',
@@ -12,23 +14,23 @@ class DatabaseConnection {
       'password' => 'rootpassword'
     ]);
 
-    $this->pdo = new \PDO("mysql:host=$servername;dbname={$dbname}", $username, $password, [
-      \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
+    $this->pdo = new PDO("mysql:host=$servername;dbname={$dbname}", $username, $password, [
+      PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
     ]);
   }
 
-  public function fetchAll(string $table, $class, $passed_sql = null):false|array
+  public function fetchAll($class, string $table = null, string $passed_sql = null):false|array
   {
     $sql = $passed_sql ?? 'SELECT * FROM ' . $table;
     $query = $this->pdo->prepare($sql);
     $query->execute();
-    return $query->fetchAll(\PDO::FETCH_CLASS, $class);
+    return $query->fetchAll(PDO::FETCH_CLASS, $class);
   }
 
   public function fetch(string $table, string $id_param, int $id, $class):mixed
   {
     $query = $this->pdo->query('SELECT * FROM ' . $table . ' WHERE ' . $id_param . ' = ' . $id);
-    $query->setFetchMode(\PDO::FETCH_CLASS, $class);
+    $query->setFetchMode(PDO::FETCH_CLASS, $class);
     return $query->fetch();
   }
 

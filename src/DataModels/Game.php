@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\DataModels;
 class Game
 {
   public int $app_id;

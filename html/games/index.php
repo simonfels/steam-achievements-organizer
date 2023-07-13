@@ -1,13 +1,6 @@
 <?php
 
-include_once __DIR__ . '/../../src/basics.php';
+include_once __DIR__ . '/../../src/autoloader.php';
 
-use App\Models\GamesList;
-
-// fetch games from db
-
-$games_list = new GamesList();
-
-render('Games/index', [
-  'games' => $games_list->fetchAll()
-]);
+$games_controller = new App\Controller\GamesController();
+$games_controller->index();

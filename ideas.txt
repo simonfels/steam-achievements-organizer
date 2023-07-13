@@ -1,5 +1,15 @@
-/index.php (lists all games)
-/fetch_game.php
-/dead-by-daylight
-/dead-by-daylight/fetch.php
-/dead-by-daylight/fetch_user_data.php
+list all users
+
+list all games
+
+user
+    list all games
+    list all achievements for one game
+
+
+---
+
+fetch-data überarbeiten -> games von usern fetchen
+
+write own migrations
+

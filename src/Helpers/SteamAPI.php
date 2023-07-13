@@ -6,10 +6,17 @@ class SteamAPI {
   const BASE_URL = "https://api.steampowered.com";
   const ALL_ACHIEVEMENTS_URL = SteamAPI::BASE_URL . '/ISteamUserStats/GetSchemaForGame/v2/?';
   const USER_ACHIEVEMENTS_URL = SteamAPI::BASE_URL . '/ISteamUserStats/GetPlayerAchievements/v0001/?';
+  const USER_URL = SteamAPI::BASE_URL . '/ISteamUser/GetPlayerSummaries/v0002/?';
+  const USER_GAMES_URL = SteamAPI::BASE_URL . '/IPlayerService/GetOwnedGames/v0001/?';
+
   public function __construct(private string $api_key) {}
-  public function fetch_user_achievements(string $app_id, string $user_id):array
+  public function fetchUserAchievements(string $app_id, string $user_id): array|false
   {
-    $response = $this->api_call(self::USER_ACHIEVEMENTS_URL . $this->build_params(["appid" => $app_id, "steamid" => $user_id]));
+    $response = $this->apiCall(self::USER_ACHIEVEMENTS_URL . $this->buildParams(["appid" => $app_id, "steamid" => $user_id]));
+
+    if(empty($response) || empty($response["playerstats"]) || empty($response["playerstats"]["achievements"])) {
+      return false;
+    }
 
     $achievements = array_map(function($item) use($user_id) { return [
       "achievement_system_name" => $item["apiname"],
@@ -24,10 +31,15 @@ class SteamAPI {
       'achievements' => $achievements
     ];
   }
-  public function fetch_achievements(string $app_id):array
+  public function fetchAchievements(string $app_id): array|false
   {
-    $response = $this->api_call(self::ALL_ACHIEVEMENTS_URL . $this->build_params(["appid" => $app_id]));
-    $achievements = array_map(function($item) use ($app_id) {
+    $response = $this->apiCall(self::ALL_ACHIEVEMENTS_URL . $this->buildParams(["appid" => $app_id]));
+
+    if(empty($response["game"]) || empty($response["game"]["availableGameStats"]) || empty($response["game"]["availableGameStats"]["achievements"])) {
+      return false;
+    }
+
+    return array_map(function($item) use ($app_id) {
       return [
         'system_name' => $item['name'],
         'display_name' => $item['displayName'],
@@ -38,16 +50,34 @@ class SteamAPI {
         'game_id' => $app_id
       ];
     }, $response["game"]["availableGameStats"]["achievements"]);
-
-    return [
-      "achievements" => $achievements
-    ];
   }
-  private function api_call(string $url):array
+  public function fetchUser(string $user_id): array|false
   {
-    return json_decode(file_get_contents($url), true);
+    $response = $this->apiCall(self::USER_URL . $this->buildParams(['steamids' => $user_id]));
+
+    if(!empty($players = $response["response"]["players"])) {
+      $player = $players[0];
+      return [
+        'id' => $player['steamid'],
+        'name' => $player['personaname'],
+        'steam_url' => $player['profileurl'],
+        'avatar_url' => $player['avatarmedium']
+      ];
+    } else {
+      return false;
+    }
   }
-  private function build_params(array $params):string
+  public function fetchUserGames(string $user_id): array|false
+  {
+    $response = $this->apiCall(self::USER_GAMES_URL . $this->buildParams(['steamid' => $user_id]));
+
+    return array_map(function($item) use ($user_id) { return ['game_id' => $item['appid'], 'user_id' => $user_id]; }, $response['response']['games']);
+  }
+  private function apiCall(string $url): array|null
+  {
+    return json_decode(@file_get_contents($url), true);
+  }
+  private function buildParams(array $params): string
   {
     $default_params = [
       "key" => $this->api_key,

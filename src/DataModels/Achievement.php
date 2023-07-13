@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Models;
+namespace App\DataModels;
+use DateTime;
+
 class Achievement
 {
   public int $id;
@@ -16,7 +18,7 @@ class Achievement
 
   public function formatted_unlocked_at():?string {
     if(empty($this->unlocked_at)) return null;
-    return \DateTime::createFromFormat( 'U', $this->unlocked_at )->format( 'H:i \U\h\r d.m.Y' );
+    return DateTime::createFromFormat( 'U', $this->unlocked_at )->format( 'H:i \U\h\r d.m.Y' );
   }
 
   public function getVars() {
