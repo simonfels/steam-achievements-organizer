@@ -19,12 +19,16 @@ class DatabaseConnection {
     ]);
   }
 
-  public function fetchAll($class, string $table = null, string $passed_sql = null):false|array
+  public function fetchAll($class = null, string $table = null, string $passed_sql = null):false|array
   {
     $sql = $passed_sql ?? 'SELECT * FROM ' . $table;
     $query = $this->pdo->prepare($sql);
     $query->execute();
-    return $query->fetchAll(PDO::FETCH_CLASS, $class);
+    if(!empty($class)) {
+      return $query->fetchAll(PDO::FETCH_CLASS, $class);
+    } else {
+      return $query->fetchAll(PDO::FETCH_DEFAULT);
+    }
   }
 
   public function fetch(string $table, string $id_param, int $id, $class):mixed

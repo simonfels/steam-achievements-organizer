@@ -5,12 +5,12 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
-<body class="bg-zinc-950" style="padding: 0; margin: 0; font-family: sans-serif">
+<body class="bg-neutral-950 text-neutral-300" style="padding: 0; margin: 0; font-family: sans-serif">
     <nav>
         <ul class="flex">
-            <li><a href="/games" class="text-neutral-300 inline-block p-2"><strong>Games</strong></a></li>
-            <li><a href="/users" class="text-neutral-300 inline-block p-2"><strong>Users</strong></a></li>
-            <li><a href="/" class="text-neutral-300 inline-block p-2"><strong>Fetch Data</strong></a></li>
+            <li><a href="/games" class="inline-block p-2"><strong>Games</strong></a></li>
+            <li><a href="/users" class="inline-block p-2"><strong>Users</strong></a></li>
+            <li><a href="/" class="inline-block p-2"><strong>Fetch Data</strong></a></li>
         </ul>
     </nav>
     <div class="m-2">

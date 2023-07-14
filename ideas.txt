@@ -1,15 +1,23 @@
-list all users
-
-list all games
-
-user
-    list all games
-    list all achievements for one game
-
+users/index
+    - [x] list all users
+users/show
+    - [ ] github like calendar
+    - [ ] activity feed, nach tag
+    - [ ] error handling, wenn seite ohne parameter aufgerufen wird
+games/index
+    - [x] list all games
+games/show
+    - [x] list all achievements for game
+scraper/index
+    - [x] alle games von usern holen
+    - [ ] visuelles feedback (in form eines log z.b.)
 
 ---
 
-fetch-data überarbeiten -> games von usern fetchen
-
-write own migrations
-
+- [ ] write own migrations
+- [ ] datenbank überarbeiten
+    -> achievement counts in db schreiben
+    -> abgeschlossene games markieren
+    -> games ohne achievements nicht speichern
+    -> free_games holen (getownedgames mit parameter aufrufen)
+    -> percentages in db speichern (total, relative (so wie steam berechnet))

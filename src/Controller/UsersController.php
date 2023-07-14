@@ -9,9 +9,15 @@ class UsersController extends AbstractController {
   public function __construct() {
     $this->users_list = new UsersList();
   }
-  public function index():void {
+  public function index(): void {
     $this->render('Users/index', [
       'users' => $this->users_list->all()
+    ]);
+  }
+
+  public function show(string $user_id): void {
+    $this->render('Users/show', [
+      'user' => $this->users_list->find($user_id)
     ]);
   }
 }

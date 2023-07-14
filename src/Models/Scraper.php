@@ -18,7 +18,7 @@ class Scraper extends AbstractModel {
     if($scrapedUser)
     {
       $scrapedGames = $this->scrapeUserGames($scrapedUser);
-      //$this->scrapeGameAchievements($scrapedGames);
+      $this->scrapeGameAchievements($scrapedGames);
       $userAchievements = $this->scrapeGamesData($scrapedGames, $user_id);
       $this->scrapeGameUserAchievements($userAchievements);
     }
@@ -36,11 +36,10 @@ class Scraper extends AbstractModel {
   }
   private function scrapeUserGames(string $user_id): array {
     $fetchedGames = $this->steam_api->fetchUserGames($user_id);
-    //foreach($fetchedGames as $fetchedGame)
-    //{
-    //  $this->database_connection->insert('user_games', array_keys($fetchedGame), $fetchedGame);
-    //}
-
+    foreach($fetchedGames as $fetchedGame)
+    {
+      $this->database_connection->insert('user_games', array_keys($fetchedGame), $fetchedGame);
+    }
     return array_column($fetchedGames, 'game_id');
   }
   private function scrapeGamesData(array $game_ids, string $user_id): array|false {
@@ -49,10 +48,10 @@ class Scraper extends AbstractModel {
       $fetchedGame = $this->steam_api->fetchUserAchievements($game_id, $user_id);
 
       if(!empty($fetchedGame)) {
-        //$this->database_connection->insert('games', ['app_id', 'name'], [
-        //  'app_id' => $fetchedGame["game_id"],
-        //  'name' => $fetchedGame["game_name"]
-        //]);
+        $this->database_connection->insert('games', ['app_id', 'name'], [
+          'app_id' => $fetchedGame["game_id"],
+          'name' => $fetchedGame["game_name"]
+        ]);
         $userAchievements[] = $fetchedGame["achievements"];
       }
     }

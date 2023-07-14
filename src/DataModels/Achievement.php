@@ -2,6 +2,7 @@
 
 namespace App\DataModels;
 use DateTime;
+use DateTimeZone;
 
 class Achievement
 {
@@ -18,7 +19,11 @@ class Achievement
 
   public function formatted_unlocked_at():?string {
     if(empty($this->unlocked_at)) return null;
-    return DateTime::createFromFormat( 'U', $this->unlocked_at )->format( 'H:i \U\h\r d.m.Y' );
+
+    $datetime = DateTime::createFromFormat( 'U', $this->unlocked_at);
+    $datetime->setTimezone(new DateTimeZone('Europe/Berlin'));
+
+    return $datetime->format( 'H:i \U\h\r d.m.Y' );
   }
 
   public function getVars() {
