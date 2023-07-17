@@ -25,19 +25,36 @@ $weekdays = array_fill_keys(range(1, 7), []);
 
 foreach($date_period as $date){
     $weekday = $date->format('w');
-    $weekdays[$weekday == 0 ? 7 : $weekday][$date->format('d.m.Y')] = colorcode($dates[$date->format('U')] ?? 0);
+    $values = colorcode($dates[$date->format('U')] ?? 0);
+    $values[] = $date->format('U');
+    $weekdays[$weekday == 0 ? 7 : $weekday][$date->format('d.m.Y')] = $values;
 }
 $days = ['SO','SA','FR','DO','MI','DI','MO'];
+$achievements = $user[2];
 ?>
 
   <?php foreach($weekdays as $weekday): ?>
     <div class="flex font-mono">
         <div class="text-xs font-bold text-neutral-500 self-center"><?php echo array_pop($days) ?></div>
         <?php foreach($weekday as $day => $count): ?>
-            <?php echo "<div style='margin: 3px; width: 12px; height: 12px; background-color: {$count[0]}' title='Earned {$count[1]} Achievement" . ($count[1] === 1 ? '' : 's') . " on " . $day . "'></div>" ?>
+            <?php echo "<a href='/users/show.php?userid={$user[0]->id}&date=$count[2]'><div style='margin: 3px; width: 12px; height: 12px; background-color: {$count[0]}' title='Earned {$count[1]} Achievement" . ($count[1] === 1 ? '' : 's') . " on " . $day . "'></div></a>" ?>
         <?php endforeach; ?>
     </div>
   <?php endforeach; ?>
-<?php if(!empty($date)): ?>
-    <?php echo $date; ?>
+<h3><?php echo DateTime::createFromFormat('U', $show_date)->format('d.m.Y'); ?></h3>
+<?php if(!empty($achievements)): ?>
+        <div class="grid gap-2 grid-cols-2 md:grid-cols-3 xl:grid-cols-6">
+            <?php foreach($achievements as $achievement): ?>
+                <div class="flex flex-col justify-between w-full bg-neutral-800 p-2 rounded">
+                    <div class="flex">
+                        <div style="background-image: url(' <?php echo $achievement->icon ?>'); width: 50px; height: 50px" class="bg-cover flex-none mr-2"></div>
+                        <div>
+                            <p class="text-lg font-bold line-clamp-1 text-neutral-300"><?php echo $achievement->display_name ?></p>
+                            <p class="text-sm line-clamp-2 hover:line-clamp-none text-neutral-400"><?php echo $achievement->description ?></p>
+                        </div>
+                    </div>
+                    <div class="text-right text-sm text-neutral-100 mt-2"><?php echo $achievement->formatted_unlocked_at('short') ?></div>
+                </div>
+            <?php endforeach; ?>
+        </div>
 <?php endif; ?>

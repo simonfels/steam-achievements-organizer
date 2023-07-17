@@ -17,13 +17,17 @@ class Achievement
   public bool $achieved;
   public ?string $unlocked_at;
 
-  public function formatted_unlocked_at():?string {
+  public function formatted_unlocked_at(string $format = 'long'):?string {
     if(empty($this->unlocked_at)) return null;
 
     $datetime = DateTime::createFromFormat( 'U', $this->unlocked_at);
     $datetime->setTimezone(new DateTimeZone('Europe/Berlin'));
 
-    return $datetime->format( 'H:i \U\h\r d.m.Y' );
+    if($format === 'short') {
+      return $datetime->format( 'H:i \U\h\r' );
+    } else {
+      return $datetime->format( 'H:i \U\h\r d.m.Y' );
+    }
   }
 
   public function getVars() {

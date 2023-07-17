@@ -2,6 +2,7 @@
 
 namespace App\Models;
 use App\DataModels\User;
+use App\DataModels\Achievement;
 
 class UsersList extends AbstractModel
 {
@@ -13,16 +14,19 @@ class UsersList extends AbstractModel
     return $this->database_connection->fetchAll(class: User::class, passed_sql: $sql);
   }
 
-  public function find($user_id): array {
+  public function find($user_id, $date = null): array {
     $user = $this->database_connection->fetch('users', 'id', $user_id, User::class);
-    $sql = "SELECT floor((unlocked_at+7200)/86400)*86400 day, count(*) count FROM `user_achievements` WHERE unlocked_at IS NOT NULL AND user_id = {$user_id} GROUP BY day ORDER BY `day` DESC;";
+    $sql = "SELECT floor((unlocked_at+7200)/86400)*86400 day, count(*) count FROM `user_achievements` WHERE unlocked_at IS NOT NULL AND user_id = $user_id GROUP BY day ORDER BY `day` DESC;";
     $days_query = $this->database_connection->fetchAll(passed_sql: $sql);
     $days = array_combine(
       array_map(function($item){ return $item['day']; }, $days_query),
       array_map(function($item){ return $item['count']; }, $days_query)
     );
-    //$days = array_combine();
-    return [$user, $days];
+    if(!empty($date)) {
+      $sql2 = "SELECT achievements.*, achieved, unlocked_at FROM `user_achievements` JOIN achievements ON user_achievements.achievement_system_name = achievements.system_name WHERE unlocked_at IS NOT NULL AND floor((unlocked_at+7200)/86400)*86400 = $date AND user_id = $user_id ORDER BY unlocked_at asc;"; // build query to get achievements for user x for day y
+      $achievements_query = $this->database_connection->fetchAll(class: Achievement::class,passed_sql: $sql2);
+    }
+    return [$user, $days, $achievements_query ?? null];
   }
 }
 
