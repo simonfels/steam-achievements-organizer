@@ -41,9 +41,9 @@ $achievements = $user[2];
         <?php endforeach; ?>
     </div>
   <?php endforeach; ?>
-<h3><?php echo DateTime::createFromFormat('U', $show_date)->format('d.m.Y'); ?></h3>
 <?php if(!empty($achievements)): ?>
-        <div class="grid gap-2 grid-cols-2 md:grid-cols-3 xl:grid-cols-6">
+    <h3><?php echo DateTime::createFromFormat('U', $show_date)->format('d.m.Y'); ?></h3>
+    <div class="grid gap-2 grid-cols-2 md:grid-cols-3 xl:grid-cols-6">
             <?php foreach($achievements as $achievement): ?>
                 <div class="flex flex-col justify-between w-full bg-neutral-800 p-2 rounded">
                     <div class="flex">

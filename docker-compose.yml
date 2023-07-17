@@ -7,7 +7,7 @@ services:
   app:
     build: ./
     volumes:
-      - ./html:/var/www/html:z
+      - ./public_html:/var/www/html:z
       - ./src:/var/www/src:z
     ports:
       - 3000:80

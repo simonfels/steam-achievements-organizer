@@ -4,6 +4,6 @@ RUN apt-get update \
 RUN docker-php-ext-install pdo pdo_mysql mysqli bcmath
 RUN a2enmod rewrite
 WORKDIR /var/www
-COPY html/ /html
+COPY public_html/ /html
 COPY src/ /src
 EXPOSE 80

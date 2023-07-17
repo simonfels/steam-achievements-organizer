@@ -23,7 +23,7 @@ class UsersList extends AbstractModel
       array_map(function($item){ return $item['count']; }, $days_query)
     );
     if(!empty($date)) {
-      $sql2 = "SELECT achievements.*, achieved, unlocked_at FROM `user_achievements` JOIN achievements ON user_achievements.achievement_system_name = achievements.system_name WHERE unlocked_at IS NOT NULL AND floor((unlocked_at+7200)/86400)*86400 = $date AND user_id = $user_id ORDER BY unlocked_at asc;"; // build query to get achievements for user x for day y
+      $sql2 = "SELECT achievements.*, achieved, unlocked_at FROM `user_achievements` JOIN achievements ON user_achievements.achievement_system_name = achievements.system_name WHERE unlocked_at IS NOT NULL AND floor((unlocked_at+7200)/86400)*86400 = $date AND user_id = $user_id ORDER BY unlocked_at asc;";
       $achievements_query = $this->database_connection->fetchAll(class: Achievement::class,passed_sql: $sql2);
     }
     return [$user, $days, $achievements_query ?? null];

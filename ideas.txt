@@ -2,16 +2,18 @@ users/index
     - [x] list all users
 users/show
     - [x] github like calendar
-    - [ ] activity feed, nach tag
+    - [x] activity feed, nach tag
+    - [ ] activity feed gruppieren nach spiel
     - [ ] error handling, wenn seite ohne parameter aufgerufen wird
 games/index
-    - [x] list all games
+    - [x] list all gamesgit dad
 games/show
     - [x] list all achievements for game
 scraper/index
     - [x] alle games von usern holen
     - [ ] visuelles feedback (in form eines log z.b.)
     - [ ] prozess in teilprozesse aufteilen (nicht alles am stück holen) -> sicherer für fehlerhandling
+    - [ ] queries einsparen (update limit of 5000)
 
 ---
 
@@ -23,3 +25,7 @@ scraper/index
     -> free_games holen (getownedgames mit parameter `&include_played_free_games=1&include_appinfo=1` aufrufen)
         -> img_icon_url = http://media.steampowered.com/steamcommunity/public/images/apps/{appid}/{img_icon_url}.jpg
     -> percentages in db speichern (total, relative (so wie steam berechnet))
+    -> ftp-deploy einrichten über github actions
+    -> passwörter auslagern
+    -> add game_id to user_achievements
+
