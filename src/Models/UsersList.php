@@ -15,7 +15,7 @@ class UsersList extends AbstractModel
 
   public function find($user_id): array {
     $user = $this->database_connection->fetch('users', 'id', $user_id, User::class);
-    $sql = "SELECT floor((unlocked_at+7200)/86400)*86400 day, count(*) count FROM `user_achievements` WHERE unlocked_at IS NOT NULL AND user_id = '76561197999852541' GROUP BY day ORDER BY `day` DESC;";
+    $sql = "SELECT floor((unlocked_at+7200)/86400)*86400 day, count(*) count FROM `user_achievements` WHERE unlocked_at IS NOT NULL AND user_id = {$user_id} GROUP BY day ORDER BY `day` DESC;";
     $days_query = $this->database_connection->fetchAll(passed_sql: $sql);
     $days = array_combine(
       array_map(function($item){ return $item['day']; }, $days_query),

@@ -73,7 +73,7 @@ class Scraper extends AbstractModel {
   private function scrapeGameUserAchievements(array $userAchievements): void {
     foreach($userAchievements as $gameAchievements) {
       foreach($gameAchievements as $gameAchievement) {
-        $this->database_connection->insert('user_achievements', array_keys($gameAchievement), $gameAchievement);
+        $this->database_connection->insert('user_achievements', array_keys($gameAchievement), $gameAchievement, ['achieved', 'unlocked_at']);
       }
     }
   }

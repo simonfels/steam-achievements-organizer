@@ -3,11 +3,11 @@
 namespace App\Helpers;
 
 class SteamAPI {
-  const BASE_URL = "https://api.steampowered.com";
-  const ALL_ACHIEVEMENTS_URL = SteamAPI::BASE_URL . '/ISteamUserStats/GetSchemaForGame/v2/?';
-  const USER_ACHIEVEMENTS_URL = SteamAPI::BASE_URL . '/ISteamUserStats/GetPlayerAchievements/v0001/?';
-  const USER_URL = SteamAPI::BASE_URL . '/ISteamUser/GetPlayerSummaries/v0002/?';
-  const USER_GAMES_URL = SteamAPI::BASE_URL . '/IPlayerService/GetOwnedGames/v0001/?';
+  private const BASE_URL = "https://api.steampowered.com";
+  private const ALL_ACHIEVEMENTS_URL = SteamAPI::BASE_URL . '/ISteamUserStats/GetSchemaForGame/v2/?';
+  private const USER_ACHIEVEMENTS_URL = SteamAPI::BASE_URL . '/ISteamUserStats/GetPlayerAchievements/v0001/?';
+  private const USER_URL = SteamAPI::BASE_URL . '/ISteamUser/GetPlayerSummaries/v0002/?';
+  private const USER_GAMES_URL = SteamAPI::BASE_URL . '/IPlayerService/GetOwnedGames/v0001/?';
 
   public function __construct(private string $api_key) {}
   public function fetchUserAchievements(string $app_id, string $user_id): array|false
@@ -69,7 +69,10 @@ class SteamAPI {
   }
   public function fetchUserGames(string $user_id): array|false
   {
-    $response = $this->apiCall(self::USER_GAMES_URL . $this->buildParams(['steamid' => $user_id]));
+    $response = $this->apiCall(self::USER_GAMES_URL . $this->buildParams([
+      'steamid' => $user_id,
+      'include_played_free_games' => 1
+    ]));
 
     return array_map(function($item) use ($user_id) { return ['game_id' => $item['appid'], 'user_id' => $user_id]; }, $response['response']['games']);
   }

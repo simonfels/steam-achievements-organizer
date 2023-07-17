@@ -38,8 +38,16 @@ class DatabaseConnection {
     return $query->fetch();
   }
 
-  public function insert(string $table, array $attributes, array $entries) {
-    $sql = 'INSERT IGNORE INTO ' . $table . ' (' . implode(', ', $attributes) . ') VALUES (' . implode(', ', array_map(function($item) { return ':' . $item; }, $attributes)) . ')';
+  public function insert(string $table, array $attributes, array $entries, array|null $updatedAttributes = null): void {
+    if(empty($updatedAttributes)) {
+      $sql = 'INSERT IGNORE INTO ' . $table . ' (' . implode(', ', $attributes) . ')' .
+              ' VALUES (' . implode(', ', array_map(function($item) { return ':' . $item; }, $attributes)) . ')';
+    } else {
+      $sql = 'INSERT INTO ' . $table . ' (' . implode(', ', $attributes) . ')' .
+              ' VALUES (' . implode(', ', array_map(function($item) { return ':' . $item; }, $attributes)) . ') AS val' .
+              ' ON DUPLICATE KEY UPDATE ' . implode(', ', array_map(function($item) { return "$item=val.$item"; }, $updatedAttributes));
+    }
+
     $this->pdo->prepare($sql)->execute($entries);
   }
 }
