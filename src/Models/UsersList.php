@@ -23,20 +23,11 @@ class UsersList extends AbstractModel
       array_map(function($item){ return $item['count']; }, $days_query)
     );
     if(!empty($date)) {
-      $sql2 = "SELECT achievements.*, achieved, unlocked_at FROM `user_achievements` JOIN achievements ON user_achievements.achievement_system_name = achievements.system_name WHERE unlocked_at IS NOT NULL AND floor((unlocked_at+7200)/86400)*86400 = $date AND user_id = $user_id ORDER BY unlocked_at asc;";
+      $sql2 = "SELECT achievements.*, games.name game_name, achieved, unlocked_at FROM `user_achievements` JOIN achievements ON user_achievements.achievement_system_name = achievements.system_name JOIN games ON games.app_id = achievements.game_id WHERE unlocked_at IS NOT NULL AND floor((unlocked_at+7200)/86400)*86400 = $date AND user_id = $user_id ORDER BY unlocked_at asc;";
       $achievements_query = $this->database_connection->fetchAll(class: Achievement::class,passed_sql: $sql2);
+      $game_names = array_unique(array_map(function($item) { return $item->game_name; }, $achievements_query));
+      $achievements = array_combine($game_names, array_map(function($game_name) use($achievements_query) { return array_filter($achievements_query, function($item) use($game_name) { return $item->game_name == $game_name; }); }, $game_names));
     }
-    return [$user, $days, $achievements_query ?? null];
+    return [$user, $days, $achievements ?? null];
   }
 }
-
-
-/*
-public function find($app_id):array {
-  $game = $this->database_connection->fetch("games", "app_id", $app_id, \App\DataModels\Game::class);
-  $sql = "SELECT a.*, ua.achieved, ua.unlocked_at FROM achievements a JOIN user_achievements ua ON ua.achievement_system_name = a.system_name WHERE game_id = " . $app_id . " ORDER BY achieved desc, unlocked_at desc";
-  $game_achievements = $this->database_connection->fetchAll(class: \App\DataModels\Achievement::class, passed_sql: $sql);
-
-  return [$game, $game_achievements];
-}
-*/

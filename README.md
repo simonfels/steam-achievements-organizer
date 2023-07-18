@@ -6,8 +6,8 @@
 ### users/show
 - [x] github like calendar
 - activity feed
-    - [ ] per day
-    - [ ] group by game
+    - [x] per day
+    - [x] group by game
 - [ ] error handling, when calling site without parameter
 ### games/index
 - [x] list all games

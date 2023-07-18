@@ -49,17 +49,20 @@ $achievements = $user[2];
         <?php if(!empty($achievements)): ?>
             <h3><?php echo DateTime::createFromFormat('U', $show_date)->format('d.m.Y'); ?></h3>
             <div class="grid gap-2 grid-cols-1">
-                    <?php foreach($achievements as $achievement): ?>
-                        <div class="flex flex-col justify-between w-full bg-neutral-800 p-2 rounded">
-                            <div class="flex">
-                                <div style="background-image: url(' <?php echo $achievement->icon ?>'); width: 50px; height: 50px" class="bg-cover flex-none mr-2"></div>
-                                <div>
-                                    <p class="text-lg font-bold line-clamp-1 text-neutral-300"><?php echo $achievement->display_name ?></p>
-                                    <p class="text-sm line-clamp-2 hover:line-clamp-none text-neutral-400"><?php echo $achievement->description ?></p>
+                    <?php foreach($achievements as $key => $game): ?>
+                        <h4><?php echo $key ?></h4>
+                        <?php foreach($game as $achievement): ?>
+                            <div class="flex flex-col justify-between w-full bg-neutral-800 p-2 rounded">
+                                <div class="flex">
+                                    <div style="background-image: url(' <?php echo $achievement->icon ?>'); width: 50px; height: 50px" class="bg-cover flex-none mr-2"></div>
+                                    <div>
+                                        <p class="text-lg font-bold line-clamp-1 text-neutral-300"><?php echo $achievement->display_name ?></p>
+                                        <p class="text-sm line-clamp-2 hover:line-clamp-none text-neutral-400"><?php echo $achievement->description ?></p>
+                                    </div>
                                 </div>
+                                <div class="text-left text-sm text-neutral-100 mt-2"><?php echo $achievement->formatted_unlocked_at('short') ?></div>
                             </div>
-                            <div class="text-left text-sm text-neutral-100 mt-2"><?php echo $achievement->formatted_unlocked_at('short') ?></div>
-                        </div>
+                        <?php endforeach; ?>
                     <?php endforeach; ?>
                 </div>
         <?php endif; ?>

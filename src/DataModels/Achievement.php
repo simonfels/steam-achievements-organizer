@@ -8,6 +8,7 @@ class Achievement
 {
   public int $id;
   public int $game_id;
+  public string $game_name;
   public string $system_name;
   public string $display_name;
   public bool $hidden;
