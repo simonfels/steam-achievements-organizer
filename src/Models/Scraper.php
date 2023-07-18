@@ -14,14 +14,14 @@ class Scraper extends AbstractModel {
   }
   public function scrapeUser(string $user_id): array {
     $scrapedUser = $this->scrapeUserData($user_id);
-
-    if($scrapedUser)
-    {
-      $scrapedGames = $this->scrapeUserGames($scrapedUser);
-      $this->scrapeGameAchievements($scrapedGames);
-      $userAchievements = $this->scrapeGamesData($scrapedGames, $user_id);
-      $this->scrapeGameUserAchievements($userAchievements);
-    }
+//
+//    if($scrapedUser)
+//    {
+//      $scrapedGames = $this->scrapeUserGames($scrapedUser);
+//      $this->scrapeGameAchievements($scrapedGames);
+//      $userAchievements = $this->scrapeGamesData($scrapedGames, $user_id);
+//      $this->scrapeGameUserAchievements($userAchievements);
+//    }
     return ["success"];
   }
 
@@ -29,7 +29,7 @@ class Scraper extends AbstractModel {
     $fetchedUser = $this->steam_api->fetchUser($user_id);
     if($fetchedUser)
     {
-      $this->database_connection->insert('users', array_keys($fetchedUser), $fetchedUser);
+      $this->database_connection->insert('users', array_keys($fetchedUser), $fetchedUser, ['avatar_url', 'name']);
       return $user_id;
     }
     return false;

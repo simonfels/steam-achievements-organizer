@@ -6,7 +6,7 @@ class SteamAPI {
   private const BASE_URL = "https://api.steampowered.com";
   private const ALL_ACHIEVEMENTS_URL = SteamAPI::BASE_URL . '/ISteamUserStats/GetSchemaForGame/v2/?';
   private const USER_ACHIEVEMENTS_URL = SteamAPI::BASE_URL . '/ISteamUserStats/GetPlayerAchievements/v0001/?';
-  private const USER_URL = SteamAPI::BASE_URL . '/ISteamUser/GetPlayerSummaries/v0002/?';
+  private const USER_URL = SteamAPI::BASE_URL . '/ISteamUser/GetPlayerSummaries/v2/?';
   private const USER_GAMES_URL = SteamAPI::BASE_URL . '/IPlayerService/GetOwnedGames/v0001/?';
 
   public function __construct(private string $api_key) {}
@@ -61,7 +61,7 @@ class SteamAPI {
         'id' => $player['steamid'],
         'name' => $player['personaname'],
         'steam_url' => $player['profileurl'],
-        'avatar_url' => $player['avatarmedium']
+        'avatar_url' => $player['avatarfull']
       ];
     } else {
       return false;

@@ -28,4 +28,6 @@ scraper/index
     -> ftp-deploy einrichten über github actions
     -> passwörter auslagern
     -> add game_id to user_achievements
+    -> use twig for templating
 
+    -> IPlayerService/GetOwnedGames https://steamwebapi.azurewebsites.net/ - evtl. weitere Parameter verwenden
