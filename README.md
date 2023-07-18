@@ -1,33 +1,41 @@
-users/index
-    - [x] list all users
-users/show
-    - [x] github like calendar
-    - [x] activity feed, nach tag
-    - [ ] activity feed gruppieren nach spiel
-    - [ ] error handling, wenn seite ohne parameter aufgerufen wird
-games/index
-    - [x] list all gamesgit dad
-games/show
-    - [x] list all achievements for game
-scraper/index
-    - [x] alle games von usern holen
-    - [ ] visuelles feedback (in form eines log z.b.)
-    - [ ] prozess in teilprozesse aufteilen (nicht alles am stück holen) -> sicherer für fehlerhandling
-    - [ ] queries einsparen (update limit of 5000)
+# Steam Achievements Viewer
+## Coding TODOs
+### users/index
+- [x] list all users
+- [ ] add pagination
+### users/show
+- [x] github like calendar
+- activity feed
+    - [ ] per day
+    - [ ] group by game
+- [ ] error handling, when calling site without parameter
+### games/index
+- [x] list all games
+### games/show
+- [x] list all achievements for a game
+- [ ] remove completed achievements here
+- [ ] add game/achievement statistics
+### scraper/index
+- [x] alle games von usern holen
+- [ ] visual feedback (e.g. log, progressbar, etc.)
+- [ ] split process in reproducable parts -> more error-prone
+- [ ] use less sql-queries (hoster has update limit of 5000)
+- [ ] IPlayerService/GetOwnedGames https://steamwebapi.azurewebsites.net/ - evtl. weitere Parameter verwenden
+      - img_icon_url = http://media.steampowered.com/steamcommunity/public/images/apps/{appid}/{img_icon_url}.jpg
+      - https://stackoverflow.com/questions/53963328/how-do-i-get-a-hash-for-a-picture-form-a-steam-game
 
----
+## Styling TODOs
+### general
+- [ ] which sites are needed?
+- [ ] develop uniform style for the whole website
+- [ ] use twig for templating
 
-- [ ] write own migrations
-- [ ] datenbank überarbeiten
-    -> achievement counts in db schreiben
-    -> abgeschlossene games markieren
-    -> games ohne achievements nicht speichern
-    -> free_games holen (getownedgames mit parameter `&include_played_free_games=1&include_appinfo=1` aufrufen)
-        -> img_icon_url = http://media.steampowered.com/steamcommunity/public/images/apps/{appid}/{img_icon_url}.jpg
-    -> percentages in db speichern (total, relative (so wie steam berechnet))
-    -> ftp-deploy einrichten über github actions
-    -> passwörter auslagern
-    -> add game_id to user_achievements
-    -> use twig for templating
-
-    -> IPlayerService/GetOwnedGames https://steamwebapi.azurewebsites.net/ - evtl. weitere Parameter verwenden
+## Database/Security/CICD TODOs
+- [ ] write migrations, to recreate the db
+- [ ] add game_id to user_achievements
+- [ ] remove passwords from repository
+- [ ] use ftp-deploy as github action
+- [ ] save percentages in db
+- [ ] save total counts in db
+- [ ] don't save any game without achievements
+- [ ] mark completed (user)-games (+ when it was completed -> when was the last achievement unlocked)
