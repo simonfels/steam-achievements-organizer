@@ -13,7 +13,7 @@ class GamesList extends AbstractModel
 
   public function find($app_id):array {
     $game = $this->database_connection->fetch("games", "app_id", $app_id, Game::class);
-    $sql = "SELECT a.* FROM achievements a WHERE game_id = " . $app_id . " ORDER BY display_name";
+    $sql = "SELECT a.* FROM achievements a WHERE game_id = " . $app_id . " ORDER BY percent desc, display_name";
     $game_achievements = $this->database_connection->fetchAll(class: Achievement::class, passed_sql: $sql);
 
     return [$game, $game_achievements];

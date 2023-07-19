@@ -17,6 +17,7 @@ class Achievement
   public string $icongray;
   public bool $achieved;
   public ?string $unlocked_at;
+  public ?float $percent;
 
   public function formatted_unlocked_at(string $format = 'long'):?string {
     if(empty($this->unlocked_at)) return null;

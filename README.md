@@ -14,7 +14,7 @@
 ### games/show
 - [x] list all achievements for a game
 - [x] remove completed achievements here
-- [ ] add game/achievement statistics
+- [x] add achievement percentages
 ### scraper/index
 - [x] alle games von usern holen
 - [ ] visual feedback (e.g. log, progressbar, etc.)
@@ -27,6 +27,8 @@
 ## Styling TODOs
 ### general
 - [ ] which sites are needed?
+  - List all Achievements for a Game + User
+    - With Categories (Achieved / Unachieved / Marked)
 - [ ] develop uniform style for the whole website
 - [ ] use twig for templating
 

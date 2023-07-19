@@ -8,6 +8,7 @@ class SteamAPI {
   private const USER_ACHIEVEMENTS_URL = SteamAPI::BASE_URL . '/ISteamUserStats/GetPlayerAchievements/v0001/?';
   private const USER_URL = SteamAPI::BASE_URL . '/ISteamUser/GetPlayerSummaries/v2/?';
   private const USER_GAMES_URL = SteamAPI::BASE_URL . '/IPlayerService/GetOwnedGames/v0001/?';
+  private const GLOBAL_PERCENTAGES_URL = SteamAPI::BASE_URL . '/ISteamUserStats/GetGlobalAchievementPercentagesForApp/v2/?';
 
   public function __construct(private string $api_key) {}
   public function fetchUserAchievements(string $app_id, string $user_id): array|false
@@ -75,6 +76,19 @@ class SteamAPI {
     ]));
 
     return array_map(function($item) use ($user_id) { return ['game_id' => $item['appid'], 'user_id' => $user_id]; }, $response['response']['games']);
+  }
+  public function fetchGameGlobalPercentages(string $app_id): array|false {
+    $response = $this->apiCall(self::GLOBAL_PERCENTAGES_URL . $this->buildParams([
+      'gameid' => $app_id
+    ]));
+
+    $result = [];
+
+    foreach($response['achievementpercentages']['achievements'] as $achievement) {
+      $result[$achievement['name']] = $achievement['percent'];
+    }
+
+    return $result;
   }
   private function apiCall(string $url): array|null
   {

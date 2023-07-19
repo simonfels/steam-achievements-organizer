@@ -1,5 +1,12 @@
 <?php
-$zone = new DateTimeZone('Europe/Berlin');
-$datetime = DateTime::createFromFormat('U', time());
-$datetime->setTimezone($zone);
-var_dump($datetime->getOffset());
+
+include_once "../src/autoloader.php";
+
+use \App\Models\Scraper;
+
+$scraper = new Scraper();
+
+if(!empty($_GET['gameids'])) {
+  $scraper->scrapeGameAchievements($_GET['gameids']);
+  echo implode(', ', $_GET['gameids']);
+}

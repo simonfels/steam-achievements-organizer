@@ -57,19 +57,20 @@ class Scraper extends AbstractModel {
     }
     return $userAchievements;
   }
-  private function scrapeGameAchievements(array $game_ids): void {
+  public function scrapeGameAchievements(array $game_ids): void {
     foreach($game_ids as $game_id)
     {
       $fetchedAchievements = $this->steam_api->fetchAchievements($game_id);
+      $fetchedPercentages = $this->steam_api->fetchGameGlobalPercentages($game_id);
+      $mergedAchievements = array_map(function($item) use($fetchedPercentages) { return array_merge($item, ['percent' => $fetchedPercentages[$item['system_name']]]); }, $fetchedAchievements);
 
-      if($fetchedAchievements) {
-        foreach($fetchedAchievements as $fetchedAchievement) {
-          $this->database_connection->insert('achievements', array_keys($fetchedAchievement), $fetchedAchievement);
+      if($mergedAchievements) {
+        foreach($mergedAchievements as $fetchedAchievement) {
+          $this->database_connection->insert('achievements', array_keys($fetchedAchievement), $fetchedAchievement, ['percent']);
         }
       }
     }
   }
-  private function scrapeGamePercentages(): void {}
   private function scrapeGameUserAchievements(array $userAchievements): void {
     foreach($userAchievements as $gameAchievements) {
       foreach($gameAchievements as $gameAchievement) {
