@@ -13,7 +13,7 @@
 - [x] list all games
 ### games/show
 - [x] list all achievements for a game
-- [ ] remove completed achievements here
+- [x] remove completed achievements here
 - [ ] add game/achievement statistics
 ### scraper/index
 - [x] alle games von usern holen

@@ -54,7 +54,7 @@ $achievements = $user[2];
                         <?php foreach($game as $achievement): ?>
                             <div class="flex flex-col justify-between w-full bg-neutral-800 p-2 rounded">
                                 <div class="flex">
-                                    <div style="background-image: url(' <?php echo $achievement->icon ?>'); width: 50px; height: 50px" class="bg-cover flex-none mr-2"></div>
+                                    <div style="background-image: url(' <?php echo $achievement->icon ?>'); width: 50px; height: 50px" class="w-20 h-20 bg-cover flex-none mr-2"></div>
                                     <div>
                                         <p class="text-lg font-bold line-clamp-1 text-neutral-300"><?php echo $achievement->display_name ?></p>
                                         <p class="text-sm line-clamp-2 hover:line-clamp-none text-neutral-400"><?php echo $achievement->description ?></p>
