@@ -5,7 +5,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
-<body class="bg-black text-neutral-300" style="padding: 0; margin: 0; font-family: sans-serif">
+<body class="bg-white-900 text-neutral-900 font-mono p-0 m-0">
     <nav>
         <ul class="flex">
             <li><a href="/games" class="inline-block p-2"><strong>Games</strong></a></li>

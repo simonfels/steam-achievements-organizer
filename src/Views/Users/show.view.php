@@ -1,5 +1,5 @@
 <?php
-function colorcode(int $count): array {
+function colorcode(int $count, DateTime $date): array {
   $colors = [
       0 => '#161b22', //  0
       1 => '#0e4429', //  1 - 10
@@ -7,47 +7,65 @@ function colorcode(int $count): array {
       3 => '#26a641', // 21 - 30
       4 => '#39d353', // 31 -
     ];
-  if($count == 0) return [$colors[0], $count];
+  //if($count == 0) return [$colors[0], $count];
 
   $calcIndex = ceil($count / 10);
 
-  return [$colors[ceil(min($calcIndex, 4))], $count];
+  //  return [$colors[ceil(min($calcIndex, 4))], $count];
+  return ['hsl(' . $date->format('m') * 30 . ', 40%, ' . (ceil(min($calcIndex, 4))) * 15 + 16 . '%)', $count];
 }
-$start = new DateTime('2023-01-01');
+$start = DateTime::createFromFormat('d.m.Y', date('d.m.Y'));
+$start->setTime(0,0);
+$start->modify("-1 year");
 $weekday = $start->format('w') == 0 ? 6 : $start->format('w') - 1;
 $start->modify("-$weekday days");
 
 $date_period = new DatePeriod($start, DateInterval::createFromDateString('1 day'), new DateTime('now'));
 $dates = $user[1];
 $weekdays = array_fill_keys(range(1, 7), []);
-
 foreach($date_period as $date){
     $weekday = $date->format('w');
-    $values = colorcode($dates[$date->format('U')] ?? 0);
-    $values[] = $date->format('U');
+    $values = colorcode($dates[$date->format('U')] ?? 0, $date);
+    $values[] = $date;
     $weekdays[$weekday == 0 ? 7 : $weekday][$date->format('d.m.Y')] = $values;
 }
 $days = ['SO','SA','FR','DO','MI','DI','MO'];
 $achievements = $user[2];
 ?>
-
-<div class="flex max-w-7xl">
-    <div class="m-3">
-        <img class="w-40" src="<?php echo $user[0]->avatar_url ?>">
-        <h2 class="text-2xl font-bold"><?php echo $user[0]->name ?></h2>
-        <a class="text-blue-400" href="<?php echo $user[0]->steam_url ?>">Link to Steam</a>
-    </div>
-    <div class="flex-1">
-        <?php foreach($weekdays as $weekday): ?>
-            <div class="flex font-mono">
-                <div class="text-xs font-bold text-neutral-500 self-center"><?php echo array_pop($days) ?></div>
-                <?php foreach($weekday as $day => $count): ?>
-                    <?php echo "<a href='/users/show.php?userid={$user[0]->id}&date=$count[2]'><div class='w-4 h-4 m-0.5 rounded' style='background-color: {$count[0]}' title='Earned {$count[1]} Achievement" . ($count[1] === 1 ? '' : 's') . " on " . $day . "'></div></a>" ?>
-                <?php endforeach; ?>
-            </div>
-        <?php endforeach; ?>
-        <?php if(!empty($achievements)): ?>
+<div class="w-full flex justify-center">
+    <div class="max-w-7xl">
+        <div class="m-3 hidden">
+            <img class="w-40" src="<?php echo $user[0]->avatar_url ?>">
+            <h2 class="text-2xl font-bold"><?php echo $user[0]->name ?></h2>
+            <a class="text-blue-400" href="<?php echo $user[0]->steam_url ?>">Link to Steam</a>
+        </div>
+        <div class="flex justify-center w-full">
+            <table>
+                <thead class="font-mono text-xs font-normal text-neutral-500">
+                    <th></th>
+                    <?php
+                        $months = array_count_values(array_map(function($day) { return $day[2]->format('M\'y'); }, $weekdays[1]));
+                    ?>
+                    <?php foreach($months as $month => $count): ?>
+                        <th colspan="<?php echo $count ?>"><small><?php echo $month ?></small></th>
+                    <?php endforeach; ?>
+                </thead>
+                <tbody>
+                    <?php foreach($weekdays as $weekday): ?>
+                        <tr class="font-mono">
+                                <td class="text-xs font-bold text-neutral-500 self-center"><?php echo array_pop($days) ?></td>
+                                <?php foreach($weekday as $day => $count): ?>
+                                    <?php echo "<td class='invert'><a href='/users/show.php?userid={$user[0]->id}&date={$count[2]->format('U')}'><div class='w-4 h-4 rounded' style='background-color: {$count[0]}' title='Earned {$count[1]} Achievement" . ($count[1] === 1 ? '' : 's') . " on " . $day . "'></div></a></td>" ?>
+                                <?php endforeach; ?>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+        <?php if(!empty($show_date)): ?>
             <h3><?php echo DateTime::createFromFormat('U', $show_date)->format('d.m.Y'); ?></h3>
+        <?php endif ?>
+        <?php if(!empty($achievements)): ?>
             <div class="grid gap-2 grid-cols-1">
                     <?php foreach($achievements as $key => $game): ?>
                         <h4><?php echo $key ?></h4>
