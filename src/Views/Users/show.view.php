@@ -47,7 +47,7 @@ $achievements = $user[2];
                         $months = array_count_values(array_map(function($day) { return $day[2]->format('M\'y'); }, $weekdays[1]));
                     ?>
                     <?php foreach($months as $month => $count): ?>
-                        <th colspan="<?php echo $count ?>"><small><?php echo $month ?></small></th>
+                        <th class="text-neutral-300" colspan="<?php echo $count ?>"><small><?php echo $month ?></small></th>
                     <?php endforeach; ?>
                 </thead>
                 <tbody>
@@ -55,7 +55,7 @@ $achievements = $user[2];
                         <tr class="font-mono">
                                 <td class="text-xs font-bold text-neutral-500 self-center"><?php echo array_pop($days) ?></td>
                                 <?php foreach($weekday as $day => $count): ?>
-                                    <?php echo "<td class='invert'><a href='/users/show.php?userid={$user[0]->id}&date={$count[2]->format('U')}'><div class='w-4 h-4 rounded' style='background-color: {$count[0]}' title='Earned {$count[1]} Achievement" . ($count[1] === 1 ? '' : 's') . " on " . $day . "'></div></a></td>" ?>
+                                    <?php echo "<td><a href='/users/show.php?userid={$user[0]->id}&date={$count[2]->format('U')}'><div class='w-4 h-4 rounded' style='background-color: {$count[0]}' title='Earned {$count[1]} Achievement" . ($count[1] === 1 ? '' : 's') . " on " . $day . "'></div></a></td>" ?>
                                 <?php endforeach; ?>
                         </tr>
                     <?php endforeach; ?>

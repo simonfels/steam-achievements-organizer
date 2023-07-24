@@ -15,10 +15,17 @@ class UsersController extends AbstractController {
     ]);
   }
 
-  public function show(string $user_id, string|null $date = null): void {
-    $this->render('Users/show', [
-      'user' => $this->users_list->find($user_id, $date),
-      'show_date' => $date
-    ]);
+  public function show(): void {
+    $user_id = @$_GET['userid'];
+    $date = @$_GET['date'];
+
+    if(!empty($user_id)) {
+      $this->render('Users/show', [
+        'user' => $this->users_list->find($user_id, $date),
+        'show_date' => $date
+      ]);
+    } else {
+      $this->render('Users/404');
+    }
   }
 }
