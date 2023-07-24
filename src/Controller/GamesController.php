@@ -16,11 +16,17 @@ class GamesController extends AbstractController {
   }
 
   public function show():void {
-    [$game, $achievements] = $this->games_list->find($_GET["appid"]);
+    $game_id = @$_GET['gameid'];
 
-    $this->render('Games/show', [
-      'game' => $game,
-      'achievements' => $achievements
-    ]);
+    if(!empty($game_id)) {
+      [$game, $achievements] = $this->games_list->find($game_id);
+
+      $this->render('Games/show', [
+        'game' => $game,
+        'achievements' => $achievements
+      ]);
+    } else {
+      $this->render('Games/404');
+    }
   }
 }

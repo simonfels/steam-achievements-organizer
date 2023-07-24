@@ -10,7 +10,7 @@
         <ul class="flex">
             <li><a href="/games" class="inline-block p-2"><strong>Games</strong></a></li>
             <li><a href="/users" class="inline-block p-2"><strong>Users</strong></a></li>
-            <li><a href="/" class="inline-block p-2"><strong>Fetch Data</strong></a></li>
+            <li><a href="/scraper" class="inline-block p-2"><strong>Fetch Data</strong></a></li>
         </ul>
     </nav>
     <div class="m-2">

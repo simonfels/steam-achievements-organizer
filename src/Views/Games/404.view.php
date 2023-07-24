@@ -1,0 +1,1 @@
+<p>Please specify a <b>gameid</b> <small>(<span class="text-orange-400">games/show.php?game=&lt;STEAM-APP-ID&gt;</span>)</small> to show information about a game.</p>

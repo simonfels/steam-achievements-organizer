@@ -9,8 +9,15 @@ class ScraperController extends AbstractController {
   public function __construct() {
     $this->scraper = new Scraper();
   }
-  public function index():void {
-    $log = $this->scraper->scrapeUser($_GET["userid"]);
-    $this->render('Scraper/index', ['protocol' => $log]);
+  public function index(): void {
+    $user_id = @$_GET['userid'];
+    $log = [];
+    if(!empty($user_id)) {
+      $log = $this->scraper->scrapeUser($_GET["userid"]);
+    }
+    $this->render('Scraper/index', [
+      'protocol' => $log,
+      'user_id' => $user_id
+    ]);
   }
 }
