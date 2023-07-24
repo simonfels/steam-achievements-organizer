@@ -19,15 +19,20 @@ class DatabaseConnection {
     ]);
   }
 
-  public function fetchAll($class = null, string $table = null, string $passed_sql = null):false|array
+  public function fetchAll($class = null, string $table = null, string $passed_sql = null, int $pdoMode = null, int $column = null):false|array
   {
     $sql = $passed_sql ?? 'SELECT * FROM ' . $table;
     $query = $this->pdo->prepare($sql);
     $query->execute();
-    if(!empty($class)) {
-      return $query->fetchAll(PDO::FETCH_CLASS, $class);
+
+    if(isset($pdoMode) && isset($column)) {
+      return $query->fetchAll($pdoMode, $column);
     } else {
-      return $query->fetchAll(PDO::FETCH_DEFAULT);
+      if(!empty($class)) {
+        return $query->fetchAll(PDO::FETCH_CLASS, $class);
+      } else {
+        return $query->fetchAll(PDO::FETCH_DEFAULT);
+      }
     }
   }
 
@@ -49,5 +54,11 @@ class DatabaseConnection {
     }
 
     $this->pdo->prepare($sql)->execute($entries);
+  }
+
+  public function import(string $table, array $items, array|null $updatedAttributes = null): void {
+    foreach($items as $entries) {
+      $this->insert($table, array_keys($entries), $entries, $updatedAttributes);
+    }
   }
 }

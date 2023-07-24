@@ -12,7 +12,7 @@ class Achievement
   public string $system_name;
   public string $display_name;
   public bool $hidden;
-  public string $description;
+  public ?string $description;
   public string $icon;
   public string $icongray;
   public bool $achieved;

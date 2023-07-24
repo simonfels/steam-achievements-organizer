@@ -2,80 +2,89 @@
 
 namespace App\Models;
 use App\Helpers\SteamAPI;
+use App\DataModels\User;
+use PDO;
 
 class Scraper extends AbstractModel {
-  const STEAM_API_KEY = "34726D7C756F3C392EAD2DABB301462C";
   private SteamAPI $steam_api;
-  private array $log;
+  public int $numberOfApiCalls;
+
   public function __construct() {
     parent::__construct();
-    $this->steam_api = new SteamAPI(self::STEAM_API_KEY);
-    $this->log = array();
-  }
-  public function scrapeUser(string $user_id): array {
-    $scrapedUser = $this->scrapeUserData($user_id);
-//
-//    if($scrapedUser)
-//    {
-//      $scrapedGames = $this->scrapeUserGames($scrapedUser);
-//      $this->scrapeGameAchievements($scrapedGames);
-//      $userAchievements = $this->scrapeGamesData($scrapedGames, $user_id);
-//      $this->scrapeGameUserAchievements($userAchievements);
-//    }
-    return ["success"];
+    $this->steam_api = new SteamAPI();
+    $this->numberOfApiCalls = 0;
   }
 
-  private function scrapeUserData(string $user_id): string|false {
-    $fetchedUser = $this->steam_api->fetchUser($user_id);
+  public function allUsers(): array {
+    return $this->database_connection->fetchAll(User::class, passed_sql: '
+        select users.*, count(user_games.id) games_count, achievements.total_achievements from users
+        left join user_games on users.id = user_games.user_id
+        left join (
+            select users.id, count(ua.id) total_achievements
+            from users
+            left join user_achievements ua on users.id = ua.user_id
+            group by users.id
+        ) achievements on achievements.id = users.id
+        group by users.id
+    ');
+  }
+
+  public function scrapeUserData(string $user_id): bool {
+    $fetchedUser = $this->getSteamAPI()->fetchUser($user_id);
     if($fetchedUser)
     {
       $this->database_connection->insert('users', array_keys($fetchedUser), $fetchedUser, ['avatar_url', 'name']);
-      return $user_id;
+      return true;
     }
     return false;
   }
-  private function scrapeUserGames(string $user_id): array {
-    $fetchedGames = $this->steam_api->fetchUserGames($user_id);
-    foreach($fetchedGames as $fetchedGame)
-    {
-      $this->database_connection->insert('user_games', array_keys($fetchedGame), $fetchedGame);
+
+  public function scrapeUserGames(string $user_id): bool {
+    $fetched = $this->getSteamAPI()->fetchUserGames($user_id);
+    $fetchedGames = $fetched[0];
+    $fetchedUserGames = $fetched[1];
+
+    if(!empty($fetchedGames) && !empty($fetchedUserGames)) {
+      $this->database_connection->import('games', $fetchedGames);
+      $this->database_connection->import('user_games', $fetchedUserGames);
+
+      return true;
     }
-    return array_column($fetchedGames, 'game_id');
+    return false;
   }
-  private function scrapeGamesData(array $game_ids, string $user_id): array|false {
-    $userAchievements = [];
+
+  public function scrapeGameAchievements(string $user_id): bool {
+    $user_games = $this->database_connection->fetchAll(passed_sql: "SELECT games.* FROM games JOIN user_games ON games.id = user_games.game_id WHERE user_games.user_id = $user_id", pdoMode: PDO::FETCH_COLUMN, column: 0);
+    $game_ids = $user_games;
+
     foreach($game_ids as $game_id) {
-      $fetchedGame = $this->steam_api->fetchUserAchievements($game_id, $user_id);
+      $fetchedAchievements = $this->getSteamAPI()->fetchAchievements($game_id);
 
-      if(!empty($fetchedGame)) {
-        $this->database_connection->insert('games', ['app_id', 'name'], [
-          'app_id' => $fetchedGame["game_id"],
-          'name' => $fetchedGame["game_name"]
-        ]);
-        $userAchievements[] = $fetchedGame["achievements"];
-      }
-    }
-    return $userAchievements;
-  }
-  public function scrapeGameAchievements(array $game_ids): void {
-    foreach($game_ids as $game_id)
-    {
-      $fetchedAchievements = $this->steam_api->fetchAchievements($game_id);
-      $fetchedPercentages = $this->steam_api->fetchGameGlobalPercentages($game_id);
-      $mergedAchievements = array_map(function($item) use($fetchedPercentages) { return array_merge($item, ['percent' => $fetchedPercentages[$item['system_name']]]); }, $fetchedAchievements);
+      if(!empty($fetchedAchievements)) {
+        $fetchedPercentages = $this->getSteamAPI()->fetchGameGlobalPercentages($game_id);
+        $fetchedUserAchievements = $this->getSteamAPI()->fetchUserAchievements($game_id, $user_id);
+        $mergedAchievements = array_map(function($item) use($fetchedPercentages) { return array_merge($item, ['percent' => $fetchedPercentages[$item['system_name']]]); }, $fetchedAchievements);
 
-      if($mergedAchievements) {
-        foreach($mergedAchievements as $fetchedAchievement) {
-          $this->database_connection->insert('achievements', array_keys($fetchedAchievement), $fetchedAchievement, ['percent']);
-        }
+        $this->database_connection->import('achievements', $mergedAchievements, ['percent']);
+
+        $insertedAchievementsQuery = $this->database_connection->fetchAll(passed_sql: "SELECT a.id, a.system_name FROM achievements a WHERE game_id = $game_id");
+        $insertedAchievements = array_combine(array_column($insertedAchievementsQuery, 'system_name'), array_column($insertedAchievementsQuery, 'id'));
+
+        $mergedUserAchievements = array_map(function($achievement) use($insertedAchievements) { return [
+          'user_id' => $achievement['user_id'],
+          'achievement_id' => $insertedAchievements[$achievement['achievement_system_name']],
+          'achieved' => $achievement['achieved'],
+          'unlocked_at' => $achievement['unlocked_at']
+        ]; }, $fetchedUserAchievements);
+
+        $this->database_connection->import('user_achievements', $mergedUserAchievements, ['achieved', 'unlocked_at']);
       }
     }
+    return true;
   }
-  private function scrapeGameUserAchievements(array $userAchievements): void {
-    foreach($userAchievements as $gameAchievements) {
-      foreach($gameAchievements as $gameAchievement) {
-        $this->database_connection->insert('user_achievements', array_keys($gameAchievement), $gameAchievement, ['achieved', 'unlocked_at']);
-      }
-    }
+
+  private function getSteamAPI(): SteamAPI {
+    $this->numberOfApiCalls++;
+    return $this->steam_api;
   }
 }

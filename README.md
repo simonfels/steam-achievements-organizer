@@ -4,13 +4,12 @@
 
 ### general
 - [ ] general | add pagination
-### scraper/index
-- [ ] scraper/index | visual feedback (e.g. log, progressbar, etc.)
-- [ ] scraper/index | split process in reproducable parts -> more error-prone
-- [ ] scraper/index | use less sql-queries (webhoster has limit of 5000 update queries)
-- [ ] scraper/index | IPlayerService/GetOwnedGames https://steamwebapi.azurewebsites.net/ - evtl. weitere Parameter verwenden
-  - img_icon_url = http://media.steampowered.com/steamcommunity/public/images/apps/{appid}/{img_icon_url}.jpg
-  - https://stackoverflow.com/questions/53963328/how-do-i-get-a-hash-for-a-picture-form-a-steam-game
+### scraper
+- [ ] scraper | visual feedback (e.g. log, progressbar, etc.)
+- [ ] scraper | split process in reproducable parts -> more error-prone
+- [ ] scraper | use less sql-queries (webhoster has limit of 5000 update queries)
+- [x] scraper | IPlayerService/GetOwnedGames https://steamwebapi.azurewebsites.net/ - evtl. weitere Parameter verwenden
+- [ ] scraper | add img_icon_url = http://media.steampowered.com/steamcommunity/public/images/apps/{appid}/{img_icon_url}.jpg
 
 ## Styling TODOs
 
@@ -32,6 +31,8 @@
 - [ ] db | save total number of games / number of games with achievements
 - [ ] db | don't save any game without achievements
 - [ ] db | mark completed (user)-games (+ when it was completed -> when was the last achievement unlocked)
+- [ ] db | add columns `created_at` & `updated_at` to every table
+- [ ] db | log number of api calls (because of 100,000 per day limitation)
 
 ## CI/CD
 
