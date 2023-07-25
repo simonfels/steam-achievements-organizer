@@ -83,6 +83,10 @@ class Scraper extends AbstractModel {
     return true;
   }
 
+  public function calculateStats(): void {
+
+  }
+
   private function getSteamAPI(): SteamAPI {
     $this->numberOfApiCalls++;
     return $this->steam_api;

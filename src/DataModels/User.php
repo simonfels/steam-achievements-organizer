@@ -12,6 +12,7 @@ class User
   public int $games_count;
 
   public function achievementPercentage():float {
+    if($this->total_achievements === 0) return 0;
     return round((float)$this->achieved_achievements / $this->total_achievements, 2) * 100;
   }
-  }
+}

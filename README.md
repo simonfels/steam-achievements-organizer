@@ -4,6 +4,8 @@
 
 ### general
 - [ ] general | add pagination
+- [ ] general | option to manually add games (also tag these games as being `manually added`)
+  - info: games that are not in the steam-store anymore will not be returned from GetOwnedGames (e.g. https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?appid=403570&key=34726D7C756F3C392EAD2DABB301462C&steamid=76561197999852541)
 ### scraper
 - [ ] scraper | add img_icon_url = http://media.steampowered.com/steamcommunity/public/images/apps/{appid}/{img_icon_url}.jpg
 
@@ -39,6 +41,8 @@
 ---
 
 ## Finished
+- [x] users/show | add overview of games with percentages
+- [x] games/user | show (unlocked) achievements of a specific user
 - [x] scraper | split process in reproducable parts -> more error-prone
 - [x] scraper | visual feedback (e.g. log, progressbar, etc.)
 - [x] scraper | IPlayerService/GetOwnedGames https://steamwebapi.azurewebsites.net/ - evtl. weitere Parameter verwenden

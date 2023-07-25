@@ -17,10 +17,22 @@ class UsersController extends AbstractController {
 
   public function show(): void {
     $user_id = @$_GET['userid'];
-    $date = @$_GET['date'];
 
     if(!empty($user_id)) {
       $this->render('Users/show', [
+        'user' => $this->users_list->find($user_id)
+      ]);
+    } else {
+      $this->render('Users/404');
+    }
+  }
+
+  public function activity(): void {
+    $user_id = @$_GET['userid'];
+    $date = @$_GET['date'];
+
+    if(!empty($user_id)) {
+      $this->render('Users/activity', [
         'user' => $this->users_list->find($user_id, $date),
         'show_date' => $date
       ]);

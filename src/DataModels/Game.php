@@ -3,6 +3,9 @@
 namespace App\DataModels;
 class Game
 {
-  public int $app_id;
+  public int $id;
   public string $name;
+  public int $unlocked_achievements;
+  public int $total_achievements;
+  public float $achievement_percent;
 }
