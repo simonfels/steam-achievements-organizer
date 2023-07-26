@@ -7,12 +7,7 @@ use PDO;
 class DatabaseConnection {
   public PDO $pdo;
   public function __construct() {
-    extract([
-      'servername' => 'db',
-      'username' => 'root',
-      'dbname' => 'playground_development',
-      'password' => 'rootpassword'
-    ]);
+    extract(json_decode(file_get_contents(__DIR__ . '/../.env'), true));
 
     $this->pdo = new PDO("mysql:host=$servername;dbname={$dbname}", $username, $password, [
       PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION

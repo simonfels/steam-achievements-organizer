@@ -24,3 +24,4 @@ jobs:
           Dockerfile
           docker-compose.yml
           README.md
+          /src/.env

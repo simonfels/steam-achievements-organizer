@@ -5,7 +5,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
-<body class="bg-neutral-950 text-neutral-300 font-mono p-0 m-0">
+<body class="bg-neutral-950 text-neutral-300 font-sans p-0 m-0">
     <nav>
         <ul class="flex">
             <li><a href="/games" class="inline-block p-2"><strong>Games</strong></a></li>
@@ -13,8 +13,8 @@
             <li><a href="/scraper" class="inline-block p-2"><strong>Fetch Data</strong></a></li>
         </ul>
     </nav>
-    <div class="m-2">
+    <main>
         <?php echo $content; ?>
-    </div>
+    </main>
 </body>
 </html>

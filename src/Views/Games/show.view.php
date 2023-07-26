@@ -1,6 +1,6 @@
 <h1 class="text-neutral-300 text-2xl mb-2 ml-2"><strong><?php echo $game->name ?></strong></h1>
 <h2 class="text-neutral-300 text-lg mb-4 ml-2">Achievements</h2>
-<div class="grid gap-2 grid-cols-2 md:grid-cols-3 xl:grid-cols-6">
+<div class="grid gap-2 grid-cols-1 md:grid-cols-3 xl:grid-cols-6">
     <?php foreach($achievements as $achievement): ?>
         <div class="flex flex-col justify-between w-full bg-neutral-800 p-2 rounded">
             <div class="flex">
