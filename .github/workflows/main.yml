@@ -17,6 +17,8 @@ jobs:
         server: files.000webhost.com
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
+        server-dir: /
+        dry-run: true
         exclude: |
           **/.git*
           **/.git*/**
