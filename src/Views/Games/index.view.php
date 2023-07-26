@@ -1,4 +1,4 @@
-<h2>Index-View</h2>
+<h2>Test Index-View</h2>
 <ul class="list-disc">
   <?php foreach($games as $game): ?>
     <li>
