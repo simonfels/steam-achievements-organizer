@@ -14,9 +14,9 @@ class DatabaseConnection {
     ]);
   }
 
-  public function fetchAll($class = null, string $table = null, string $passed_sql = null, int $pdoMode = null, int $column = null):false|array
+  public function fetchAll($class = null, string $table = null, string $custom_sql = null, int $pdoMode = null, int $column = null):false|array
   {
-    $sql = $passed_sql ?? 'SELECT * FROM ' . $table;
+    $sql = $custom_sql ?? 'SELECT * FROM ' . $table;
     $query = $this->pdo->prepare($sql);
     $query->execute();
 

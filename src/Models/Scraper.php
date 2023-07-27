@@ -16,7 +16,7 @@ class Scraper extends AbstractModel {
   }
 
   public function allUsers(): array {
-    return $this->database_connection->fetchAll(User::class, passed_sql: '
+    return $this->database_connection->fetchAll(User::class, custom_sql: '
         select users.*, count(user_games.id) games_count, achievements.total_achievements from users
         left join user_games on users.id = user_games.user_id
         left join (
@@ -54,7 +54,7 @@ class Scraper extends AbstractModel {
   }
 
   public function scrapeGameAchievements(string $user_id): bool {
-    $user_games = $this->database_connection->fetchAll(passed_sql: "SELECT games.* FROM games JOIN user_games ON games.id = user_games.game_id WHERE user_games.user_id = $user_id", pdoMode: PDO::FETCH_COLUMN, column: 0);
+    $user_games = $this->database_connection->fetchAll(custom_sql: "SELECT games.* FROM games JOIN user_games ON games.id = user_games.game_id WHERE user_games.user_id = $user_id", pdoMode: PDO::FETCH_COLUMN, column: 0);
     $game_ids = $user_games;
 
     foreach($game_ids as $game_id) {
@@ -67,7 +67,7 @@ class Scraper extends AbstractModel {
 
         $this->database_connection->import('achievements', $mergedAchievements, ['percent']);
 
-        $insertedAchievementsQuery = $this->database_connection->fetchAll(passed_sql: "SELECT a.id, a.system_name FROM achievements a WHERE game_id = $game_id");
+        $insertedAchievementsQuery = $this->database_connection->fetchAll(custom_sql: "SELECT a.id, a.system_name FROM achievements a WHERE game_id = $game_id");
         $insertedAchievements = array_combine(array_column($insertedAchievementsQuery, 'system_name'), array_column($insertedAchievementsQuery, 'id'));
 
         $mergedUserAchievements = array_map(function($achievement) use($insertedAchievements) { return [

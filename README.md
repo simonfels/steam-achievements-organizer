@@ -3,6 +3,13 @@
 ## Backlog
 - Fix Timezone-Offset Calculation @users/activity (currently it is fixed at +02:00h)
 
+- Warnings: When fetching A9ts for arutomas |
+  ```
+    Warning: Undefined array key "NEW_ACHIEVEMENT_245_15" in /var/www/src/Models/Scraper.php on line 66
+    Warning: Undefined array key "NEW_ACHIEVEMENT_245_16" in /var/www/src/Models/Scraper.php on line 66
+    Warning: Undefined array key "NEW_ACHIEVEMENT_245_17" in /var/www/src/Models/Scraper.php on line 66
+  ```
+
 ## Coding TODOs
 
 ### general
@@ -18,7 +25,7 @@
 ## Styling TODOs
 
 ### general
-- [ ] styling | which sites are needed?
+- [META] Which sites are needed?
   - List all Games of a User with Progress(-bar)
   - List all Achievements of a User for a Game
     - With Categories (Achieved / Unachieved / All)
@@ -38,14 +45,10 @@
 - [ ] db | add columns `created_at` & `updated_at` to every table
 - [ ] db | log number of api calls to db (because of 100,000 per day limitation)
 
-## CI/CD
-
-### general
-- [ ] ci/cd | remove passwords from repository
-
 ---
 
 ## Finished
+- [x] ci/cd | remove passwords from repository
 - [x] ci/cd | use ftp-deploy as github action
 - [x] users/show | add overview of games with percentages
 - [x] games/user | show (unlocked) achievements of a specific user
