@@ -1,0 +1,20 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body class="bg-neutral-950 text-neutral-300 font-sans p-0 m-0">
+    <nav>
+        <ul class="flex">
+            <li><a href="/games" class="inline-block p-2"><strong>Games</strong></a></li>
+            <li><a href="/users" class="inline-block p-2"><strong>Users</strong></a></li>
+            <li><a href="/scraper" class="inline-block p-2"><strong>Fetch Data</strong></a></li>
+        </ul>
+    </nav>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

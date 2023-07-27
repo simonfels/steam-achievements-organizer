@@ -7,12 +7,13 @@ services:
   app:
     build: ./
     volumes:
-      - ./public_html:/var/www/html:z
-      - ./src:/var/www/src:z
+      - ./www:/var/www:z
     ports:
       - 3000:80
     depends_on:
       - db
+    environment:
+      APACHE_DOCUMENT_ROOT: /var/www/public_html
   db:
     image: mysql
     restart: always

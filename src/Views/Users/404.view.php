@@ -1,1 +1,0 @@
-<p>Please specify a <b>userid</b> <small>(<span class="text-orange-400">users/show.php?userid=&lt;STEAM-USER-ID&gt;</span>)</small> to show information about a user.</p>

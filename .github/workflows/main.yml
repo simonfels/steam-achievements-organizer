@@ -18,11 +18,9 @@ jobs:
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
         server-dir: /
+        local-dir: ./www/
         exclude: |
+          **/.env*
           **/.git*
           **/.git*/**
           **/node_modules/**
-          Dockerfile
-          docker-compose.yml
-          README.md
-          /src/.env

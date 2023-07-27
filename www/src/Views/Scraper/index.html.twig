@@ -1,0 +1,38 @@
+{% extends 'Layouts/main.html.twig' %}
+
+{% block content %}
+<form action="/scraper/user.php" method="GET">
+    <label>Steam-ID</label>
+    <input type="text" placeholder="Steam-ID" name="userid">
+    <input type="submit">
+</form>
+
+{% if users is not empty %}
+    <table>
+        <thead>
+            <th>Username</th>
+            <th>Games</th>
+            <th>Achievements</th>
+            <th colspan="3">Actions</th>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.games_count }}</td>
+                    <td>{{ user.total_achievements }}</td>
+                    <td><a class="text-orange-300" href="/scraper/user.php?{{ {'userid': user.id}|url_encode }}">user</a></td>
+                    <td><a class="text-green-300" href="/scraper/games.php?{{ {'userid': user.id}|url_encode }}">user-games</a></td>
+                    <td><a class="text-red-300" href="/scraper/achievements.php?{{ {'userid': user.id}|url_encode }}">user-achievements</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+
+{% if result is defined and operation is defined %}
+    <p>Operation: {{ operation }}</p>
+    <p>Success: {{ result ? '✔️' : '❌' }}</p>
+    <p># of API-Calls: {{ api_calls }}</p>
+{% endif %}
+{% endblock %}
