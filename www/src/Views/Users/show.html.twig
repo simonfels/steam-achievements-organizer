@@ -6,7 +6,7 @@
 <div class="grid md:grid-cols-4 grid-cols-1 gap-2">
     {% for game in user[3] %}
         <a href="/games/user.php?{{ {'gameid': game.id, 'userid': user[0].id}|url_encode }}" class="flex">
-            <div style="background-color: hsl({{ game.achievement_percent|round }}, 50%, 35%)" class="w-2"></div>
+            <div style="background-color: hsl({{ game.achievement_percent|round }}, 50%, 35%)" class="w-2 shrink-0"></div>
             <div class="p-2 bg-neutral-800 grow">
                 <strong class="line-clamp-1">{{ game.name }}</strong>
                 <div class="flex justify-between">

@@ -23,7 +23,7 @@
                             {% for day, count in weekday %}
                                 <td>
                                     <a href="/users/activity.php?{{ {'userid': user[0].id, 'date': count[2]|date('U')}|url_encode }}">
-                                        <div class="w-4 h-4 rounded" style="background-color: {{ count[0] }}" title="{{ 'Earned ' ~ count[1] ~ ' Achievements on ' ~ day }}"></div>
+                                        <div class="float-right w-4 h-4 rounded" style="background-color: {{ count[0] }}" title="{{ 'Earned ' ~ count[1] ~ ' Achievements on ' ~ day }}"></div>
                                     </a>
                                 </td>
                             {% endfor %}
