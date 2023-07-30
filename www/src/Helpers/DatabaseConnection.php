@@ -44,8 +44,8 @@ class DatabaseConnection {
               ' VALUES (' . implode(', ', array_map(function($item) { return ':' . $item; }, $attributes)) . ')';
     } else {
       $sql = 'INSERT INTO ' . $table . ' (' . implode(', ', $attributes) . ')' .
-              ' VALUES (' . implode(', ', array_map(function($item) { return ':' . $item; }, $attributes)) . ') AS val' .
-              ' ON DUPLICATE KEY UPDATE ' . implode(', ', array_map(function($item) { return "$item=val.$item"; }, $updatedAttributes));
+              ' VALUES (' . implode(', ', array_map(function($item) { return ':' . $item; }, $attributes)) . ')' .
+              ' ON DUPLICATE KEY UPDATE ' . implode(', ', array_map(function($item) { return "$item=VALUES($item)"; }, $updatedAttributes));
     }
 
     $this->pdo->prepare($sql)->execute($entries);

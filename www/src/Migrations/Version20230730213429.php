@@ -24,7 +24,7 @@ final class Version20230730213429 extends AbstractMigration
                 display_name text NOT NULL,
                 hidden tinyint NOT NULL,
                 percent float,
-                description text NOT NULL,
+                description text,
                 icon varchar(300) NOT NULL,
                 icongray varchar(300) NOT NULL
             );
