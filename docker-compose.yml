@@ -15,14 +15,14 @@ services:
     environment:
       APACHE_DOCUMENT_ROOT: /var/www/public_html
   db:
-    image: mysql
+    image: mariadb:10.5.20
     restart: always
     volumes:
       - dbdata:/var/lib/mysql
     ports:
       - 3406:3306
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
+      MARIADB_ROOT_PASSWORD: rootpassword
   pma:
     image: phpmyadmin
     restart: always

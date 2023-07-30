@@ -25,9 +25,7 @@
 ## DATABASE TODOs
 
 ### general
-- [ ] [HIGH-PRIO] use the same db-system for dev and prod
 - [ ] use less insert-queries (webhoster has limit of 5000 update queries) => rewrite import function of DatabaseConnection
-- [ ] write migrations, to recreate the db
 - [ ] save total counts
 - [ ] save total number of games / number of games with achievements
 - [ ] don't save any game without achievements
@@ -53,3 +51,4 @@
   Warning: Undefined array key "NEW_ACHIEVEMENT_245_16" in /var/www/src/Models/Scraper.php on line 66
   Warning: Undefined array key "NEW_ACHIEVEMENT_245_17" in /var/www/src/Models/Scraper.php on line 66
   ```
+- temp solution for .git folders in /vendor: rm -rf `find . -type d -name .git`
