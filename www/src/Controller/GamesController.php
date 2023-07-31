@@ -39,6 +39,7 @@ class GamesController extends AbstractController {
 
       $this->render('Games/user', [
         'game' => $game,
+        'user_id' => $user_id,
         'achievements' => implode(", ", array_map(function($achievement) { return $achievement->getVars(); }, $achievements))
       ]);
     } else {

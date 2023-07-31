@@ -1,6 +1,7 @@
 {% extends 'Layouts/main.html.twig' %}
 
 {% block content %}
+<a href="/scraper/game.php?{{ {'userid': user_id, 'gameid': game.id}|url_encode }}">Refresh</a>
 <div id="app">
     <div class="sticky top-0 px-4 bg-neutral-900 p-3 z-50">
         <h1 class="text-xl mb-2"><strong>{{ game.name }}</strong></h1>

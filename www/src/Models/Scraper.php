@@ -53,8 +53,8 @@ class Scraper extends AbstractModel {
     return false;
   }
 
-  public function scrapeGameAchievements(string $user_id): bool {
-    $user_games = $this->database_connection->fetchAll(custom_sql: "SELECT games.* FROM games JOIN user_games ON games.id = user_games.game_id WHERE user_games.user_id = $user_id", pdoMode: PDO::FETCH_COLUMN, column: 0);
+  public function scrapeGameAchievements(string $user_id, array $passedGameIds = null): bool {
+    $user_games = $passedGameIds ?? $this->database_connection->fetchAll(custom_sql: "SELECT games.* FROM games JOIN user_games ON games.id = user_games.game_id WHERE user_games.user_id = $user_id", pdoMode: PDO::FETCH_COLUMN, column: 0);
     $game_ids = $user_games;
 
     foreach($game_ids as $game_id) {
