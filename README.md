@@ -25,7 +25,6 @@
 ## DATABASE TODOs
 
 ### general
-- [ ] use less insert-queries (webhoster has limit of 5000 update queries) => rewrite import function of DatabaseConnection
 - [ ] save total counts
 - [ ] save total number of games / number of games with achievements
 - [ ] don't save any game without achievements
@@ -44,11 +43,4 @@
 - scraper | add img_icon_url = http://media.steampowered.com/steamcommunity/public/images/apps/{appid}/{img_icon_url}.jpg
 - scraper | add option to resolve vanity-urls
 - general | add pagination [LOW-PRIO]
-
-- Warnings: When fetching A9ts for arutomas |
-  ```
-  Warning: Undefined array key "NEW_ACHIEVEMENT_245_15" in /var/www/src/Models/Scraper.php on line 66
-  Warning: Undefined array key "NEW_ACHIEVEMENT_245_16" in /var/www/src/Models/Scraper.php on line 66
-  Warning: Undefined array key "NEW_ACHIEVEMENT_245_17" in /var/www/src/Models/Scraper.php on line 66
-  ```
 - temp solution for .git folders in /vendor: rm -rf `find . -type d -name .git`

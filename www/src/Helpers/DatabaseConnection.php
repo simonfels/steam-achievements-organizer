@@ -39,21 +39,32 @@ class DatabaseConnection {
   }
 
   public function insert(string $table, array $attributes, array $entries, array|null $updatedAttributes = null): void {
-    if(empty($updatedAttributes)) {
-      $sql = 'INSERT IGNORE INTO ' . $table . ' (' . implode(', ', $attributes) . ')' .
-              ' VALUES (' . implode(', ', array_map(function($item) { return ':' . $item; }, $attributes)) . ')';
-    } else {
-      $sql = 'INSERT INTO ' . $table . ' (' . implode(', ', $attributes) . ')' .
-              ' VALUES (' . implode(', ', array_map(function($item) { return ':' . $item; }, $attributes)) . ')' .
-              ' ON DUPLICATE KEY UPDATE ' . implode(', ', array_map(function($item) { return "$item=VALUES($item)"; }, $updatedAttributes));
-    }
+      $base_sql = "INTO $table (" . implode(', ', $attributes) . ')' .
+                  ' VALUES (' . implode(', ', array_map(function($item) { return ':' . $item; }, $attributes)) . ')';
 
-    $this->pdo->prepare($sql)->execute($entries);
+      if(empty($updatedAttributes)) {
+          $sql = "INSERT IGNORE $base_sql";
+      } else {
+          $sql = "INSERT $base_sql ON DUPLICATE KEY UPDATE " . implode(', ', array_map(function($item) { return "$item=VALUES($item)"; }, $updatedAttributes));
+      }
+
+      $this->pdo->prepare($sql)->execute($entries);
   }
 
-  public function import(string $table, array $items, array|null $updatedAttributes = null): void {
-    foreach($items as $entries) {
-      $this->insert($table, array_keys($entries), $entries, $updatedAttributes);
+    public function import(string $table, array $items, array|null $updatedAttributes = null): void {
+        $schema = array_keys($items[0]);
+        $base_sql = "INTO $table (" . implode(', ', $schema) . ")" .
+                    " VALUES " . implode(', ', array_map(function($item) {
+                        $values = array_map(function($val) { return $val === null ? "NULL" : "\"" . addslashes($val) . "\""; }, array_values($item));
+                        return "(" . implode(", ", $values) . ")";
+                    }, $items));
+
+        if(empty($updatedAttributes)) {
+            $sql = "INSERT IGNORE $base_sql";
+        } else {
+            $sql = "INSERT $base_sql  ON DUPLICATE KEY UPDATE " . implode(', ', array_map(function($item) { return "$item=VALUES($item)"; }, $updatedAttributes));
+        }
+
+        $this->pdo->exec($sql);
     }
-  }
 }

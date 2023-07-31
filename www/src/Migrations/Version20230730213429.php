@@ -27,19 +27,19 @@ final class Version20230730213429 extends AbstractMigration
                 description text,
                 icon varchar(300) NOT NULL,
                 icongray varchar(300) NOT NULL
-            );
+            ) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_unicode_520_ci';
           
             CREATE TABLE games (
                 id bigint NOT NULL,
                 name varchar(200) NOT NULL
-            );
+            ) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_unicode_520_ci';
 
             CREATE TABLE users (
                 id bigint NOT NULL,
                 name varchar(200) NOT NULL,
                 steam_url varchar(200) NOT NULL,
                 avatar_url varchar(200) NOT NULL
-            );
+            ) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_unicode_520_ci';
 
             CREATE TABLE user_achievements (
                 id bigint NOT NULL,
@@ -47,13 +47,13 @@ final class Version20230730213429 extends AbstractMigration
                 achievement_id bigint NOT NULL,
                 achieved tinyint NOT NULL,
                 unlocked_at int DEFAULT NULL
-            );
+            ) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_unicode_520_ci';
 
             CREATE TABLE user_games (
                 id bigint NOT NULL,
                 user_id bigint NOT NULL,
                 game_id bigint NOT NULL
-            );
+            ) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_unicode_520_ci';
 
             ALTER TABLE achievements
             ADD PRIMARY KEY (id),
@@ -79,7 +79,7 @@ final class Version20230730213429 extends AbstractMigration
             MODIFY id bigint NOT NULL AUTO_INCREMENT;
             
             ALTER TABLE user_games
-            MODIFY id bigint NOT NULL AUTO_INCREMENT;
+            MODIFY id bigint NOT NULL AUTO_INCREMENT, add PRIMARY KEY (`id`);
           ");
     }
 
