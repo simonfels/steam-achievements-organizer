@@ -3,30 +3,33 @@
 ## CODING TODOs
 
 ### general
-- [ ] import tailwind & vue, instead of using external links
 - [ ] option to manually add games (also tag these games as being `manually added`)
   - info: games that are not in the steam-store anymore will not be returned from GetOwnedGames (e.g. https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?appid=403570&key=34726D7C756F3C392EAD2DABB301462C&steamid=76561197999852541)
 
 ### scraper
+- [ ] call steam-api with parallel calls using curl_multi_exec
 - [ ] more visual feedback (maybe with vue and ajax/axios)
-
+- [ ] adjust order of api-calls/db-inserts:
+  - get games list, each game:
+    - calc total number of games
+    - check if game already in db (if yes, multiple steps can be skipped)
+    - get game-achievements (calc total) (if not already present)
+    - get game-achievement percentages (if not already present)
+    - get user-achievements (calc percentage completed, mark game completed if 100%)
+  - 
 
 ## STYLING TODOs
 
 ### general
-- [META] Which sites are needed?
-  - List all Games of a User with Progress(-bar)
-  - List all Achievements of a User for a Game
-    - With Categories (Achieved / Unachieved / All)
-    - With Multiple Sort Options (Original, Name, UnlockedAt, ...)
 - [ ] develop uniform style for the whole website
-
 
 ## DATABASE TODOs
 
 ### general
-- [ ] save total counts
-- [ ] save total number of games / number of games with achievements
+- [ ] save number of games with achievements, number of achievements, number of earned achievements (to reduce queries)
+  - users:
+    + number of games with achievements
+    + number of completed games
 - [ ] don't save any game without achievements
 - [ ] mark completed (user)-games (+ when it was completed -> when was the last achievement unlocked)
 - [ ] add columns `created_at` & `updated_at` to every table
@@ -38,8 +41,10 @@
 - [ ] add composer install as github action & remove /vendor from vcs
 
 ## BACKLOG
+- add option to add descriptions to hidden achievements (if not already present)
+- import tailwind & vue, instead of using external links
 - display graphs for users/activity maybe
-- Fix Timezone-Offset Calculation @users/activity (currently it is fixed at +02:00h)
+- Fix Timezone-Offset Calculation @ users/activity (currently it is fixed at +02:00h)
 - scraper | add img_icon_url = http://media.steampowered.com/steamcommunity/public/images/apps/{appid}/{img_icon_url}.jpg
 - scraper | add option to resolve vanity-urls
 - general | add pagination [LOW-PRIO]

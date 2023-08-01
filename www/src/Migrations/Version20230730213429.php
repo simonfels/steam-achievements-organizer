@@ -16,7 +16,7 @@ final class Version20230730213429 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql("
+        $this->addSql(<<<SQL
             CREATE TABLE achievements (
                 id bigint NOT NULL,
                 game_id bigint NOT NULL,
@@ -80,7 +80,7 @@ final class Version20230730213429 extends AbstractMigration
             
             ALTER TABLE user_games
             MODIFY id bigint NOT NULL AUTO_INCREMENT, add PRIMARY KEY (`id`);
-          ");
+          SQL);
     }
 
     public function down(Schema $schema): void
