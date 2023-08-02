@@ -10,14 +10,13 @@
 - [ ] call steam-api with parallel calls using curl_multi_exec
   - try to benchmark with https://github.com/scottchiefbaker/php-benchmark to measure actual benefit
 - [ ] more visual feedback (maybe with vue and ajax/axios)
-- [ ] adjust order of api-calls/db-inserts:
+- [ ] adjust order of api-calls/db-inserts (for curl_multi_exec):
   - get games list, each game:
     - calc total number of games
     - check if game already in db (if yes, multiple steps can be skipped)
     - get game-achievements (calc total) (if not already present)
     - get game-achievement percentages (if not already present)
     - get user-achievements (calc percentage completed, mark game completed if 100%)
-  - 
 
 ## STYLING TODOs
 
@@ -27,7 +26,6 @@
 ## DATABASE TODOs
 
 ### general
-- [ ] mark completed (user)-games (+ when it was completed -> when was the last achievement unlocked)
 - [ ] add columns `created_at` & `updated_at` to every table
 - [ ] log number of api calls to db (because of 100,000 per day limitation)
 

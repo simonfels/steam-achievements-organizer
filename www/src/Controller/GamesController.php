@@ -30,6 +30,27 @@ class GamesController extends AbstractController {
     }
   }
 
+  public function edit(): void {
+      $achievement_id = @$_GET['achievementid'];
+
+      if(!empty($achievement_id)) {
+
+          $this->render('Games/edit', [
+            'achievement' => $this->games_list->findAchievement($achievement_id),
+          ]);
+      } else {
+          $this->render('Games/404');
+      }
+  }
+
+  public function update(): void {
+      $description = @$_POST['description'];
+
+      $this->games_list->updateAchievement($description);
+
+      header('Location: /games');
+  }
+
   public function user(): void {
     $game_id = @$_GET['gameid'];
     $user_id = @$_GET['userid'];

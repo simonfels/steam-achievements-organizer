@@ -20,6 +20,10 @@ class GamesList extends AbstractModel
     return [$game, $game_achievements];
   }
 
+  public function findAchievement($id): Achievement {
+      return $this->database_connection->fetch('achievements', 'id', $id, Achievement::class);
+  }
+
   public function findForUser($id, $user_id): array {
     $game = $this->database_connection->fetch("games", "id", $id, Game::class, <<<SQL
         SELECT g.*, ug.completed_at FROM games g JOIN user_games ug ON g.id = ug.game_id WHERE g.id = $id
