@@ -8,6 +8,7 @@
 
 ### scraper
 - [ ] call steam-api with parallel calls using curl_multi_exec
+  - try to benchmark with https://github.com/scottchiefbaker/php-benchmark to measure actual benefit
 - [ ] more visual feedback (maybe with vue and ajax/axios)
 - [ ] adjust order of api-calls/db-inserts:
   - get games list, each game:
@@ -26,11 +27,6 @@
 ## DATABASE TODOs
 
 ### general
-- [ ] save number of games with achievements, number of achievements, number of earned achievements (to reduce queries)
-  - users:
-    + number of games with achievements
-    + number of completed games
-- [ ] don't save any game without achievements
 - [ ] mark completed (user)-games (+ when it was completed -> when was the last achievement unlocked)
 - [ ] add columns `created_at` & `updated_at` to every table
 - [ ] log number of api calls to db (because of 100,000 per day limitation)

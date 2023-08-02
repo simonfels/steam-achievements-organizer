@@ -1,20 +1,24 @@
 {% extends 'Layouts/main.html.twig' %}
 
 {% block content %}
-<a href="/users/activity.php?{{ {'userid': user[0].id}|url_encode }}">Activity</a>
-
-<div class="grid md:grid-cols-4 grid-cols-1 gap-2">
-    {% for game in user[3] %}
-        <a href="/games/user.php?{{ {'gameid': game.id, 'userid': user[0].id}|url_encode }}" class="flex">
-            <div style="background-color: hsl({{ game.achievement_percent|round }}, 50%, 35%)" class="w-2 shrink-0"></div>
-            <div class="p-2 bg-neutral-800 grow">
-                <strong class="line-clamp-1">{{ game.name }}</strong>
-                <div class="flex justify-between">
-                    <span  class="truncate">{{ game.unlocked_achievements }}/{{ game.total_achievements }}</span>
-                    <span>{{ game.achievement_percent|round(1, 'floor') }}%</span>
+    <div class="my-3">
+        <a href="#" class="inline-block px-2 py-1 rounded bg-neutral-600">Games</a>
+        <a href="/users/activity.php?{{ {'userid': user[0].id}|url_encode }}" class="inline-block px-2 py-1 rounded bg-neutral-800">Activity</a>
+    </div>
+    <div class="grid md:grid-cols-4 grid-cols-1 gap-2">
+        {% for game in user[3] %}
+            <a href="/games/user.php?{{ {'gameid': game.id, 'userid': user[0].id}|url_encode }}" class="flex">
+                <div style="background-color: hsl({{ game.achievement_percent|round }}, 50%, 35%)"
+                     class="w-2 shrink-0"></div>
+                <div class="p-2 bg-neutral-800 grow">
+                    <strong class="line-clamp-1">{{ game.name }} {% if game.formatted_completed_at is not null %}<small>
+                            (Completed at: {{ game.formatted_completed_at }})</small>{% endif %}</strong>
+                    <div class="flex justify-between">
+                        <span class="truncate">{{ game.unlocked_achievements }}/{{ game.total_achievements }}</span>
+                        <span>{{ game.achievement_percent|round(1, 'floor') }}%</span>
+                    </div>
                 </div>
-            </div>
-        </a>
-    {% endfor %}
-</div>
+            </a>
+        {% endfor %}
+    </div>
 {% endblock %}

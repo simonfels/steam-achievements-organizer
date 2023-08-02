@@ -17,14 +17,16 @@ class UsersList extends AbstractModel
 
   public function find($user_id, $date = null): array {
     $user = $this->database_connection->fetch('users', 'id', $user_id, User::class);
-    $user_games = $this->database_connection->fetchAll(Game::class, custom_sql: "SELECT g.*, sum(ua.achieved) unlocked_achievements, count(a.id) total_achievements, sum(ua.achieved) / count(a.id) * 100 achievement_percent
-                  FROM games g
-                  JOIN user_games ug ON g.id = ug.game_id
-                  JOIN achievements a ON a.game_id = g.id
-                  JOIN user_achievements ua ON a.id = ua.achievement_id
-                  WHERE ug.user_id = $user_id AND ua.user_id = $user_id
-                  GROUP BY g.id  
-                  ORDER BY achievement_percent DESC");
+    $user_games = $this->database_connection->fetchAll(Game::class, custom_sql: <<<SQL
+        SELECT g.*, sum(ua.achieved) unlocked_achievements, count(a.id) total_achievements, sum(ua.achieved) / count(a.id) * 100 achievement_percent, ug.completed_at
+        FROM games g
+        JOIN user_games ug ON g.id = ug.game_id
+        JOIN achievements a ON a.game_id = g.id
+        JOIN user_achievements ua ON a.id = ua.achievement_id
+        WHERE ug.user_id = $user_id AND ua.user_id = $user_id
+        GROUP BY g.id, g.name, ug.completed_at
+        ORDER BY achievement_percent DESC, ug.completed_at DESC, g.name
+    SQL);
     $sql = "SELECT floor((unlocked_at+7200)/86400)*86400 day, count(*) count FROM `user_achievements` WHERE unlocked_at IS NOT NULL AND user_id = $user_id GROUP BY day ORDER BY `day` DESC;";
     $days_query = $this->database_connection->fetchAll(custom_sql: $sql);
     $days = array_combine(

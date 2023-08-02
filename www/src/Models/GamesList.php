@@ -21,7 +21,9 @@ class GamesList extends AbstractModel
   }
 
   public function findForUser($id, $user_id): array {
-    $game = $this->database_connection->fetch("games", "id", $id, Game::class);
+    $game = $this->database_connection->fetch("games", "id", $id, Game::class, <<<SQL
+        SELECT g.*, ug.completed_at FROM games g JOIN user_games ug ON g.id = ug.game_id WHERE g.id = $id
+    SQL);
     $sql = "SELECT a.*, ua.achieved, ua.unlocked_at FROM achievements a JOIN user_achievements ua ON ua.achievement_id = a.id WHERE user_id = $user_id AND game_id = $id ORDER BY achieved desc, unlocked_at desc";
     $game_achievements = $this->database_connection->fetchAll(class: Achievement::class, custom_sql: $sql);
 

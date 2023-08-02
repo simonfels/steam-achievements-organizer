@@ -11,7 +11,7 @@ final class Version20230730213429 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Create initial schema';
     }
 
     public function up(Schema $schema): void
@@ -52,7 +52,7 @@ final class Version20230730213429 extends AbstractMigration
             CREATE TABLE user_games (
                 id bigint NOT NULL,
                 user_id bigint NOT NULL,
-                game_id bigint NOT NULL
+                game_id bigint NOT NULL,
             ) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_unicode_520_ci';
 
             ALTER TABLE achievements

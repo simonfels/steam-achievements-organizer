@@ -1,6 +1,10 @@
 {% extends 'Layouts/main.html.twig' %}
 
 {% block content %}
+<div class="my-3">
+    <a href="/users/show.php?{{ {'userid': user[0].id}|url_encode }}" class="inline-block px-2 py-1 rounded bg-neutral-800">Games</a>
+    <a href="#" class="inline-block px-2 py-1 rounded bg-neutral-600">Activity</a>
+</div>
 <div class="w-full flex justify-center">
     <div class="max-w-7xl">
         <div class="m-3 hidden">
