@@ -14,24 +14,24 @@
         <label class="font-bold inline-block py-2" for="searchbox">search</label><input type="text" id="searchbox" v-model="searchbox" class="rounded" /><br>
         <input type="radio" value="locked" id="listMode2" v-model="listMode" class="hidden mr-2 peer/a1" /><label for="listMode2" class="peer-checked/a1:text-sky-500 inline-block bg-neutral-500 peer-checked/a1:bg-sky-900 py-1 px-2 rounded mr-2">not unlocked</label>
         <input type="radio" value="achieved" id="listMode1" v-model="listMode" class="hidden mr-2 peer/a2" /><label for="listMode1" class="peer-checked/a2:text-sky-500 inline-block bg-neutral-500 peer-checked/a2:bg-sky-900 py-1 px-2 rounded mr-2">unlocked</label>
-        <input type="radio" value="all" id="listMode3" v-model="listMode" class="hidden mr-2 peer/a3" /><label for="listMode3" class="peer-checked/a3:text-sky-500 inline-block bg-neutral-500 peer-checked/a3:bg-sky-900 py-1 px-2 rounded">all</label>
     </div>
-    <div class="grid gap-2 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 m-4">
-        {% verbatim %}
-            <div class="overflow-hidden flex flex-col justify-between bg-neutral-800 p-2 rounded" :class="{ 'opacity-60': achievement.achieved }" v-for="achievement in achievements">
-                <div class="flex rounded">
-                    <div :style="{ 'background-image': 'url(' + (achievement.achieved ? achievement.icon : achievement.icongray) + ')' }" class="w-12 h-12 bg-cover flex-none mr-2"></div>
-                    <div>
-                        <p class="text-md line-clamp-1 text-neutral-300"><span v-html="highlight(achievement.display_name)"></span></p>
-                        <p class="text-sm line-clamp-2 hover:line-clamp-none text-neutral-400"><span v-html="highlight(achievement.description)"></p>
+    {% verbatim %}
+        <h2>{{ achievements.length }} Achievements</h2>
+        <div class="grid gap-2 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 m-4">
+                <div class="overflow-hidden flex flex-col justify-between bg-neutral-800 p-2 rounded" :class="{ 'opacity-60': achievement.achieved }" v-for="achievement in achievements">
+                    <div class="flex rounded">
+                        <div :style="{ 'background-image': 'url(' + (achievement.achieved ? achievement.icon : achievement.icongray) + ')' }" class="w-12 h-12 bg-cover flex-none mr-2"></div>
+                        <div>
+                            <p class="text-md line-clamp-1 text-neutral-300" v-html="highlight(achievement.display_name)"></p>
+                            <p class="text-sm line-clamp-2 hover:line-clamp-none text-neutral-400" v-html="highlight(achievement.description)"></p>
+                        </div>
                     </div>
+                    <div class="text-right text-sm text-neutral-100 mt-2" v-if="achievement.unlocked_at">{{ achievement.unlocked_at }}</div>
                 </div>
-                <div class="text-right text-sm text-neutral-100 mt-2" v-if="achievement.unlocked_at">{{ achievement.unlocked_at }}</div>
             </div>
-        {% endverbatim %}
-    </div>
-</div>
-<script>
+        </div>
+    {% endverbatim %}
+    <script>
     const { createApp, ref, computed } = Vue
 
     createApp({
@@ -44,7 +44,6 @@
                     switch (listMode.value) {
                         case 'achieved': return ach.achieved;
                         case 'locked': return !ach.achieved;
-                        default: return true;
                     }
                 }).filter((b) => {
                     if(searchbox.value.length === 0)

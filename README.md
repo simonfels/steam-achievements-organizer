@@ -17,6 +17,7 @@
     - get game-achievements (calc total) (if not already present)
     - get game-achievement percentages (if not already present)
     - get user-achievements (calc percentage completed, mark game completed if 100%)
+    - maybe mark games/etc. when they were fetched, for automation (fetch all games that haven't been fetched since 2 days, etc..)
 
 ## STYLING TODOs
 
@@ -38,7 +39,6 @@
 - [ ] add composer install as github action & remove /vendor from vcs
 
 ## BACKLOG
-- add option to add descriptions to hidden achievements (if not already present)
 - import tailwind & vue, instead of using external links
 - display graphs for users/activity maybe
 - Fix Timezone-Offset Calculation @ users/activity (currently it is fixed at +02:00h)

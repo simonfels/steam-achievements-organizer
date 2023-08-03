@@ -25,4 +25,17 @@ class Game
 
         return $datetime->format('d.m.Y');
     }
+
+    public function getVars()
+    {
+        $array_of_vars = get_object_vars($this);
+        $array_of_vars["completed_at"] = $this->formatted_completed_at();
+        $array_of_vars["achievement_percent"] = $this->floordec($this->achievement_percent);
+        return json_encode($array_of_vars);
+    }
+
+    private function floordec($zahl): float|int
+    {
+        return floor($zahl*pow(10, 2))/pow(10, 2);
+    }
 }

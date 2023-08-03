@@ -20,10 +20,12 @@ class UsersController extends AbstractController {
 
   public function show(): void {
     $user_id = @$_GET['userid'];
+    [$user, $_trash1, $_trash2, $games] = $this->users_list->find($user_id);
 
     if(!empty($user_id)) {
       $this->render('Users/show', [
-        'user' => $this->users_list->find($user_id)
+        'user' => $user,
+        'games' => implode(", ", array_map(function($game) { return $game->getVars(); }, $games))
       ]);
     } else {
       $this->render('Users/404');
@@ -68,18 +70,8 @@ class UsersController extends AbstractController {
     }
 
     private function color_code(int $count, DateTime $date): array {
-//        $colors = [
-//            0 => '#161b22', //  0
-//            1 => '#0e4429', //  1 - 10
-//            2 => '#006d32', // 11 - 20
-//            3 => '#26a641', // 21 - 30
-//            4 => '#39d353', // 31 -
-//        ];
-        //if($count == 0) return [$colors[0], $count];
-
         $calcIndex = ceil($count / 10);
 
-        //  return [$colors[ceil(min($calcIndex, 4))], $count];
         return ['hsl(' . $date->format('m') * 30 . ', 40%, ' . (ceil(min($calcIndex, 4))) * 15 + 16 . '%)', $count];
     }
 }
