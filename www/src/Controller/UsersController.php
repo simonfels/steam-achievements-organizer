@@ -43,8 +43,10 @@ class UsersController extends AbstractController {
             $start->modify("-1 year");
             $weekday = $start->format('w') == 0 ? 6 : $start->format('w') - 1;
             $start->modify("-$weekday days");
+            $end = new DateTime('now');
+            $end->modify("+2 hours");
 
-            $date_period = new DatePeriod($start, DateInterval::createFromDateString('1 day'), new DateTime('now'));
+            $date_period = new DatePeriod($start, DateInterval::createFromDateString('1 day'), $end);
             $dates = $user[1];
             $weekdays = array_fill_keys(range(1, 7), []);
             $show_date = (!empty($date) ? DateTime::createFromFormat('U', $date)->format('d.m.Y') : null);
