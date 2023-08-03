@@ -61,11 +61,11 @@ class Scraper extends AbstractModel {
       $fetchedAchievements = $this->getSteamAPI()->fetchAchievements($game_id);
 
       if(!empty($fetchedAchievements)) {
-        //$fetchedPercentages = $this->getSteamAPI()->fetchGameGlobalPercentages($game_id);
+        $fetchedPercentages = $this->getSteamAPI()->fetchGameGlobalPercentages($game_id);
         $fetchedUserAchievements = $this->getSteamAPI()->fetchUserAchievements($game_id, $user_id);
-        //$mergedAchievements = array_map(function($item) use($fetchedPercentages) { return array_merge($item, ['percent' => $fetchedPercentages[$item['system_name']]]); }, $fetchedAchievements);
+        $mergedAchievements = array_map(function($item) use($fetchedPercentages) { return array_merge($item, ['percent' => $fetchedPercentages[$item['system_name']]]); }, $fetchedAchievements);
 
-        //$this->database_connection->import('achievements', $mergedAchievements, ['percent']);
+        $this->database_connection->import('achievements', $mergedAchievements, ['percent']);
 
         $insertedAchievementsQuery = $this->database_connection->fetchAll(custom_sql: "SELECT a.id, a.system_name FROM achievements a WHERE game_id = $game_id");
         $insertedAchievements = array_combine(array_column($insertedAchievementsQuery, 'system_name'), array_column($insertedAchievementsQuery, 'id'));
@@ -77,7 +77,7 @@ class Scraper extends AbstractModel {
           'unlocked_at' => $achievement['unlocked_at']
         ]; }, $fetchedUserAchievements);
 
-        //$this->database_connection->import('user_achievements', $mergedUserAchievements, ['achieved', 'unlocked_at']);
+        $this->database_connection->import('user_achievements', $mergedUserAchievements, ['achieved', 'unlocked_at']);
 
         if(count($mergedUserAchievements) === array_sum(array_column($mergedUserAchievements, 'achieved'))) {
             $last_unlocked_at = max(array_column($mergedUserAchievements, 'unlocked_at'));

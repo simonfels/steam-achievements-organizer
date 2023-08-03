@@ -4,7 +4,7 @@
 <h2>List of all fetched Useres</h2>
 <div class="grid grid-cols-3 text-neutral-300 text-center">
   {% for user in users %}
-    <a href="/users/show.php?{{ {"userid": user.id}|url_encode }}">{{ user.name }}</a>
+    <a href="/users/show.php?{{ {"userid": user.id}|url_encode }}"><i class="fa-solid fa-user"></i> {{ user.name }}</a>
     <div>{{ user.achieved_achievements }} / {{ user.total_achievements }}</div>
     <div>{{ user.achievementPercentage }}%</div>
   {% endfor %}

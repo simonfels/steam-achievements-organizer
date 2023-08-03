@@ -31,6 +31,9 @@
 
 ## CI/CD TODOs
 
+### general
+- [ ] remove steam-api key from repository
+
 ### workflow
 - [ ] add composer install as github action & remove /vendor from vcs
 

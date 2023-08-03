@@ -1,10 +1,16 @@
 {% extends 'Layouts/main.html.twig' %}
 
 {% block content %}
-<a href="/scraper/game.php?{{ {'userid': user_id, 'gameid': game.id}|url_encode }}">Refresh</a>
+<a href="/scraper/game.php?{{ {'userid': user_id, 'gameid': game.id}|url_encode }}"><i class="fa-solid fa-rotate"></i></a>
 <div id="app">
     <div class="sticky top-0 px-4 bg-neutral-900 p-3 z-50">
-        <h1 class="text-xl mb-2"><strong>{{ game.name }}</strong> <small>(Completed at: {{ game.formatted_completed_at }})</small></h1>
+        <h1 class="text-xl mb-2">
+            <strong class="line-clamp-1">{{ game.name }}
+                {% if game.formatted_completed_at is not null %}
+                    <small>(<i class="fa-solid fa-crown"></i> {{ game.formatted_completed_at }})</small>
+                {% endif %}
+            </strong>
+        </h1>
         <label class="font-bold inline-block py-2" for="searchbox">search</label><input type="text" id="searchbox" v-model="searchbox" class="rounded" /><br>
         <input type="radio" value="locked" id="listMode2" v-model="listMode" class="hidden mr-2 peer/a1" /><label for="listMode2" class="peer-checked/a1:text-sky-500 inline-block bg-neutral-500 peer-checked/a1:bg-sky-900 py-1 px-2 rounded mr-2">not unlocked</label>
         <input type="radio" value="achieved" id="listMode1" v-model="listMode" class="hidden mr-2 peer/a2" /><label for="listMode1" class="peer-checked/a2:text-sky-500 inline-block bg-neutral-500 peer-checked/a2:bg-sky-900 py-1 px-2 rounded mr-2">unlocked</label>
