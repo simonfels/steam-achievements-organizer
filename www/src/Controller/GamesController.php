@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controller;
+use App\DataModels\Achievement;
 use App\Models\GamesList;
 
 class GamesController extends AbstractController {
@@ -44,11 +45,12 @@ class GamesController extends AbstractController {
   }
 
   public function update(): void {
+      $achievement_id = @$_POST['achievement_id'];
       $description = @$_POST['description'];
 
-      $this->games_list->updateAchievement($description);
+      $achievement = $this->games_list->updateAchievement($achievement_id, $description);
 
-      header('Location: /games');
+      header('Location: /games/show.php?' . http_build_query(['gameid' => $achievement->game_id]));
   }
 
   public function user(): void {

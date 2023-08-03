@@ -24,6 +24,17 @@ class GamesList extends AbstractModel
       return $this->database_connection->fetch('achievements', 'id', $id, Achievement::class);
   }
 
+  public function updateAchievement($id, $description): Achievement {
+      $this->database_connection->pdo->prepare(<<<SQL
+        UPDATE achievements SET description = :description WHERE id = :id
+      SQL)->execute([
+        'id' => $id,
+        'description' => $description
+      ]);
+
+      return $this->findAchievement($id);
+  }
+
   public function findForUser($id, $user_id): array {
     $game = $this->database_connection->fetch("games", "id", $id, Game::class, <<<SQL
         SELECT g.*, ug.completed_at FROM games g JOIN user_games ug ON g.id = ug.game_id WHERE g.id = $id

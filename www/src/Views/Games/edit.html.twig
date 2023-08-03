@@ -11,6 +11,7 @@
                 <form action="/games/update.php" method="POST">
                     <label for="description">Description</label><br>
                     <input name="description" id="description" placeholder="add description here" class="w-full text-black"><br>
+                    <input type="hidden" value="{{ achievement.id }}" name="achievement_id">
                     <input type="submit">
                 </form>
             </div>
