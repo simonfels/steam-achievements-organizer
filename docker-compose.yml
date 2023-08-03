@@ -34,3 +34,10 @@ services:
       - 3001:80
     depends_on:
       - db
+  css:
+    build:
+      context: ./
+      dockerfile: ./DockerfileCSS
+    command: npm start
+    volumes:
+      - .:/node:z

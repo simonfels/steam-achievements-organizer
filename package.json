@@ -1,0 +1,15 @@
+{
+  "name": "tailwindcss",
+  "version": "3.3.3",
+  "description": "CSS-Framework",
+  "main": "tailwiwnd.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx tailwindcss -i ./www/src/Assets/style.css -o ./www/public_html/assets/style.css --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "tailwindcss": "^3.3.3"
+  }
+}
