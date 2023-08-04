@@ -7,6 +7,7 @@
   - info: games that are not in the steam-store anymore will not be returned from GetOwnedGames (e.g. https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?appid=403570&key=34726D7C756F3C392EAD2DABB301462C&steamid=76561197999852541)
 
 ### scraper
+- [ ] add error-handling for api-calls (there are sometimes games/achievements missing, when scraping)
 - [ ] call steam-api with parallel calls using curl_multi_exec
   - try to benchmark with https://github.com/scottchiefbaker/php-benchmark to measure actual benefit
 - [ ] more visual feedback (maybe with vue and ajax/axios)
@@ -39,7 +40,7 @@
 - [ ] add composer install as github action & remove /vendor from vcs
 
 ## BACKLOG
-- import tailwind & vue, instead of using external links
+- import vue, instead of using external link
 - display graphs for users/activity maybe
 - Fix Timezone-Offset Calculation @ users/activity (currently it is fixed at +02:00h)
 - scraper | add img_icon_url = http://media.steampowered.com/steamcommunity/public/images/apps/{appid}/{img_icon_url}.jpg
