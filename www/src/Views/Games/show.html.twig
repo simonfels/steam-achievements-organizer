@@ -2,6 +2,17 @@
 
 {% block content %}
     <h1 class="text-neutral-300 text-2xl mb-2 ml-2"><strong>{{ game.name }}</strong></h1>
+    <h2 class="text-neutral-300 text-lg mb-4 ml-2">Tags</h2>
+    <form action="/tags/create.php" method="POST">
+        <input type="hidden" name="game_id" value="{{ game.id }}">
+        <input type="text" name="name" placeholder="Name of the Tag">
+        <input type="submit">
+        <ul>
+            {% for tag in tags %}
+                <li><a href="/tagged_achievements/new.php?{{ { "tagid": tag.id }|url_encode }}">{{ tag.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </form>
     <h2 class="text-neutral-300 text-lg mb-4 ml-2">Achievements</h2>
     <div class="grid gap-2 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
         {% for achievement in achievements %}
@@ -10,8 +21,12 @@
                     <div style="background-image: url('{{ achievement.icon }}'); width: 50px; height: 50px"
                         class="bg-cover flex-none mr-2"></div>
                     <div>
-                        <p class="text-lg font-bold line-clamp-1 text-neutral-300"
-                           title="<?php echo $achievement->display_name ?>">{{ achievement.display_name }}</p>
+                        <p class="text-lg font-bold line-clamp-1 text-neutral-300" title="<?php echo $achievement->display_name ?>">{{ achievement.display_name }}</p>
+                        <p>
+                            {% for tagId in achievement.getTagIds %}
+                                <span class="text-sm rounded-full bg-neutral-500">{{ tags[tagId].name }}</span>
+                            {% endfor %}
+                        </p>
                         <p class="text-sm line-clamp-2 hover:line-clamp-none text-neutral-400">
                             {% if achievement.description is not null %}
                                 {{ achievement.description }}

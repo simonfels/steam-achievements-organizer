@@ -20,11 +20,12 @@ class GamesController extends AbstractController {
     $game_id = @$_GET['gameid'];
 
     if(!empty($game_id)) {
-      [$game, $achievements] = $this->games_list->find($game_id);
+      [$game, $achievements, $tags] = $this->games_list->find($game_id);
 
       $this->render('Games/show', [
         'game' => $game,
-        'achievements' => $achievements
+        'achievements' => $achievements,
+        'tags' => $tags
       ]);
     } else {
       $this->render('Games/404');

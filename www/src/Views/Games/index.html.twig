@@ -1,16 +1,15 @@
 {% extends "Layouts/main.html.twig" %}
-
 {% block content %}
-<h2>List of all fetched Games</h2>
-<ul class="list-disc">
-  {% for game in games %}
-    <li>
-      <strong>
-          <a class="text-neutral-300 text-lg" href="/games/show.php?{{ { 'gameid': game.id}|url_encode }}">
-            {{ game.name }} ({{ game.total_achievements }})
-          </a>
-      </strong>
-    </li>
-  {% endfor %}
-</ul>
+    <h2>
+        List of all fetched Games
+    </h2>
+    <div class="grid grid-cols-3">
+        {% for game in games %}
+            <div>
+                <a class="text-neutral-300 text-lg" href="/games/show.php?{{ { 'gameid': game.id}|url_encode }}">
+                    {{ game.name }} <span class="inline-block px-1 py-0.5 text-xs bg-pink-400 text-black rounded">{{ game.total_achievements }}</span>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}

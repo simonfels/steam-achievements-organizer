@@ -1,0 +1,38 @@
+{% extends 'Layouts/main.html.twig' %}
+
+{% block content %}
+    <h1 class="text-neutral-300 text-2xl mb-2 ml-2">
+        <strong>{{ tag.name }}</strong>
+    </h1>
+    <h2 class="text-neutral-300 text-lg mb-4 ml-2">Achievements</h2>
+    <form action="/tagged_achievements/create.php" method="POST">
+        <input type="hidden" name="tag_id" value="{{tag.id}}">
+        <input type="submit">
+        <div class="grid gap-2 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
+            {% for achievement in achievements %}
+                <div>
+                    <input type="checkbox" name="checked_ids[]" id="checked_ids_{{achievement.id}}" value="{{ achievement.id }}" class="peer hidden">
+                    <label class="flex flex-col justify-between w-full p-2 rounded peer-checked:bg-blue-700 bg-neutral-800" for="checked_ids_{{achievement.id}}">
+                        <div class="flex">
+                            <div>
+                                <div style="background-image: url('{{ achievement.icon }}'); width: 50px; height: 50px" class="bg-cover flex-none mr-2"></div>
+                            </div>
+                            <div>
+                                <p class="text-lg font-bold line-clamp-1 text-neutral-300" title="<?php echo $achievement->display_name ?>">
+                                    {{ achievement.display_name }}
+                                </p>
+                                <p class="text-sm line-clamp-2 hover:line-clamp-none text-neutral-400">
+                                    {% if achievement.description is not null %}
+                                        {{ achievement.description }}
+                                    {% else %}
+                                        <a href="/games/edit.php?{{ { " achievementid": achievement.id }|url_encode }}" class="bg-yellow-900 text-neutral-200 rounded px-1 py-0.5 inline-block">Add description</a>
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+            {% endfor %}
+        </div>
+    </form>
+{% endblock %}

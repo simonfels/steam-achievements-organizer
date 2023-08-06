@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\DataModels\Achievement;
 use App\DataModels\Game;
+use App\DataModels\Tag;
 
 class GamesList extends AbstractModel
 {
@@ -14,10 +15,16 @@ class GamesList extends AbstractModel
 
   public function find($id): array {
     $game = $this->database_connection->fetch("games", "id", $id, Game::class);
-    $sql = "SELECT a.* FROM achievements a WHERE game_id = " . $id . " ORDER BY percent desc, display_name";
+    $sql = "SELECT a.*, GROUP_CONCAT(t.id) tag_ids FROM achievements a LEFT JOIN tagged_achievements ta ON a.id = ta.achievement_id LEFT JOIN tags t ON ta.tag_id = t.id WHERE a.game_id = " . $id . " GROUP BY a.id, a.percent, a.display_name ORDER BY a.percent desc, a.display_name";
     $game_achievements = $this->database_connection->fetchAll(class: Achievement::class, custom_sql: $sql);
+    $tags = $this->database_connection->fetchAll(class: Tag::class, custom_sql: <<<SQL
+      SELECT * FROM tags WHERE game_id = $game->id
+    SQL);
 
-    return [$game, $game_achievements];
+    $ids = array_column($tags, 'id');
+    $preparedTags = array_combine($ids, $tags);
+
+    return [$game, $game_achievements, $preparedTags];
   }
 
   public function findAchievement($id): Achievement {
