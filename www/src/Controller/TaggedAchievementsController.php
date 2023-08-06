@@ -26,6 +26,7 @@ class TaggedAchievementsController extends AbstractController {
   public function create(): void {
     $database_connection = new DatabaseConnection();
     $tag_id = @$_POST['tag_id'];
+    $tag = $database_connection->fetch('tags', 'id', $tag_id, Tag::class);
     $checked_ids = @$_POST['checked_ids'];
     $sql_values = implode(", ", array_map(function($id) use($tag_id) { return "($tag_id, $id)"; }, $checked_ids));
 
@@ -33,6 +34,6 @@ class TaggedAchievementsController extends AbstractController {
       INSERT IGNORE INTO tagged_achievements(tag_id, achievement_id) VALUES $sql_values;
     SQL);
 
-    header('Location: /tagged_achievements/new.php?' . http_build_query(['tagid' => $tag_id]));
+    header('Location: /games/show.php?' . http_build_query(['gameid' => $tag->game_id]));
   }
 }

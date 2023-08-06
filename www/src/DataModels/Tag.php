@@ -6,4 +6,5 @@ class Tag
   public int $id;
   public string $name;
   public string $game_id;
+  public string $background_color;
 }

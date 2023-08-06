@@ -3,13 +3,16 @@
     <h2>
         List of all fetched Games
     </h2>
-    <div class="grid grid-cols-3">
+    <div class="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-4 gap-2">
         {% for game in games %}
-            <div>
-                <a class="text-neutral-300 text-lg" href="/games/show.php?{{ { 'gameid': game.id}|url_encode }}">
-                    {{ game.name }} <span class="inline-block px-1 py-0.5 text-xs bg-pink-400 text-black rounded">{{ game.total_achievements }}</span>
-                </a>
-            </div>
+            <a class="flex bg-neutral-800 rounded p-2 justify-between" href="/games/show.php?{{ { 'gameid': game.id}|url_encode }}">
+                <div class="text-lg text-neutral-300 ml-2">{{ game.name }}</div>
+                <div class="ml-2 flex-none">
+                    <span class="p-1 text-xs bg-neutral-900 rounded">
+                        {{ game.total_achievements }} <i class="fa-solid fa-trophy text-yellow-400"></i>
+                    </span>
+                </div>
+            </a>
         {% endfor %}
     </div>
 {% endblock %}

@@ -1,3 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: "VictorMono";
+  src: url("/assets/fonts/VictorMono-Medium.ttf");
+}
+
+input[type=color]::-webkit-color-swatch-wrapper {
+  padding: 0; 
+}

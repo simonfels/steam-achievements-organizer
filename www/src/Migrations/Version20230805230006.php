@@ -21,29 +21,22 @@ final class Version20230805230006 extends AbstractMigration
     {
         $this->addSql(<<<SQL
             CREATE TABLE tags (
-                id bigint NOT NULL,
+                id bigint NOT NULL AUTO_INCREMENT,
                 game_id bigint NOT NULL,
-                name text NOT NULL
+                name varchar(200) NOT NULL,
+                background_color varchar(200) NOT NULL,
+                PRIMARY KEY (id)
             ) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_unicode_ci';
 
             CREATE TABLE tagged_achievements (
-                id bigint NOT NULL,
+                id bigint NOT NULL AUTO_INCREMENT,
                 achievement_id bigint NOT NULL,
-                tag_id bigint NOT NULL
+                tag_id bigint NOT NULL,
+                PRIMARY KEY (id)
             ) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_unicode_ci';
 
             ALTER TABLE tagged_achievements
-            ADD PRIMARY KEY (id),
-            ADD UNIQUE KEY index_tagged_achievements_on_achievment_id_and_tag_id (achivement_id,tag_id);
-
-            ALTER TABLE tagged_achievements
-            MODIFY id int NOT NULL AUTO_INCREMENT;
-
-            ALTER TABLE tags
-            ADD PRIMARY KEY (id);
-
-            ALTER TABLE tags
-            MODIFY id int NOT NULL AUTO_INCREMENT;
+            ADD UNIQUE KEY index_tagged_achievements_on_achievment_id_and_tag_id (achievement_id,tag_id);
         SQL);
     }
 
