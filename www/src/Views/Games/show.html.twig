@@ -31,7 +31,7 @@
                         <p class="text-lg font-bold line-clamp-1 text-neutral-300" title="{{ achievement.display_name }}">{{ achievement.display_name }}</p>
                         <p>
                             {% for tagId in achievement.getTagIds %}
-                                <span style="background-color: {{ tags[tagId].background_color }}" class="text-sm bg-neutral-500 p-1"><i class="fa-solid fa-hashtag"></i> {{ tags[tagId].name|first }}</span>
+                                <span style="background-color: {{ tags[tagId].background_color }}" class="text-sm bg-neutral-500 p-1"><i class="fa-solid fa-hashtag"></i> {{ tags[tagId].name }}</span>
                             {% endfor %}
                         </p>
                         <p class="text-sm line-clamp-2 hover:line-clamp-none text-neutral-400">

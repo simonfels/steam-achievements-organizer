@@ -59,12 +59,13 @@ class GamesController extends AbstractController {
     $user_id = @$_GET['userid'];
 
     if(!empty($game_id) && !empty($user_id)) {
-      [$game, $achievements] = $this->games_list->findForUser($game_id, $user_id);
+      [$game, $achievements, $tags] = $this->games_list->findForUser($game_id, $user_id);
 
       $this->render('Games/user', [
         'game' => $game,
         'user_id' => $user_id,
-        'achievements' => implode(", ", array_map(function($achievement) { return $achievement->getVars(); }, $achievements))
+        'achievements' => implode(", ", array_map(function($achievement) { return $achievement->getVars(); }, $achievements)),
+        'tags' => $tags
       ]);
     } else {
       $this->render('Games/404');

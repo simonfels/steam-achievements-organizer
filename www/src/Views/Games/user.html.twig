@@ -12,8 +12,27 @@
             </strong>
         </h1>
         <label class="font-bold inline-block py-2" for="searchbox">search</label><input type="text" id="searchbox" v-model="searchbox" class="rounded" /><br>
-        <input type="radio" value="locked" id="listMode2" v-model="listMode" class="hidden mr-2 peer/a1" /><label for="listMode2" class="peer-checked/a1:text-sky-500 inline-block bg-neutral-500 peer-checked/a1:bg-sky-900 py-1 px-2 rounded mr-2">not unlocked</label>
-        <input type="radio" value="achieved" id="listMode1" v-model="listMode" class="hidden mr-2 peer/a2" /><label for="listMode1" class="peer-checked/a2:text-sky-500 inline-block bg-neutral-500 peer-checked/a2:bg-sky-900 py-1 px-2 rounded mr-2">unlocked</label>
+        <input type="radio" value="locked" id="listMode2" v-model="listMode" class="hidden peer/a1" />
+        <label for="listMode2" class="peer-checked/a1:text-sky-500 inline-block bg-neutral-500 peer-checked/a1:bg-sky-900 py-1 px-2 rounded mr-2">not unlocked</label>
+        <input type="radio" value="achieved" id="listMode1" v-model="listMode" class="hidden peer/a2" />
+        <label for="listMode1" class="peer-checked/a2:text-sky-500 inline-block bg-neutral-500 peer-checked/a2:bg-sky-900 py-1 px-2 rounded mr-2">unlocked</label>
+        <h2 class="block mt-3"><i class="fa-solid fa-tags"></i> Tags</h2>
+        <div class="flex mt-2">
+            <div>
+                <input type="radio" v-model="tagMode" value="all" class="hidden" id="tagModeA">
+                <label for="tagModeA" class="inline-block text-sm py-1 px-2 text-white bg-neutral-800"><i class="fa-regular" :class="{'fa-square-check': tagMode == 'all', 'fa-square': tagMode != 'all'}"></i> All</label>
+            </div>
+            <div>
+                <input type="radio" v-model="tagMode" value="none" class="hidden" id="tagModeB">
+                <label for="tagModeB" class="inline-block text-sm py-1 px-2 text-white bg-neutral-600"><i class="fa-regular" :class="{'fa-square-check': tagMode == 'none', 'fa-square': tagMode != 'none'}"></i> None</label>
+            </div>
+            {% for tag in tags %}
+                <div>
+                    <input type="radio" v-model="tagMode" class="hidden" value="{{ tag.id }}" id="tagMode{{ tag.id }}">
+                    <label for="tagMode{{ tag.id }}" style="background-color: {{ tag.background_color }}" class="inline-block text-sm py-1 px-2 text-white"><i class="fa-regular" :class="{'fa-square-check': tagMode == '{{ tag.id }}', 'fa-square': tagMode != '{{ tag.id }}'}"></i> {{ tag.name }}</label>
+                </div>
+            {% endfor %}
+        </div>
     </div>
     {% verbatim %}
         <h2>{{ achievements.length }} Achievements</h2>
@@ -37,6 +56,7 @@
     createApp({
         setup() {
             const listMode = ref('locked')
+            const tagMode =ref('all')
             const searchbox = ref('')
 
             const achievements = computed(() => {
@@ -45,6 +65,15 @@
                         case 'achieved': return ach.achieved;
                         case 'locked': return !ach.achieved;
                     }
+                }).filter((a) => {
+                    if(tagMode.value === 'all')
+                        return true
+                    else if(tagMode.value === 'none')
+                        return a.tag_ids === null
+                    else if(a.tag_ids === null)
+                        return false
+                    else
+                        return a.tag_ids.includes(tagMode.value)
                 }).filter((b) => {
                     if(searchbox.value.length === 0)
                         return true
@@ -62,7 +91,7 @@
             }
 
             return {
-                achievements, listMode, searchbox, highlight
+                achievements, listMode, searchbox, highlight, tagMode
             }
         }
     }).mount('#app')
