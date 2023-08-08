@@ -3,7 +3,7 @@
 namespace App\DataModels;
 class User
 {
-  public int $id;
+  public string $id;
   public string $name;
   public string $avatar_url;
   public string $steam_url;
