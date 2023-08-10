@@ -21,9 +21,9 @@
                     <td>{{ user.name }}</td>
                     <td>{{ user.games_count }}</td>
                     <td>{{ user.total_achievements }}</td>
-                    <td><a class="text-orange-300" :href="'/scraper/user.php?userid=' + user.id">user</a></td>
-                    <td><a class="text-green-300" :href="'/scraper/games.php?userid=' + user.id">games</a></td>
-                    <td><a class="text-red-300" :href="'/scraper/achievements.php?userid=' + user.id">achievements</a></td>
+                    <td><a class="text-orange-300" @click="fetchAsync('/scraper/user.php?userid=' + user.id)">user</a></td>
+                    <td><a class="text-green-300" @click="fetchAsync('/scraper/games.php?userid=' + user.id)">games</a></td>
+                    <td><a class="text-red-300" @click="fetchAsync('/scraper/achievements.php?userid=' + user.id)">achievements</a></td>
                     {% endverbatim %}
                 </tr>
             </tbody>
@@ -47,13 +47,19 @@
             function onSubmit(event) {
                 let userid = event.target.elements.userid.value
 
-                fetch('http://localhost:3000/scraper/user.php?userid=' + userid)
+                fetch('/scraper/user.php?userid=' + userid)
+                    .then(response => response.json())
+                    .then(data => users.value = data["users"])
+            }
+
+            function fetchAsync(url) {
+                fetch(url)
                     .then(response => response.json())
                     .then(data => users.value = data["users"])
             }
 
             return {
-                users, onSubmit
+                users, onSubmit, fetchAsync
             }
         }
     }).mount('#app')

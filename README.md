@@ -3,6 +3,7 @@
 ## CODING TODOs
 
 ### general
+- [ ] general activity-site for all users (like the steam "Activity"-tab)
 - [ ] option to manually add games (also tag these games as being `manually added`)
   - info: games that are not in the steam-store anymore will not be returned from GetOwnedGames (e.g. https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?appid=403570&key=34726D7C756F3C392EAD2DABB301462C&steamid=76561197999852541)
 
@@ -46,5 +47,6 @@
 - Fix Timezone-Offset Calculation @ users/activity (currently it is fixed at +02:00h)
 - scraper | add img_icon_url = http://media.steampowered.com/steamcommunity/public/images/apps/{appid}/{img_icon_url}.jpg
 - scraper | add option to resolve vanity-urls
-- general | add pagination [LOW-PRIO]
+- general | add pagination [LOW-PRIO] (/games, /users)
 - temp solution for .git folders in /vendor: rm -rf `find . -type d -name .git`
+- Visual Bug in users/activity calendar when month only has one column

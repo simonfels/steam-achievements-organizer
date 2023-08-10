@@ -2,19 +2,22 @@
 
 namespace App\Helpers;
 
+use GuzzleHttp\Client;
+
 class SteamAPI {
   private const BASE_URL = "https://api.steampowered.com";
-  private const ALL_ACHIEVEMENTS_URL = SteamAPI::BASE_URL . '/ISteamUserStats/GetSchemaForGame/v2/?';
-  private const USER_ACHIEVEMENTS_URL = SteamAPI::BASE_URL . '/ISteamUserStats/GetPlayerAchievements/v1/?';
-  private const USER_URL = SteamAPI::BASE_URL . '/ISteamUser/GetPlayerSummaries/v2/?';
-  private const USER_GAMES_URL = SteamAPI::BASE_URL . '/IPlayerService/GetOwnedGames/v1/?';
-  private const GLOBAL_PERCENTAGES_URL = SteamAPI::BASE_URL . '/ISteamUserStats/GetGlobalAchievementPercentagesForApp/v2/?';
+  private const ALL_ACHIEVEMENTS_URL = 'ISteamUserStats/GetSchemaForGame/v2/?';
+  private const USER_ACHIEVEMENTS_URL = 'ISteamUserStats/GetPlayerAchievements/v1/?';
+  private const USER_URL = 'ISteamUser/GetPlayerSummaries/v2/?';
+  private const USER_GAMES_URL = 'IPlayerService/GetOwnedGames/v1/?';
+  private const GLOBAL_PERCENTAGES_URL = 'ISteamUserStats/GetGlobalAchievementPercentagesForApp/v2/?';
   private const STEAM_API_KEY = "34726D7C756F3C392EAD2DABB301462C";
 
   public function __construct() {}
 
-  public function fetchUserAchievements(string $app_id, string $user_id): array|false {
-    $response = $this->apiCall(self::USER_ACHIEVEMENTS_URL . $this->buildParams(["appid" => $app_id, "steamid" => $user_id]));
+  public function fetchUserAchievements(string $app_id, string $user_id): array|false
+  {
+    $response = $this->apiCall(self::USER_ACHIEVEMENTS_URL, $this->buildParams(["appid" => $app_id, "steamid" => $user_id]));
 
     if(empty($response) || empty($response["playerstats"]) || empty($response["playerstats"]["achievements"])) {
       return false;
@@ -30,7 +33,7 @@ class SteamAPI {
 
   public function fetchAchievements(string $app_id): array|false
   {
-    $response = $this->apiCall(self::ALL_ACHIEVEMENTS_URL . $this->buildParams(["appid" => $app_id]));
+    $response = $this->apiCall(self::ALL_ACHIEVEMENTS_URL, $this->buildParams(["appid" => $app_id]));
 
     if(empty($response["game"]) || empty($response["game"]["availableGameStats"]) || empty($response["game"]["availableGameStats"]["achievements"])) {
       return false;
@@ -51,7 +54,7 @@ class SteamAPI {
 
   public function fetchUser(string $user_id): array|false
   {
-    $response = $this->apiCall(self::USER_URL . $this->buildParams(['steamids' => $user_id]));
+    $response = $this->apiCall(self::USER_URL, $this->buildParams(['steamids' => $user_id]));
 
     if(!empty($players = $response["response"]["players"])) {
       $player = $players[0];
@@ -66,45 +69,53 @@ class SteamAPI {
     }
   }
 
-  public function fetchUserGames(string $user_id): array|false
-  {
-    $response = $this->apiCall(self::USER_GAMES_URL . $this->buildParams([
-        'steamid' => $user_id,
-        'include_played_free_games' => 1,
-        'include_appinfo' => 1
-    ]));
-    $games = array_map(function($item) { return ['id' => $item['appid'], 'name' => $item['name']]; }, $response['response']['games']);
-    $user_games = array_map(function($item) use ($user_id) { return ['game_id' => $item['appid'], 'user_id' => $user_id]; }, $response['response']['games']);
+    public function fetchUserGames(string $user_id): array|false
+    {
+        $response = $this->apiCall(self::USER_GAMES_URL, $this->buildParams([
+            'steamid' => $user_id,
+            'include_played_free_games' => 1,
+            'include_appinfo' => 1
+        ]));
+        $games = array_map(function($item) { return ['id' => $item['appid'], 'name' => $item['name']]; }, $response['response']['games']);
+        $user_games = array_map(function($item) use ($user_id) { return ['game_id' => $item['appid'], 'user_id' => $user_id]; }, $response['response']['games']);
 
-    return [$games, $user_games];
-  }
-
-  public function fetchGameGlobalPercentages(string $app_id): array|false {
-    $response = $this->apiCall(self::GLOBAL_PERCENTAGES_URL . $this->buildParams([
-      'gameid' => $app_id
-    ]));
-
-    $result = [];
-
-    foreach($response['achievementpercentages']['achievements'] as $achievement) {
-      $result[$achievement['name']] = $achievement['percent'];
+        return [$games, $user_games];
     }
 
-    return $result;
-  }
+    public function fetchGameGlobalPercentages(string $app_id): array|false
+    {
+        $response = $this->apiCall(self::GLOBAL_PERCENTAGES_URL, $this->buildParams([
+            'gameid' => $app_id
+        ]));
 
-  private function apiCall(string $url): array|null
-  {
-    return json_decode(@file_get_contents($url), true);
-  }
+        $result = [];
 
-  private function buildParams(array $params): string
+        foreach($response['achievementpercentages']['achievements'] as $achievement) {
+            $result[$achievement['name']] = $achievement['percent'];
+        }
+
+        return $result;
+    }
+
+    private function apiCall(string $url, array $params): array|null
+    {
+        $client = new Client([
+            'base_uri' => $this::BASE_URL,
+            'timeout'  => 2.0,
+        ]);
+
+        $request = $client->request('GET', $url, ['query' => $params]);
+
+        return json_decode($request->getBody(), true);
+    }
+
+  private function buildParams(array $params): array
   {
     $default_params = [
       "key" => self::STEAM_API_KEY,
       "format" => "json"
     ];
 
-    return http_build_query(array_merge($default_params, $params));
+    return array_merge($default_params, $params);
   }
 }
