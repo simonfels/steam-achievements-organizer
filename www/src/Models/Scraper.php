@@ -15,7 +15,7 @@ class Scraper extends AbstractModel {
     $this->numberOfApiCalls = 0;
   }
 
-  public function allUsers(): false|string
+  public function allUsers(): array
   {
     $users = $this->database_connection->fetchAll(User::class, custom_sql: '
         select users.*, count(user_games.id) games_count, achievements.total_achievements from users
@@ -28,7 +28,7 @@ class Scraper extends AbstractModel {
         ) achievements on achievements.id = users.id
         group by users.id
     ');
-    return json_encode($users);
+    return $users;
   }
 
   public function scrapeUserData(string $user_id): bool {

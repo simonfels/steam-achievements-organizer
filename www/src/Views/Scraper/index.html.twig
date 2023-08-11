@@ -7,35 +7,53 @@
         <input type="text" placeholder="Steam-ID" name="userid">
         <input type="submit">
     </form>
-    {% if users is not empty %}
-        <table>
-            <thead>
-                <th>Username</th>
-                <th>Games</th>
-                <th>Achievements</th>
-                <th colspan="3">Actions</th>
-            </thead>
-            <tbody>
-                <tr v-for="user in users">
-                    {% verbatim %}
-                    <td>{{ user.name }}</td>
-                    <td>{{ user.games_count }}</td>
-                    <td>{{ user.total_achievements }}</td>
-                    <td><a class="text-orange-300" @click="fetchAsync('/scraper/user.php?userid=' + user.id)">user</a></td>
-                    <td><a class="text-green-300" @click="fetchAsync('/scraper/games.php?userid=' + user.id)">games</a></td>
-                    <td><a class="text-red-300" @click="fetchAsync('/scraper/achievements.php?userid=' + user.id)">achievements</a></td>
-                    {% endverbatim %}
-                </tr>
-            </tbody>
-        </table>
-    {% endif %}
-</div>
+    <div class="grid grid-cols-2">
+        <div>
+            <table class="w-full">
+                <thead>
+                    <th class="text-sm">Username</th>
+                    <th class="text-sm">Games</th>
+                    <th class="text-sm">Achievements</th>
+                    <th class="text-sm" colspan="3">Actions</th>
+                </thead>
+                <tbody>
+                    <tr v-for="user in users">
+                        {% verbatim %}
+                        <td>{{ user.name }}</td>
+                        <td>{{ user.games_count }}</td>
+                        <td>{{ user.total_achievements }}</td>
+                        <td><a class="text-orange-300" @click="fetchAsync('/scraper/user.php?userid=' + user.id)">user</a></td>
+                        <td><a class="text-green-300" @click="fetchAsync('/scraper/games.php?userid=' + user.id)">games</a></td>
+                        <td><a class="text-red-300" @click="fetchAsync('/scraper/achievements.php?userid=' + user.id)">achievements</a></td>
+                        {% endverbatim %}
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
-{% if result is defined and operation is defined %}
-    <p>Operation: {{ operation }}</p>
-    <p>Success: {{ result ? '✔️' : '❌' }}</p>
-    <p># of API-Calls: {{ api_calls }}</p>
-{% endif %}
+        
+        <div>
+            {% verbatim %}
+                <table class="w-full">
+                    <thead>
+                        <th class="text-sm">URL</th>
+                        <th class="text-sm">Operation</th>
+                        <th class="text-sm">Success</th>
+                        <th class="text-sm">Api-Calls</th>
+                    </thead>
+                    <tbody>
+                        <tr v-for="apiCall in apiCalls">
+                            <td class="text-xs">{{ apiCall.url }}</td>
+                            <td>{{ apiCall.operation }}</td>
+                            <td>{{ apiCall.result ? '✔️' : '❌' }}</td>
+                            <td>{{ apiCall.api_calls }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            {% endverbatim %}
+        </div>
+    </div>
+</div>
 
 <script>
     const { createApp, ref, computed } = Vue
@@ -43,6 +61,7 @@
     createApp({
         setup() {
             const users = ref({{ users|raw }})
+            const apiCalls = ref([])
 
             function onSubmit(event) {
                 let userid = event.target.elements.userid.value
@@ -55,11 +74,14 @@
             function fetchAsync(url) {
                 fetch(url)
                     .then(response => response.json())
-                    .then(data => users.value = data["users"])
+                    .then(data => {
+                        this.users = data["users"]
+                        this.apiCalls.push({'url': url, 'operation':data['operation'],'result':data['result'],'api_calls':data['api_calls']})
+                    })
             }
 
             return {
-                users, onSubmit, fetchAsync
+                users, onSubmit, fetchAsync, apiCalls
             }
         }
     }).mount('#app')

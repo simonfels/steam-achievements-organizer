@@ -16,7 +16,7 @@ class ScraperController extends AbstractController
     public function index(): void
     {
         $this->render('Scraper/index', [
-          'users' => $this->scraper->allUsers()
+          'users' => json_encode($this->scraper->allUsers())
         ]);
     }
 
@@ -31,9 +31,8 @@ class ScraperController extends AbstractController
               'user_id' => $user_id,
               'operation' => 'getUser',
               'api_calls' => $this->scraper->numberOfApiCalls,
-              'users' => json_decode($this->scraper->allUsers())
+              'users' => $this->scraper->allUsers()
             ];
-            // $this->render('Scraper/index', $return_value);
             header('Content-Type: application/json');
             echo json_encode($return_value);
         } else {
@@ -47,13 +46,15 @@ class ScraperController extends AbstractController
 
         if (!empty($user_id)) {
             $result = $this->scraper->scrapeUserGames($_GET["userid"]);
-            $this->render('Scraper/index', [
+            $return_value = [
               'result' => $result,
               'user_id' => $user_id,
               'operation' => 'getGames',
               'api_calls' => $this->scraper->numberOfApiCalls,
               'users' => $this->scraper->allUsers()
-            ]);
+            ];
+            header('Content-Type: application/json');
+            echo json_encode($return_value);
         } else {
             $this->render('Scraper/404');
         }
@@ -78,13 +79,15 @@ class ScraperController extends AbstractController
 
         if (!empty($user_id)) {
             $result = $this->scraper->scrapeGameAchievements($_GET["userid"]);
-            $this->render('Scraper/index', [
+            $return_value = [
               'result' => $result,
               'user_id' => $user_id,
               'operation' => 'getAchievements',
               'api_calls' => $this->scraper->numberOfApiCalls,
               'users' => $this->scraper->allUsers()
-            ]);
+            ];
+            header('Content-Type: application/json');
+            echo json_encode($return_value);
         } else {
             $this->render('Scraper/404');
         }
