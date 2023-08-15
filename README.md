@@ -50,3 +50,4 @@
 - general | add pagination [LOW-PRIO] (/games, /users)
 - temp solution for .git folders in /vendor: rm -rf `find . -type d -name .git`
 - Visual Bug in users/activity calendar when month only has one column
+- Use https://store.steampowered.com/api/appdetails?appids=240 for Game-Details (maybe if needed)
