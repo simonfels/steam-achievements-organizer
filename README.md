@@ -41,6 +41,11 @@
 ### workflow
 - [ ] add composer install as github action & remove /vendor from vcs
 
+### TESTING TODOs
+- [ ] add code-quality checks using: php-cs, php-cs-fixer, psalm
+- [ ] add tests
+- [ ] add tests and quality-checks to github-actions
+
 ## BACKLOG
 - import vue, instead of using external link
 - display graphs for users/activity maybe

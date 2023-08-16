@@ -11,20 +11,32 @@
         <div>
             <table class="w-full">
                 <thead>
-                    <th class="text-sm">Username</th>
-                    <th class="text-sm">Games</th>
-                    <th class="text-sm">Achievements</th>
-                    <th class="text-sm" colspan="3">Actions</th>
+                    <th class="border-neutral-600 border text-sm">Username</th>
+                    <th class="border-neutral-600 border text-sm">Games</th>
+                    <th class="border-neutral-600 border text-sm">Achievements</th>
+                    <th class="border-neutral-600 border text-sm" colspan="3">Actions</th>
                 </thead>
                 <tbody>
-                    <tr v-for="user in users">
+                    <tr class="border border-neutral-600" v-for="user in users">
                         {% verbatim %}
-                        <td>{{ user.name }}</td>
-                        <td>{{ user.games_count }}</td>
-                        <td>{{ user.total_achievements }}</td>
-                        <td><a class="text-orange-300" @click="fetchAsync('/scraper/user.php?userid=' + user.id)">user</a></td>
-                        <td><a class="text-green-300" @click="fetchAsync('/scraper/games.php?userid=' + user.id)">games</a></td>
-                        <td><a class="text-red-300" @click="fetchAsync('/scraper/achievements.php?userid=' + user.id)">achievements</a></td>
+                            <td>{{ user.name }}</td>
+                            <td class="text-right">{{ user.games_count }}</td>
+                            <td class="text-right">{{ user.total_achievements }}</td>
+                            <td class="border-l border-neutral-600 text-center">
+                                <a class="text-pink-400" @click="fetchAsync('/scraper/user.php?userid=' + user.id, $event)">
+                                    <i class="pointer-events-none fa-solid fa-user"></i>
+                                </a>
+                            </td>
+                            <td class="text-center">
+                                <a class="text-pink-400" @click="fetchAsync('/scraper/games.php?userid=' + user.id, $event)">
+                                    <i class="pointer-events-none fa-solid fa-gamepad"></i>
+                                </a>
+                            </td>
+                            <td class="text-center">
+                                <a class="text-pink-400" @click="fetchAsync('/scraper/achievements.php?userid=' + user.id, $event)">
+                                    <i class="pointer-events-none fa-solid fa-trophy"></i>
+                                </a>
+                            </td>
                         {% endverbatim %}
                     </tr>
                 </tbody>
@@ -36,10 +48,10 @@
             {% verbatim %}
                 <table class="w-full">
                     <thead>
-                        <th class="text-sm">URL</th>
-                        <th class="text-sm">Operation</th>
-                        <th class="text-sm">Success</th>
-                        <th class="text-sm">Api-Calls</th>
+                        <th class="border-neutral-600 border text-sm">URL</th>
+                        <th class="border-neutral-600 border text-sm">Operation</th>
+                        <th class="border-neutral-600 border text-sm">Success</th>
+                        <th class="border-neutral-600 border text-sm">Api-Calls</th>
                     </thead>
                     <tbody>
                         <tr v-for="apiCall in apiCalls">
@@ -62,6 +74,8 @@
         setup() {
             const users = ref({{ users|raw }})
             const apiCalls = ref([])
+            const spinner = document.createElement("i");
+            spinner.classList = ["fa-solid fa-spinner text-black animate-spin pointer-events-none"];
 
             function onSubmit(event) {
                 let userid = event.target.elements.userid.value
@@ -71,10 +85,20 @@
                     .then(data => users.value = data["users"])
             }
 
-            function fetchAsync(url) {
+            function fetchAsync(url, event) {
+                let target = event.target
+                let child = target.children[0]
+                let copyChild = child.cloneNode()
+                let newChild = spinner.cloneNode()
+                
+                target.classList.toggle('pointer-events-none', 'bg-pink-400')
+                child.replaceWith(newChild)
+
                 fetch(url)
                     .then(response => response.json())
                     .then(data => {
+                        target.classList.toggle('pointer-events-none', 'bg-pink-400')
+                        newChild.replaceWith(copyChild)
                         this.users = data["users"]
                         this.apiCalls.push({'url': url, 'operation':data['operation'],'result':data['result'],'api_calls':data['api_calls']})
                     })
