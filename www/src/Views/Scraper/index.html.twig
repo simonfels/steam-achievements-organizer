@@ -22,18 +22,18 @@
                             <td>{{ user.name }}</td>
                             <td class="text-right">{{ user.games_count }}</td>
                             <td class="text-right">{{ user.total_achievements }}</td>
-                            <td class="border-l border-neutral-600 text-center">
-                                <a class="text-pink-400" @click="fetchAsync('/scraper/user.php?userid=' + user.id, $event)">
+                            <td class="p-0 border-l border-neutral-600 text-center">
+                                <a class="text-pink-400 py-1 px-2 w-full border border-pink-400 inline-block" @click="fetchAsync('/scraper/user.php?userid=' + user.id, $event)">
                                     <i class="pointer-events-none fa-solid fa-user"></i>
                                 </a>
                             </td>
-                            <td class="text-center">
-                                <a class="text-pink-400" @click="fetchAsync('/scraper/games.php?userid=' + user.id, $event)">
+                            <td class="p-0 text-center">
+                                <a class="text-pink-400 py-1 px-2 w-full border border-pink-400 inline-block" @click="fetchAsync('/scraper/games.php?userid=' + user.id, $event)">
                                     <i class="pointer-events-none fa-solid fa-gamepad"></i>
                                 </a>
                             </td>
-                            <td class="text-center">
-                                <a class="text-pink-400" @click="fetchAsync('/scraper/achievements.php?userid=' + user.id, $event)">
+                            <td class="p-0 text-center">
+                                <a class="text-pink-400 py-1 px-2 w-full border border-pink-400 inline-block" @click="fetchAsync('/scraper/achievements.php?userid=' + user.id, $event)">
                                     <i class="pointer-events-none fa-solid fa-trophy"></i>
                                 </a>
                             </td>
@@ -91,13 +91,15 @@
                 let copyChild = child.cloneNode()
                 let newChild = spinner.cloneNode()
                 
-                target.classList.toggle('pointer-events-none', 'bg-pink-400')
+                target.classList.toggle('pointer-events-none')
+                target.classList.toggle('bg-pink-400')
                 child.replaceWith(newChild)
 
                 fetch(url)
                     .then(response => response.json())
                     .then(data => {
-                        target.classList.toggle('pointer-events-none', 'bg-pink-400')
+                        target.classList.toggle('pointer-events-none')
+                        target.classList.toggle('bg-pink-400')
                         newChild.replaceWith(copyChild)
                         this.users = data["users"]
                         this.apiCalls.push({'url': url, 'operation':data['operation'],'result':data['result'],'api_calls':data['api_calls']})
