@@ -26,6 +26,7 @@
 ### general
 - [ ] develop uniform style for the whole website
 - [ ] make users/activity mobile responsive
+- [ ] use icon for filters
 
 ## DATABASE TODOs
 

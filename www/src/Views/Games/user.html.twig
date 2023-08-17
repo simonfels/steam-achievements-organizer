@@ -1,43 +1,47 @@
 {% extends 'Layouts/main.html.twig' %}
 
 {% block content %}
-<a href="/scraper/game.php?{{ {'userid': user_id, 'gameid': game.id}|url_encode }}"><i class="fa-solid fa-rotate"></i></a>
+<a href="/scraper/game.php?{{ {'userid': user_id, 'gameid': game.id}|url_encode }}"><i class="fa-solid fa-rotate"></i> Refresh</a>
+<h1 class="text-xl mb-2">
+    <strong class="line-clamp-1">{{ game.name }}
+        {% if game.formatted_completed_at is not null %}
+            <small>(<i class="fa-solid fa-crown"></i> {{ game.formatted_completed_at }})</small>
+        {% endif %}
+    </strong>
+</h1>
+
 <div id="app">
-    <div class="sticky top-0 px-4 bg-neutral-900 p-3 z-50">
-        <h1 class="text-xl mb-2">
-            <strong class="line-clamp-1">{{ game.name }}
-                {% if game.formatted_completed_at is not null %}
-                    <small>(<i class="fa-solid fa-crown"></i> {{ game.formatted_completed_at }})</small>
-                {% endif %}
-            </strong>
-        </h1>
-        <label class="font-bold inline-block py-2" for="searchbox">search</label><input type="text" id="searchbox" v-model="searchbox" class="rounded" /><br>
+    <div class="sticky top-0 px-4 bg-black/50 p-3 z-50 backdrop-blur">
+        <div class="w-full flex justify-center mb-2">
+            <div class="text-xl bg-neutral-800 leading-5 text-center p-2">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+            <input type="text" v-model="searchbox" class="w-full sm:w-3/5 p-2 bg-neutral-800 text-white" placeholder="search" />
+        </div>
+
+
         <input type="radio" value="locked" id="listMode2" v-model="listMode" class="hidden peer/a1" />
         <label for="listMode2" class="peer-checked/a1:text-sky-500 inline-block bg-neutral-500 peer-checked/a1:bg-sky-900 py-1 px-2 rounded mr-2">not unlocked</label>
+        
         <input type="radio" value="achieved" id="listMode1" v-model="listMode" class="hidden peer/a2" />
         <label for="listMode1" class="peer-checked/a2:text-sky-500 inline-block bg-neutral-500 peer-checked/a2:bg-sky-900 py-1 px-2 rounded mr-2">unlocked</label>
-        <h2 class="block mt-3"><i class="fa-solid fa-tags"></i> Tags</h2>
+        
         <div class="flex mt-2">
-            <div>
-                <input type="radio" v-model="tagMode" value="all" class="hidden" id="tagModeA">
-                <label for="tagModeA" class="inline-block text-sm py-1 px-2 text-white bg-neutral-800"><i class="fa-regular" :class="{'fa-square-check': tagMode == 'all', 'fa-square': tagMode != 'all'}"></i> All</label>
-            </div>
-            <div>
-                <input type="radio" v-model="tagMode" value="none" class="hidden" id="tagModeB">
-                <label for="tagModeB" class="inline-block text-sm py-1 px-2 text-white bg-neutral-600"><i class="fa-regular" :class="{'fa-square-check': tagMode == 'none', 'fa-square': tagMode != 'none'}"></i> None</label>
-            </div>
+            <div class="py-1 px-2 text-sm">Tags<i class="ml-1 fa-solid fa-tags"></i></div>
             {% for tag in tags %}
                 <div>
                     <input type="radio" v-model="tagMode" class="hidden" value="{{ tag.id }}" id="tagMode{{ tag.id }}">
-                    <label for="tagMode{{ tag.id }}" style="background-color: {{ tag.background_color }}" class="inline-block text-sm py-1 px-2 text-white"><i class="fa-regular" :class="{'fa-square-check': tagMode == '{{ tag.id }}', 'fa-square': tagMode != '{{ tag.id }}'}"></i> {{ tag.name }}</label>
+                    <label for="tagMode{{ tag.id }}" style="background-color: {{ tag.background_color }}" class="inline-block text-sm py-1 px-2 text-white" @click.prevent="checkTag($event)">
+                        <i class="pointer-events-none fa-regular" :class="{'fa-square-check': tagMode == '{{ tag.id }}', 'fa-square': tagMode != '{{ tag.id }}'}"></i> {{ tag.name }}
+                    </label>
                 </div>
             {% endfor %}
         </div>
     </div>
     {% verbatim %}
-        <h2>{{ achievements.length }} Achievements</h2>
-        <div class="grid gap-2 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 m-4">
-                <div class="overflow-hidden flex flex-col justify-between bg-neutral-800 p-2 rounded" :class="{ 'opacity-60': achievement.achieved }" v-for="achievement in achievements">
+        <div class="text-sm text-neutral-500 mb-2 text-center">{{ achievements.length }}/{{ originalAchievements.length }} Achievements</div>
+        <div class="grid gap-1 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
+                <div class="flex flex-col justify-between bg-neutral-800 p-2 rounded" :class="{ 'opacity-60': achievement.achieved }" v-for="achievement in achievements">
                     <div class="flex rounded">
                         <div :style="{ 'background-image': 'url(' + (achievement.achieved ? achievement.icon : achievement.icongray) + ')' }" class="w-12 h-12 bg-cover flex-none mr-2"></div>
                         <div>
@@ -58,9 +62,10 @@
             const listMode = ref('locked')
             const tagMode =ref('all')
             const searchbox = ref('')
+            const originalAchievements = [{{ achievements|raw }}]
 
             const achievements = computed(() => {
-                return [{{ achievements|raw }}].filter((ach) => {
+                return originalAchievements.filter((ach) => {
                     switch (listMode.value) {
                         case 'achieved': return ach.achieved;
                         case 'locked': return !ach.achieved;
@@ -68,7 +73,7 @@
                 }).filter((a) => {
                     if(tagMode.value === 'all')
                         return true
-                    else if(tagMode.value === 'none')
+                    else if(tagMode.value === '-1')
                         return a.tag_ids === null
                     else if(a.tag_ids === null)
                         return false
@@ -90,8 +95,14 @@
                 return name ? name.replaceAll(new RegExp('(' + searchbox.value + ')', "ig"), '<span class="text-green-500">$1</span>') : '';
             }
 
+            function checkTag(event) {
+                let clickedValue = event.srcElement.control.value
+                
+                tagMode.value = tagMode.value === clickedValue ? 'all' : clickedValue
+            }
+
             return {
-                achievements, listMode, searchbox, highlight, tagMode
+                achievements, listMode, searchbox, highlight, tagMode, originalAchievements, checkTag
             }
         }
     }).mount('#app')
