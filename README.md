@@ -27,6 +27,7 @@
 - [ ] develop uniform style for the whole website
 - [ ] make users/activity mobile responsive
 - [ ] use icon for filters
+- [ ] try to modularize repetetive elements
 
 ## DATABASE TODOs
 
@@ -46,6 +47,7 @@
 - [ ] add code-quality checks using: php-cs, php-cs-fixer, psalm
 - [ ] add tests
 - [ ] add tests and quality-checks to github-actions
+- [ ] maybe add prettier for tailwind/vue/html
 
 ## BACKLOG
 - import vue, instead of using external link
