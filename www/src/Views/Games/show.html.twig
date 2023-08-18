@@ -1,5 +1,9 @@
 {% extends 'Layouts/main.html.twig' %}
 
+{% block head_content %}
+    <title>Tracker | Games :: {{ game.name }}</title>
+{% endblock %}
+
 {% block content %}
     <h1 class="text-neutral-300 text-2xl mb-2 ml-2"><strong>{{ game.name }}</strong></h1>
     <h2 class="text-neutral-300 text-lg mb-4 ml-2"><i class="fa-solid fa-tags"></i> Tags</h2>

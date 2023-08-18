@@ -3,6 +3,7 @@
 namespace App\Controller;
 use App\DataModels\Achievement;
 use App\Models\GamesList;
+use App\Models\UsersList;
 
 class GamesController extends AbstractController {
   private GamesList $games_list;
@@ -59,11 +60,13 @@ class GamesController extends AbstractController {
     $user_id = @$_GET['userid'];
 
     if(!empty($game_id) && !empty($user_id)) {
+      $users_list = new UsersList();
       [$game, $achievements, $tags] = $this->games_list->findForUser($game_id, $user_id);
+      [$user, $_trash1, $_trash2, $games] = $users_list->find($user_id);
 
       $this->render('Games/user', [
         'game' => $game,
-        'user_id' => $user_id,
+        'user' => $user,
         'achievements' => implode(", ", array_map(function($achievement) { return $achievement->getVars(); }, $achievements)),
         'tags' => $tags
       ]);

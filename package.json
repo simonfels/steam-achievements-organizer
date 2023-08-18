@@ -5,7 +5,7 @@
   "main": "tailwiwnd.config.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx tailwindcss -i ./www/src/Assets/style.css -o ./www/public_html/assets/style.css --watch"
+    "start": "npx tailwindcss -i ./www/src/Assets/style.css -o ./www/public_html/assets/style.css --minify --watch"
   },
   "author": "",
   "license": "ISC",

@@ -1,5 +1,9 @@
 {% extends 'Layouts/main.html.twig' %}
 
+{% block head_content %}
+    <title>Tracker | Users :: {{ user[0].name }}</title>
+{% endblock %}
+
 {% block content %}
 <div class="my-3">
     <a href="/users/show.php?{{ {'userid': user[0].id}|url_encode }}" class="inline-block px-2 py-1 rounded bg-neutral-800">Games</a>

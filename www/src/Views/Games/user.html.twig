@@ -1,7 +1,11 @@
 {% extends 'Layouts/main.html.twig' %}
 
+{% block head_content %}
+    <title>Tracker | Users :: {{ user.name }} :: {{ game.name }}</title>
+{% endblock %}
+
 {% block content %}
-<a href="/scraper/game.php?{{ {'userid': user_id, 'gameid': game.id}|url_encode }}"><i class="fa-solid fa-rotate"></i> Refresh</a>
+<a href="/scraper/game.php?{{ {'userid': user.id, 'gameid': game.id}|url_encode }}"><i class="fa-solid fa-rotate"></i> Refresh</a>
 <h1 class="text-xl mb-2">
     <strong class="line-clamp-1">{{ game.name }}
         {% if game.formatted_completed_at is not null %}
@@ -11,7 +15,7 @@
 </h1>
 
 <div id="app">
-    <div class="sticky top-0 bg-neutral-950/90 p-2 z-50 backdrop-blur">
+    <div class="sticky top-0 bg-neutral-950/60 p-2 z-50 backdrop-blur-sm">
         <div class="w-full sm:w-3/5 flex mx-auto mb-2">
             <div class="text-xl bg-neutral-800 leading-5 text-center p-2">
                 <i class="fa-solid fa-magnifying-glass"></i>

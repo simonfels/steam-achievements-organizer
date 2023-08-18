@@ -1,5 +1,9 @@
 {% extends 'Layouts/main.html.twig' %}
 
+{% block head_content %}
+    <title>Tracker | Users :: {{ user.name }}</title>
+{% endblock %}
+
 {% block content %}
     <div class="my-3">
         <a href="#" class="inline-block px-2 py-1 rounded bg-neutral-600">Games</a>

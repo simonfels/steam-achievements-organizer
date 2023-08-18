@@ -39,5 +39,6 @@ services:
       context: ./
       dockerfile: ./DockerfileCSS
     command: npm start
+    tty: true
     volumes:
       - .:/node:z
