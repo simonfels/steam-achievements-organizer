@@ -50,7 +50,6 @@
 - [ ] maybe add prettier for tailwind/vue/html
 
 ## BACKLOG
-- import vue, instead of using external link
 - display graphs for users/activity maybe
 - Fix Timezone-Offset Calculation @ users/activity (currently it is fixed at +02:00h)
 - scraper | add img_icon_url = http://media.steampowered.com/steamcommunity/public/images/apps/{appid}/{img_icon_url}.jpg

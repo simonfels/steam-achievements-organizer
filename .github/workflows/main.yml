@@ -10,7 +10,11 @@ jobs:
     steps:
     - name: 🚚 Get latest code
       uses: actions/checkout@v3
-    
+    - name: ⚗️ Run composer
+      uses: php-actions/composer@v6
+      with:
+        command: install
+        args: --working-dir www
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
