@@ -44,9 +44,6 @@
 ### general
 - [ ] remove steam-api key from repository
 
-### workflow
-- [ ] add composer install as github action & remove /vendor from vcs
-
 ### TESTING TODOs
 - [ ] add code-quality checks using: php-cs, php-cs-fixer, psalm
 - [ ] add tests
@@ -59,6 +56,5 @@
 - scraper | add img_icon_url = http://media.steampowered.com/steamcommunity/public/images/apps/{appid}/{img_icon_url}.jpg
 - scraper | add option to resolve vanity-urls
 - general | add pagination [LOW-PRIO] (/games, /users)
-- temp solution for .git folders in /vendor: rm -rf `find . -type d -name .git`
 - Visual Bug in users/activity calendar when month only has one column
 - Use https://store.steampowered.com/api/appdetails?appids=240 for Game-Details (maybe if needed)

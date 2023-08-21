@@ -1,4 +1,4 @@
-FROM php:apache
+FROM php:8.2.9-apache-bookworm
 
 ENV APACHE_DOCUMENT_ROOT /var/www/public_html
 
