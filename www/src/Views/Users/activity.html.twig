@@ -9,59 +9,57 @@
     <a href="/users/show.php?{{ {'userid': user[0].id}|url_encode }}" class="inline-block px-2 py-1 rounded bg-neutral-800">Games</a>
     <a href="#" class="inline-block px-2 py-1 rounded bg-neutral-600">Activity</a>
 </div>
-<div class="w-full flex justify-center">
-    <div class="max-w-7xl">
-        <div class="m-3 hidden">
-            <img class="w-40" src="{{ user[0].avatar_url }}">
-            <h2 class="text-2xl font-bold">{{ user[0].name }}</h2>
-            <a class="text-blue-400" href="{{ user[0].steam_url }}">Link to Steam</a>
-        </div>
-        <div class="flex justify-center w-full">
-            <table>
-                <thead class="font-mono text-xs font-normal text-neutral-500">
-                    <th></th>
-                    {% for month, count in months %}
-                        <th class="text-neutral-300" colspan="{{ count }}"><small>{{ month }}</small></th>
-                    {% endfor %}
-                </thead>
-                <tbody>
-                    {% for weekday in weekdays %}
-                        <tr class="font-mono">
-                            <td class="text-xs font-bold text-neutral-500 self-center"><?php echo array_pop($days) ?></td>
-                            {% for day, count in weekday %}
-                                <td>
-                                    <a href="/users/activity.php?{{ {'userid': user[0].id, 'date': count[2]|date('U')}|url_encode }}">
-                                        <div class="float-right w-4 h-4 rounded" style="background-color: {{ count[0] }}" title="{{ 'Earned ' ~ count[1] ~ ' Achievements on ' ~ day }}"></div>
-                                    </a>
-                                </td>
-                            {% endfor %}
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        {% if show_date is not null %}
-            <h3>{{ show_date }}</h3>
-        {% endif %}
-        {% if achievements is not empty %}
-            <div class="grid gap-2 grid-cols-1">
-                {% for game_name, game_achievements in achievements %}
-                    <h4>{{ game_name }}</h4>
-                    {% for achievement in game_achievements %}
-                        <div class="flex flex-col justify-between w-full bg-neutral-800 p-2 rounded">
-                            <div class="flex">
-                                <div style="background-image: url('{{ achievement.icon }}');" class="w-14 h-14 bg-cover flex-none mr-2"></div>
-                                <div>
-                                    <p class="text-lg font-bold line-clamp-1 text-neutral-300">{{ achievement.display_name }}</p>
-                                    <p class="text-sm line-clamp-2 hover:line-clamp-none text-neutral-400">{{ achievement.description }}</p>
-                                </div>
-                            </div>
-                            <div class="text-left text-sm text-neutral-100 mt-2">{{ achievement.formatted_unlocked_at('short') }}</div>
-                        </div>
-                    {% endfor %}
-                {% endfor %}
-            </div>
-        {% endif %}
+<div class="max-w-7xl">
+    <div class="m-3 hidden">
+        <img class="w-40" src="{{ user[0].avatar_url }}">
+        <h2 class="text-2xl font-bold">{{ user[0].name }}</h2>
+        <a class="text-blue-400" href="{{ user[0].steam_url }}">Link to Steam</a>
     </div>
+    <div class="overflow-hidden overflow-x-auto">
+        <table class="mx-auto">
+            <thead class="font-mono text-xs font-normal text-neutral-500">
+                <th></th>
+                {% for month, count in months %}
+                    <th class="text-neutral-300" colspan="{{ count }}"><small>{{ month }}</small></th>
+                {% endfor %}
+            </thead>
+            <tbody>
+                {% for weekday in weekdays %}
+                    <tr class="font-mono">
+                        <td class="text-xs font-bold text-neutral-500 self-center"><?php echo array_pop($days) ?></td>
+                        {% for day, count in weekday %}
+                            <td>
+                                <a href="/users/activity.php?{{ {'userid': user[0].id, 'date': count[2]|date('U')}|url_encode }}">
+                                    <div class="float-right w-4 h-4 rounded" style="background-color: {{ count[0] }}" title="{{ 'Earned ' ~ count[1] ~ ' Achievements on ' ~ day }}"></div>
+                                </a>
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% if show_date is not null %}
+        <h3>{{ show_date }}</h3>
+    {% endif %}
+    {% if achievements is not empty %}
+        <div class="grid gap-2 grid-cols-1">
+            {% for game_name, game_achievements in achievements %}
+                <h4>{{ game_name }}</h4>
+                {% for achievement in game_achievements %}
+                    <div class="flex flex-col justify-between w-full bg-neutral-800 p-2 rounded">
+                        <div class="flex">
+                            <div style="background-image: url('{{ achievement.icon }}');" class="w-14 h-14 bg-cover flex-none mr-2"></div>
+                            <div>
+                                <p class="text-lg font-bold line-clamp-1 text-neutral-300">{{ achievement.display_name }}</p>
+                                <p class="text-sm line-clamp-2 hover:line-clamp-none text-neutral-400">{{ achievement.description }}</p>
+                            </div>
+                        </div>
+                        <div class="text-left text-sm text-neutral-100 mt-2">{{ achievement.formatted_unlocked_at('short') }}</div>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+    {% endif %}
 </div>
 {% endblock %}
