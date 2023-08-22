@@ -4,6 +4,7 @@ namespace App\Models;
 use App\DataModels\Game;
 use App\DataModels\User;
 use App\DataModels\Achievement;
+use DateTime;
 
 class UsersList extends AbstractModel
 {
@@ -27,18 +28,51 @@ class UsersList extends AbstractModel
         GROUP BY g.id, g.name, ug.completed_at
         ORDER BY achievement_percent DESC, ug.completed_at DESC, g.name
     SQL);
-    $sql = "SELECT floor((unlocked_at+7200)/86400)*86400 day, count(*) count FROM `user_achievements` WHERE unlocked_at IS NOT NULL AND user_id = $user_id GROUP BY day ORDER BY `day` DESC;";
+      $sql = <<<SQL
+        SELECT floor((unlocked_at+7200)/86400)*86400 day, count(*) count
+        FROM user_achievements
+        WHERE unlocked_at IS NOT NULL AND user_id = $user_id
+        GROUP BY day
+        ORDER BY day DESC
+      SQL;
     $days_query = $this->database_connection->fetchAll(custom_sql: $sql);
     $days = array_combine(
       array_map(function($item){ return $item['day']; }, $days_query),
       array_map(function($item){ return $item['count']; }, $days_query)
     );
     if(!empty($date)) {
-      $sql2 = "SELECT achievements.*, games.name game_name, achieved, unlocked_at FROM `user_achievements` JOIN achievements ON user_achievements.achievement_id = achievements.id JOIN games ON games.id = achievements.game_id WHERE unlocked_at IS NOT NULL AND floor((unlocked_at+7200)/86400)*86400 = $date AND user_id = $user_id ORDER BY unlocked_at asc;";
+      $sql2 = <<<SQL
+        SELECT achievements.*, games.name game_name, achieved, unlocked_at
+        FROM user_achievements
+        JOIN achievements ON user_achievements.achievement_id = achievements.id
+        JOIN games ON games.id = achievements.game_id
+        WHERE unlocked_at IS NOT NULL AND floor((unlocked_at+7200)/86400)*86400 = $date AND user_id = $user_id
+        ORDER BY unlocked_at asc
+      SQL;
       $achievements_query = $this->database_connection->fetchAll(class: Achievement::class, custom_sql: $sql2);
       $game_names = array_unique(array_map(function($item) { return $item->game_name; }, $achievements_query));
       $achievements = array_combine($game_names, array_map(function($game_name) use($achievements_query) { return array_filter($achievements_query, function($item) use($game_name) { return $item->game_name == $game_name; }); }, $game_names));
     }
     return [$user, $days, $achievements ?? null, $user_games];
+  }
+
+  public function fetchAllByDate(): array
+  { 
+    $minDate = DateTime::createFromFormat('d.m.Y', date('d.m.Y'));
+    $minDate->setTime(0,0);
+    $minDate->modify("-4 weeks");
+
+    $achievements_query = $this->database_connection->fetchAll(class: Achievement::class, custom_sql: <<<SQL
+      SELECT a.*, games.name game_name, users.name user_name, achieved, unlocked_at, floor((unlocked_at+7200)/86400)*86400 date_on
+      FROM user_achievements ua
+      JOIN users ON ua.user_id = users.id
+      JOIN achievements a ON ua.achievement_id = a.id
+      JOIN games ON games.id = a.game_id
+      WHERE unlocked_at IS NOT NULL AND unlocked_at > {$minDate->format('U')}
+      ORDER BY date_on DESC, unlocked_at
+    SQL);
+
+    $dates = array_unique(array_map(function($item) { return $item->formatted_date_on(); }, $achievements_query));
+    return array_combine($dates, array_map(function($date) use($achievements_query) { return array_filter($achievements_query, function($item) use($date) { return $item->formatted_date_on() == $date; }); }, $dates));
   }
 }

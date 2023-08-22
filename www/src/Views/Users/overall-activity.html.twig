@@ -1,0 +1,15 @@
+{% extends 'Layouts/main.html.twig' %}
+
+{% block content %}
+    {% for key, achievements in dates %}
+        <div>{{ key }}</div>
+        <div class="grid grid-cols-1 gap-1">
+            {% for achievement in achievements %}
+                <div class="p-2 bg-neutral-800 text-md">
+                    {{ achievement.user_name }} erzielte um {{ achievement.formatted_unlocked_at('short') }} in {{ achievement.game_name }}:
+                    <span class="bg-red-900 px-1" title="{{ achievement.description }}">{{ achievement.display_name }}</span>
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+{% endblock %}

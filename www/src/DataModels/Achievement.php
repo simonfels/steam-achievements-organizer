@@ -20,6 +20,8 @@ class Achievement
     public ?string $unlocked_at;
     public ?float $percent;
     public ?string $tag_ids;
+    public ?string $date_on;
+    public ?string $user_name;
 
     public function formatted_unlocked_at(string $format = 'long'): ?string
     {
@@ -34,6 +36,17 @@ class Achievement
         } else {
             return $datetime->format('H:i \U\h\r d.m.Y');
         }
+    }
+
+    public function formatted_date_on(): ?string
+    {
+        if (empty($this->date_on))
+            return null;
+
+        $datetime = DateTime::createFromFormat('U', $this->date_on);
+        $datetime->setTimezone(new DateTimeZone('Europe/Berlin'));
+
+        return $datetime->format('d.m.Y');
     }
 
     public function getVars()

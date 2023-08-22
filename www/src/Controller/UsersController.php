@@ -71,6 +71,13 @@ class UsersController extends AbstractController {
         }
     }
 
+    public function overallActivity(): void
+    {
+      $this->render('Users/overall-activity', [
+        'dates' => $this->users_list->fetchAllByDate()
+      ]);
+    }
+
     private function color_code(int $count, DateTime $date): array {
         $calcIndex = ceil($count / 10);
 

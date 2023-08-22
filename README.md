@@ -7,7 +7,6 @@
 ## CODING TODOs
 
 ### general
-- [ ] general list-like activity-site, grouped per day, for all users (like the steam "Activity"-tab)
 - [ ] option to manually add games (also tag these games as being `manually added`)
   - info: games that are not in the steam-store anymore will not be returned from GetOwnedGames (e.g. https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?appid=403570&key=${steamapikey}&steamid=76561197999852541)
 
@@ -27,7 +26,10 @@
 ## STYLING TODOs
 
 ### general
-- [ ] try to modularize repetetive elements
+- try to modularize repetetive elements
+  - [ ] header-navs
+  - [ ] achievements
+  - [ ] games
 
 ## DATABASE TODOs
 
