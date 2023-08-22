@@ -5,13 +5,10 @@
 {% endblock %}
 
 {% block content %}
-    <h2>
-        List of all fetched Games
-    </h2>
-    <div class="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-4 gap-2">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
         {% for game in games %}
-            <a class="flex bg-neutral-800 rounded p-2 justify-between" href="/games/show.php?{{ { 'gameid': game.id}|url_encode }}">
-                <div class="text-lg text-neutral-300 ml-2">{{ game.name }}</div>
+            <a class="flex bg-neutral-800 p-2 justify-between" href="/games/show.php?{{ { 'gameid': game.id}|url_encode }}">
+                <div class="text-lg text-white line-clamp-1 ml-2" title="{{ game.name }}">{{ game.name }}</div>
                 <div class="ml-2 flex-none">
                     <span class="p-1 text-xs bg-neutral-900 rounded">
                         {{ game.total_achievements }} <i class="fa-solid fa-trophy text-yellow-400"></i>

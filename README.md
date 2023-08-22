@@ -27,7 +27,6 @@
 ## STYLING TODOs
 
 ### general
-- [ ] use icon for filters
 - [ ] try to modularize repetetive elements
 
 ## DATABASE TODOs

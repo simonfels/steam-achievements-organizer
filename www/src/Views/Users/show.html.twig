@@ -19,17 +19,23 @@
                     <input type="text" v-model="searchBox" class="w-full p-2 bg-neutral-800 text-white" placeholder="search" />
                 </div>
                 <div class="flex justify-center">
-                    <div class="basis-1/3 sm:basis-24">
-                        <input type="checkbox" value="wip" id="listMode2" v-model="listMode" class="hidden peer" />
-                        <label for="listMode2" class="text-center w-full peer-checked:text-green-500 peer-checked:bg-green-900 inline-block bg-neutral-500 py-2">WIP</label>
+                    <div class="basis-1/3 sm:basis-14 text-xl">
+                        <input type="radio" value="none" id="listMode3" v-model="listMode" class="hidden peer" />
+                        <label for="listMode3" class="text-center w-full peer-checked:text-red-400 peer-checked:bg-red-900 inline-block bg-neutral-600 py-1">
+                            <i class="fa-solid fa-battery-empty"></i>
+                        </label>
                     </div>
-                    <div class="basis-1/3 sm:basis-24">
-                        <input type="checkbox" value="completed" id="listMode1" v-model="listMode" class="hidden peer" />
-                        <label for="listMode1" class="text-center w-full peer-checked:text-green-500 peer-checked:bg-green-900 inline-block bg-neutral-500 py-2">100%</label>
+                    <div class="basis-1/3 sm:basis-14 text-xl">
+                        <input type="radio" value="wip" id="listMode2" v-model="listMode" class="hidden peer" />
+                        <label for="listMode2" class="text-center w-full peer-checked:text-yellow-400 peer-checked:bg-yellow-900 inline-block bg-neutral-600 py-1">
+                            <i class="fa-solid fa-battery-half"></i>
+                        </label>
                     </div>
-                    <div class="basis-1/3 sm:basis-24">
-                        <input type="checkbox" value="none" id="listMode3" v-model="listMode" class="hidden peer" />
-                        <label for="listMode3" class="text-center w-full peer-checked:text-green-500 peer-checked:bg-green-900 inline-block bg-neutral-500 py-2">0%</label>
+                    <div class="basis-1/3 sm:basis-14 text-xl">
+                        <input type="radio" value="completed" id="listMode1" v-model="listMode" class="hidden peer" />
+                        <label for="listMode1" class="text-center w-full peer-checked:text-green-400 peer-checked:bg-green-900 inline-block bg-neutral-600 py-1">
+                            <i class="fa-solid fa-battery-full"></i>
+                        </label>
                     </div>
                 </div>
             </div>
@@ -59,7 +65,7 @@
 
         createApp({
             setup() {
-                const listMode = ref(['wip']) // wip, completed, none
+                const listMode = ref('wip') // wip, completed, none
                 const searchBox = ref('')
                 const userId = '{{ user.id }}'
                 const originalGames = [{{ games|raw }}]
@@ -71,11 +77,11 @@
                         let wip = !(none || completed)
                         let result = false
 
-                        if(listMode.value.includes('wip'))
+                        if(listMode.value === 'wip')
                             result ||= wip
-                        if(listMode.value.includes('none'))
+                        if(listMode.value === 'none')
                             result ||= none
-                        if(listMode.value.includes('completed'))
+                        if(listMode.value === 'completed')
                             result ||= completed
 
                         return result;
