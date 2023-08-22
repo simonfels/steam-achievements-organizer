@@ -14,7 +14,7 @@ class TaggedAchievementsController extends AbstractController {
     $tag = $database_connection->fetch('tags', 'id', $tag_id, Tag::class);
 
     $achievements = $database_connection->fetchAll(Achievement::class, custom_sql: <<<SQL
-      SELECT * FROM achievements WHERE game_id = {$tag->game_id};
+      SELECT * FROM achievements WHERE game_id = {$tag->game_id} ORDER BY achievements.id
     SQL);
 
     $this->render('TaggedAchievements/new', [

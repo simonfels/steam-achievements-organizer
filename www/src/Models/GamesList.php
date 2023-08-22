@@ -15,7 +15,15 @@ class GamesList extends AbstractModel
 
   public function find($id): array {
     $game = $this->database_connection->fetch("games", "id", $id, Game::class);
-    $sql = "SELECT a.*, GROUP_CONCAT(t.id) tag_ids FROM achievements a LEFT JOIN tagged_achievements ta ON a.id = ta.achievement_id LEFT JOIN tags t ON ta.tag_id = t.id WHERE a.game_id = " . $id . " GROUP BY a.id, a.percent, a.display_name ORDER BY a.id";
+    $sql = <<<SQL
+        SELECT a.*, GROUP_CONCAT(t.id) tag_ids
+        FROM achievements a
+        LEFT JOIN tagged_achievements ta ON a.id = ta.achievement_id
+        LEFT JOIN tags t ON ta.tag_id = t.id
+        WHERE a.game_id = $id
+        GROUP BY a.id, a.percent, a.display_name
+        ORDER BY a.id
+      SQL;
     $game_achievements = $this->database_connection->fetchAll(class: Achievement::class, custom_sql: $sql);
     $tags = $this->database_connection->fetchAll(class: Tag::class, custom_sql: <<<SQL
       SELECT * FROM tags WHERE game_id = $game->id
