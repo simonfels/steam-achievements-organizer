@@ -7,16 +7,15 @@
 ## CODING TODOs
 
 ### general
-- [ ] general activity-site for all users (like the steam "Activity"-tab)
+- [ ] general list-like activity-site, grouped per day, for all users (like the steam "Activity"-tab)
 - [ ] option to manually add games (also tag these games as being `manually added`)
-  - info: games that are not in the steam-store anymore will not be returned from GetOwnedGames (e.g. https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?appid=403570&key=34726D7C756F3C392EAD2DABB301462C&steamid=76561197999852541)
+  - info: games that are not in the steam-store anymore will not be returned from GetOwnedGames (e.g. https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?appid=403570&key=${steamapikey}&steamid=76561197999852541)
 
 ### scraper
 - [ ] add error-handling for api-calls (there are sometimes games/achievements missing, when scraping)
-- [ ] call steam-api with parallel calls using curl_multi_exec
+- [ ] call steam-api with parallel calls using curl_multi_exec / guzzle_http
   - try to benchmark with https://github.com/scottchiefbaker/php-benchmark to measure actual benefit
-- [ ] more visual feedback (maybe with vue and ajax/axios)
-- [ ] adjust order of api-calls/db-inserts (for curl_multi_exec):
+- [ ] adjust order of api-calls/db-inserts (for parallel processing):
   - get games list, each game:
     - calc total number of games
     - check if game already in db (if yes, multiple steps can be skipped)
@@ -36,13 +35,7 @@
 ## DATABASE TODOs
 
 ### general
-- [ ] add columns `created_at` & `updated_at` to every table
 - [ ] log number of api calls to db (because of 100,000 per day limitation)
-
-## CI/CD TODOs
-
-### general
-- [ ] remove steam-api key from repository
 
 ### TESTING TODOs
 - [ ] add code-quality checks using: php-cs, php-cs-fixer, psalm

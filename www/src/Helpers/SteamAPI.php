@@ -11,9 +11,14 @@ class SteamAPI {
   private const USER_URL = 'ISteamUser/GetPlayerSummaries/v2/?';
   private const USER_GAMES_URL = 'IPlayerService/GetOwnedGames/v1/?';
   private const GLOBAL_PERCENTAGES_URL = 'ISteamUserStats/GetGlobalAchievementPercentagesForApp/v2/?';
-  private const STEAM_API_KEY = "34726D7C756F3C392EAD2DABB301462C";
+  
+  private string $steamApiKey;
 
-  public function __construct() {}
+  public function __construct() {
+    extract(json_decode(file_get_contents(__DIR__ . '/../../.env'), true));
+
+    $this->steamApiKey = $steamapikey;
+  }
 
   public function fetchUserAchievements(string $app_id, string $user_id): array|false
   {
@@ -112,7 +117,7 @@ class SteamAPI {
   private function buildParams(array $params): array
   {
     $default_params = [
-      "key" => self::STEAM_API_KEY,
+      "key" => $this->steamApiKey,
       "format" => "json"
     ];
 
