@@ -17,7 +17,7 @@ class Scraper extends AbstractModel {
 
   public function allUsers(): array
   {
-    $users = $this->database_connection->fetchAll(User::class, custom_sql: '
+    $users = $this->database_connection->fetchAll(User::class, custom_sql: <<<SQL
         select users.*, count(user_games.id) games_count, achievements.total_achievements from users
         left join user_games on users.id = user_games.user_id
         left join (
@@ -27,7 +27,7 @@ class Scraper extends AbstractModel {
             group by users.id
         ) achievements on achievements.id = users.id
         group by users.id
-    ');
+    SQL);
     return $users;
   }
 

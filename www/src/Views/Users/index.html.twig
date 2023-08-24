@@ -5,11 +5,18 @@
 {% endblock %}
 
 {% block content %}
-<div class="grid grid-cols-3 text-neutral-300 text-center">
-  {% for user in users %}
-    <a href="/users/show.php?{{ {"userid": user.id}|url_encode }}"><i class="fa-solid fa-user"></i> {{ user.name }}</a>
-    <div>{{ user.achieved_achievements }} / {{ user.total_achievements }}</div>
-    <div>{{ user.achievementPercentage }}%</div>
-  {% endfor %}
-</div>
+    <div class="max-w-screen-xl mx-auto">
+        {% for user in users %}
+                <a class="flex justify-between bg-neutral-700 hover:bg-neutral-800 p-1 pr-2 rounded mb-2" href="/users/show.php?{{ {"userid": user.id}|url_encode }}">
+                    <div>
+                        <span class="inline-block py-0.5 px-1 bg-dark rounded text-mint"><i class="fa-solid fa-user"></i></span>
+                        <span class="text-lg">{{ user.name }}</span>
+                        </div>
+                    <div class="text-right">
+                        <span class="text-sm text-neutral-400">({{ user.achieved_achievements }} / {{ user.total_achievements }})</span>
+                        {{ user.achievementPercentage }}%
+                    </div>
+                </a>
+        {% endfor %}
+    </div>
 {% endblock %}

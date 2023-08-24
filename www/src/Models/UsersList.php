@@ -9,10 +9,13 @@ use DateTime;
 class UsersList extends AbstractModel
 {
   public function all(): array {
-    $sql = "SELECT users.*, coalesce(sum(achieved), 0) achieved_achievements, count(ua.id) total_achievements
-            FROM users
-            LEFT JOIN user_achievements ua ON users.id = ua.user_id
-            GROUP BY users.id;";
+    $sql = <<<SQL
+            SELECT users.*, coalesce(sum(achieved), 0) achieved_achievements, count(ua.id) total_achievements
+              FROM users
+              LEFT JOIN user_achievements ua ON users.id = ua.user_id
+              GROUP BY users.id
+              ORDER BY achieved_achievements desc;
+          SQL;
     return $this->database_connection->fetchAll(class: User::class, custom_sql: $sql);
   }
 
