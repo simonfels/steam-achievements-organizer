@@ -5,43 +5,43 @@
 {% endblock %}
 
 {% block content %}
-    {% include 'Users/_subnav.html.twig' %}
+    {% include 'Users/_subnav.html.twig' with { 'user': user } only %}
     <div id="app">
         {% verbatim %}
-            <div class="sticky top-0 bg-dark/60 p-2 z-50 backdrop-blur">
-                <div class="w-full sm:w-3/5 flex mx-auto mb-2">
-                    <div class="text-xl bg-neutral-800 leading-5 text-center p-2">
+            <div class="sticky top-0 bg-white/60 dark:bg-dark/60 z-50 backdrop-blur flex">
+                <div class="w-full flex mx-auto">
+                    <div class="text-xl dark:bg-neutral-700 bg-neutral-300 leading-5 text-center p-2">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </div>
-                    <input type="text" v-model="searchBox" class="w-full p-2 bg-neutral-800 text-white" placeholder="search" />
+                    <input type="text" v-model="searchBox" class="w-full p-2 dark:bg-neutral-700 bg-neutral-300" placeholder="search" />
                 </div>
-                <div class="flex justify-center">
-                    <div class="basis-1/3 sm:basis-14 text-xl">
+                <div class="flex justify-center text-xl">
+                    <div>
                         <input type="radio" value="none" id="listMode3" v-model="listMode" class="hidden peer" />
-                        <label for="listMode3" class="text-center w-full peer-checked:text-red-400 peer-checked:bg-red-900 inline-block bg-neutral-600 py-1">
-                            <i class="fa-solid fa-battery-empty"></i>
+                        <label for="listMode3" class="h-full block px-3 dark:peer-checked:text-white peer-checked:text-dark peer-checked:bg-mint bg-neutral-300 dark:bg-neutral-700">
+                            <i class="fa-solid fa-battery-empty align-sub"></i>
                         </label>
                     </div>
-                    <div class="basis-1/3 sm:basis-14 text-xl">
+                    <div>
                         <input type="radio" value="wip" id="listMode2" v-model="listMode" class="hidden peer" />
-                        <label for="listMode2" class="text-center w-full peer-checked:text-yellow-400 peer-checked:bg-yellow-900 inline-block bg-neutral-600 py-1">
-                            <i class="fa-solid fa-battery-half"></i>
+                        <label for="listMode2" class="h-full block px-3 dark:peer-checked:text-white peer-checked:text-dark peer-checked:bg-mint bg-neutral-300 dark:bg-neutral-700">
+                            <i class="fa-solid fa-battery-half align-sub"></i>
                         </label>
                     </div>
-                    <div class="basis-1/3 sm:basis-14 text-xl">
+                    <div>
                         <input type="radio" value="completed" id="listMode1" v-model="listMode" class="hidden peer" />
-                        <label for="listMode1" class="text-center w-full peer-checked:text-green-400 peer-checked:bg-green-900 inline-block bg-neutral-600 py-1">
-                            <i class="fa-solid fa-battery-full"></i>
+                        <label for="listMode1" class="h-full block px-3 dark:peer-checked:text-white peer-checked:text-dark peer-checked:bg-mint bg-neutral-300 dark:bg-neutral-700">
+                            <i class="fa-solid fa-battery-full align-sub"></i>
                         </label>
                     </div>
                 </div>
             </div>
             <div class="text-sm text-neutral-500 mb-2 text-center">{{ games.length }}/{{ originalGames.length }} Games</div>
-            <div class="grid md:grid-cols-4 grid-cols-1 gap-1">
+            <div class="grid md:grid-cols-3 grid-cols-1 gap-1">
                     <div v-for="game in games">
                         <a :href="'/games/user.php?gameid=' + game.id + '&userid=' + userId" class="flex">
-                            <div :style="{ backgroundColor: 'hsl(' + Math.floor(game.achievement_percent) + ', 50%, 35%)' }" class="w-1 shrink-0"></div>
-                            <div class="p-2 bg-neutral-800 grow">
+                            <div :style="{ backgroundColor: 'hsl(' + Math.floor(game.achievement_percent) + ', 50%, 50%)' }" class="w-1 shrink-0"></div>
+                            <div class="p-2 bg-neutral-300 dark:bg-neutral-700 grow">
                                 <div class="line-clamp-1 mb-2">
                                     <span v-html="highlight(game.name)" :title="game.name"></span>
                                 </div>
