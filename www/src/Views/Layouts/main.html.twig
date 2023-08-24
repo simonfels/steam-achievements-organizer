@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,24 +8,13 @@
     <script src="https://kit.fontawesome.com/ee8bf187fd.js" crossorigin="anonymous"></script>
     {% block head_content %}{% endblock %}
 </head>
-<body class="bg-neutral-950 text-neutral-300 font-mono p-0 m-0">
-    <nav>
-        <ul class="flex shadow">
-            <li><a href="/games" class="inline-block p-2"><strong>Games</strong></a></li>
-            <li><a href="/users" class="inline-block p-2"><strong>Users</strong></a></li>
-            <li><a href="/scraper" class="inline-block p-2"><strong>Fetch Data</strong></a></li>
-        </ul>
-    </nav>
+<body class=" bg-slate-100 dark:bg-slate-900 text-neutral-300 font-mono p-0 m-0">
+    {% include 'Layouts/color_switcher.html.twig' %}
+    {% include 'Layouts/nav.html.twig' %}
     <main>
         {% block content %}{% endblock %}
     </main>
-    <footer class="my-6 text-center bottom-0 text-sm text-neutral-500">
-        <i class="fa-regular fa-copyright"></i>
-        2023
-        <span class="border mx-2 border-neutral-500"></span>
-        Made with
-        <i class="fa-regular fa-heart text-red-600 animate-pulse"></i>
-        by <a href="https://github.com/simonfels" class="font-bold">Simon Fels</a>
-    </footer>
+    {% include 'Layouts/footer.html.twig' %}
+    <script src="/assets/magic.js"></script>
 </body>
 </html>

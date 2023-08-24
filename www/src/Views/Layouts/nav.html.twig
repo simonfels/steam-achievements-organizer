@@ -1,0 +1,9 @@
+{% set navigationPoints = ["games", "users"] %}
+
+<nav class="w-full">
+    <ul class="flex justify-center my-4">
+        {% for navigationPoint in navigationPoints %}
+            <li><a href="/{{ navigationPoint }}" class="text-yellow-400 inline-block px-2 py-1 border-yellow-400 border rounded-lg mx-2">{{ navigationPoint|title }}</a></li>
+        {% endfor %}
+    </ul>
+</nav>

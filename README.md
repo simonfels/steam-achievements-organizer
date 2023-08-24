@@ -26,10 +26,8 @@
 ## STYLING TODOs
 
 ### general
-- try to modularize repetetive elements
-  - [ ] header-navs
-  - [ ] achievements
-  - [ ] games
+- [ ] navigation stylen, "Fetch Data" entfernen
+- [ ] logo entwickeln
 
 ## DATABASE TODOs
 
@@ -43,6 +41,7 @@
 - [ ] maybe add prettier for tailwind/vue/html
 
 ## BACKLOG
+- styling: try to modularize repetetive elements
 - display graphs for users/activity maybe
 - Fix Timezone-Offset Calculation @ users/activity (currently it is fixed at +02:00h)
 - scraper | add img_icon_url = http://media.steampowered.com/steamcommunity/public/images/apps/{appid}/{img_icon_url}.jpg
