@@ -109,7 +109,7 @@
             function highlight(name) {
                 if(searchbox.value.length === 0)
                     return name
-                return name ? name.replaceAll(new RegExp('(' + searchbox.value + ')', "ig"), '<span class="text-green-500">$1</span>') : '';
+                return name ? name.replaceAll(new RegExp('(' + searchbox.value + ')', "ig"), '<span class="text-mint">$1</span>') : '';
             }
 
             function checkTag(event) {
