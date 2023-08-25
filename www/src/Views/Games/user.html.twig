@@ -5,33 +5,35 @@
 {% endblock %}
 
 {% block content %}
-<a href="/scraper/game.php?{{ {'userid': user.id, 'gameid': game.id}|url_encode }}"><i class="fa-solid fa-rotate"></i> Refresh</a>
+
 <h1 class="text-xl mb-2">
-    <strong class="line-clamp-1">{{ game.name }}
+    <div class="line-clamp-1">
+        {{ game.name }}
+        <a href="/scraper/game.php?{{ {'userid': user.id, 'gameid': game.id}|url_encode }}"><i class="fa-solid fa-rotate text-sm"></i></a>
         {% if game.formatted_completed_at is not null %}
             <small>(<i class="fa-solid fa-crown"></i> {{ game.formatted_completed_at }})</small>
         {% endif %}
-    </strong>
+    </div>
 </h1>
 
 <div id="app">
-    <div class="sticky top-0 bg-neutral-950/60 p-2 z-50 backdrop-blur-sm">
+    <div class="sticky top-0 bg-neutral-300 dark:bg-neutral-700 p-2 z-50">
         <div class="w-full sm:w-3/5 flex mx-auto mb-2">
-            <div class="text-xl bg-neutral-800 leading-5 text-center p-2">
+            <div class="text-xl dark:bg-neutral-800 bg-neutral-400 leading-5 text-center p-2">
                 <i class="fa-solid fa-magnifying-glass"></i>
             </div>
-            <input type="text" v-model="searchbox" class="w-full p-2 bg-neutral-800 text-white" placeholder="search" />
+            <input type="text" v-model="searchbox" class="w-full p-2 dark:bg-neutral-800 bg-neutral-400" placeholder="search" />
         </div>
         <div class="flex justify-center">
             <div class="basis-1/2 sm:basis-32">
                 <input type="radio" value="locked" id="listMode2" v-model="listMode" class="hidden peer" />
-                <label for="listMode2" class="peer-checked:text-orange-500 inline-block bg-neutral-500 peer-checked:bg-orange-900 p-2 w-full text-right">
+                <label for="listMode2" class="inline-block dark:bg-neutral-500 bg-neutral-400 peer-checked:bg-mint p-2 w-full text-right">
                     locked<i class="fa-solid fa-lock ml-2"></i>
                 </label>
             </div>
             <div class="basis-1/2 sm:basis-32">
                 <input type="radio" value="achieved" id="listMode1" v-model="listMode" class="hidden peer" />
-                <label for="listMode1" class="peer-checked:text-green-500 inline-block bg-neutral-500 peer-checked:bg-green-900 p-2 w-full text-left">
+                <label for="listMode1" class="inline-block dark:bg-neutral-500 bg-neutral-400 peer-checked:bg-mint p-2 w-full text-left">
                     <i class="fa-solid fa-lock-open mr-2"></i>unlocked
                 </label>
             </div>

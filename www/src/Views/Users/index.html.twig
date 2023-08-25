@@ -6,12 +6,12 @@
 
 {% block content %}
     {% for user in users %}
-            <a class="flex justify-between bg-neutral-300 dark:bg-neutral-700 dark:hover:bg-neutral-800 hover:bg-neutral-400 p-1 pr-2 rounded mb-2" href="/users/show.php?{{ {"userid": user.id}|url_encode }}">
+            <a class="flex justify-between bg-neutral-300 dark:bg-neutral-700 dark:hover:bg-neutral-600 hover:bg-neutral-400 pr-2 mb-2" href="/users/show.php?{{ {"userid": user.id}|url_encode }}">
                 <div>
-                    <span class="inline-block py-0.5 px-1 dark:bg-dark bg-white rounded text-mint"><i class="fa-solid fa-user"></i></span>
+                    <span class="inline-block py-1 px-2 dark:bg-neutral-600 bg-neutral-400"><i class="fa-solid fa-user"></i></span>
                     <span class="text-lg">{{ user.name }}</span>
                     </div>
-                <div class="text-right">
+                <div class="text-right py-1">
                     <span class="text-sm text-neutral-500 dark:text-neutral-400">({{ user.achieved_achievements }} / {{ user.total_achievements }})</span>
                     {{ user.achievementPercentage }}%
                 </div>

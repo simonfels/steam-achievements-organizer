@@ -14,10 +14,10 @@
         </div>
         <div class="overflow-hidden overflow-x-auto">
             <table class="mx-auto">
-                <thead class="font-mono text-xs font-normal text-neutral-500">
+                <thead class="text-xs">
                     <th></th>
                     {% for month, count in months %}
-                        <th class="text-neutral-300" colspan="{{ count }}"><small>{{ month }}</small></th>
+                        <th class="text-neutral-500 dark:text-neutral-400" colspan="{{ count }}"><small>{{ month }}</small></th>
                     {% endfor %}
                 </thead>
                 <tbody>
@@ -44,15 +44,15 @@
                 {% for game_name, game_achievements in achievements %}
                     <h4>{{ game_name }}</h4>
                     {% for achievement in game_achievements %}
-                        <div class="flex flex-col justify-between w-full bg-neutral-800 p-2 rounded">
+                        <div class="dark:bg-neutral-700 bg-neutral-300 p-2">
                             <div class="flex">
                                 <div style="background-image: url('{{ achievement.icon }}');" class="w-14 h-14 bg-cover flex-none mr-2"></div>
                                 <div>
-                                    <p class="text-lg font-bold line-clamp-1 text-neutral-300">{{ achievement.display_name }}</p>
-                                    <p class="text-sm line-clamp-2 hover:line-clamp-none text-neutral-400">{{ achievement.description }}</p>
+                                    <p class="line-clamp-1">{{ achievement.display_name }}</p>
+                                    <p class="text-sm line-clamp-2 hover:line-clamp-none text-neutral-500 dark:text-neutral-400">{{ achievement.description }}</p>
                                 </div>
                             </div>
-                            <div class="text-left text-sm text-neutral-100 mt-2">{{ achievement.formatted_unlocked_at('short') }}</div>
+                            <div class="text-sm text-neutral-500 dark:text-neutral-400 mt-2">{{ achievement.formatted_unlocked_at('short') }}</div>
                         </div>
                     {% endfor %}
                 {% endfor %}
