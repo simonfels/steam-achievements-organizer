@@ -30,6 +30,7 @@ services:
       PMA_USER: root
       PMA_PASSWORD: rootpassword
       PMA_PORT: 3406
+      UPLOAD_LIMIT: 30M
     ports:
       - 3001:80
     depends_on:

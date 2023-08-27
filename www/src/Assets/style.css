@@ -7,6 +7,11 @@
   src: url("/assets/fonts/VictorMono-Medium.ttf");
 }
 
+@font-face {
+  font-family: "VictorMono-Bold";
+  src: url("/assets/fonts/VictorMono-Bold.ttf");
+}
+
 input[type=color]::-webkit-color-swatch-wrapper {
   padding: 0; 
 }

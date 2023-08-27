@@ -1,4 +1,15 @@
-<div class="my-3">
-    <a href="/users/show.php?{{ {'userid': user.id}|url_encode }}" class="inline-block px-2 py-1 bg-neutral-300 dark:bg-neutral-700">Games</a>
-    <a href="/users/activity.php?{{ {'userid': user.id}|url_encode }}" class="inline-block px-2 py-1 bg-neutral-300 dark:bg-neutral-700">Activity</a>
-</div>
+{% block subnav_title %}
+    <div class="text-lg">{{ user.name }}{{ title_extra }}</div>
+{% endblock %}
+{% block subnav_nav %}
+    <div class="mb-3 mt-1 flex text-sm">
+        <a href="/users/show.php?{{ {'userid': user.id}|url_encode }}" class="inline-block hover:opacity-70 text-neutral-500 dark:text-neutral-400">
+            <i class="fa-solid fa-trophy"></i>
+            <span>Games</span>
+        </a>
+        <a href="/users/activity.php?{{ {'userid': user.id}|url_encode }}" class="inline-block hover:opacity-70 text-neutral-500 dark:text-neutral-400 ml-3">
+            <i class="fa-solid fa-calendar"></i>
+            <span>Activity</span>
+        </a>
+    </div>
+{% endblock %}

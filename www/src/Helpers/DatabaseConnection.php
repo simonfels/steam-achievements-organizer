@@ -60,7 +60,7 @@ class DatabaseConnection
 
         if (!empty($updatedAttributes)) {
             $updateValues = implode(', ', array_map(function ($attribute) { return "$attribute=VALUES($attribute)"; }, $updatedAttributes));
-            $query += " ON DUPLICATE KEY UPDATE $updateValues";
+            $query .= " ON DUPLICATE KEY UPDATE $updateValues";
         }
 
         $this->pdo->prepare($query)->execute($entries);
@@ -82,7 +82,7 @@ class DatabaseConnection
 
         if (!empty($updatedAttributes)) {
             $updateValues = implode(', ', array_map(function ($attribute) { return "$attribute=VALUES($attribute)"; }, $updatedAttributes));
-            $query += " ON DUPLICATE KEY UPDATE $updateValues";
+            $query .= " ON DUPLICATE KEY UPDATE $updateValues";
         }
 
         $this->pdo->exec($query);

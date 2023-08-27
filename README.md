@@ -26,7 +26,6 @@
 ## STYLING TODOs
 
 ### general
-- [ ] navigation stylen, "Fetch Data" entfernen
 - [ ] logo entwickeln
 
 ## DATABASE TODOs

@@ -4,6 +4,7 @@ module.exports = {
   theme: {
     fontFamily: {
       'mono': ['VictorMono'],
+      'mono-bold': ['VictorMono-Bold']
     },
     extend: {
       animation: {

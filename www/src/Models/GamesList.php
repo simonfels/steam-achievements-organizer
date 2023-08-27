@@ -60,7 +60,10 @@ class GamesList extends AbstractModel
       SELECT * FROM tags WHERE game_id = $id
     SQL);
 
-    $tags[] = Tag::withData(-1, 'Untagged', '#525252');
+    if (sizeof($tags) > 0)
+    {
+      $tags[] = Tag::withData(-1, 'Untagged', '#525252');
+    }
 
     return [$game, $game_achievements, $tags];
   }
