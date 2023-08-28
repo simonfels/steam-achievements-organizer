@@ -13,7 +13,7 @@ class GamesController extends AbstractController {
   }
   public function index():void {
     $this->render('Games/index', [
-      'games' => $this->games_list->all()
+      'games' => implode(", ", array_map(function($game) { return $game->getVars(); }, $this->games_list->all()))
     ]);
   }
 

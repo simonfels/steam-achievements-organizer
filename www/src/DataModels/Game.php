@@ -30,7 +30,9 @@ class Game
     {
         $array_of_vars = get_object_vars($this);
         $array_of_vars["completed_at"] = $this->formatted_completed_at();
-        $array_of_vars["achievement_percent"] = $this->floordec($this->achievement_percent);
+        if(isset($this->achievement_percent)) {
+            $array_of_vars["achievement_percent"] = $this->floordec($this->achievement_percent);
+        }
         return json_encode($array_of_vars);
     }
 

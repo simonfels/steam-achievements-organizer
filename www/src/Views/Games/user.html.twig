@@ -10,12 +10,7 @@
     <div id="app">
         <div class="sticky top-0 bg-white dark:bg-dark z-50 py-2">
             <div class="flex">
-                <div class="w-full flex mx-auto">
-                    <div class="text-xl dark:bg-neutral-700 bg-neutral-300 leading-5 text-center p-2">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                    </div>
-                    <input type="text" v-model="searchbox" class="w-full p-2 dark:bg-neutral-700 bg-neutral-300" placeholder="search" />
-                </div>
+                {% include 'Components/searchbox.html.twig' %}
                 <div class="flex text-xl">
                     {% set listModes = [{ 'value': 'locked', 'icon': 'fa-lock' }, { 'value': 'achieved', 'icon': 'fa-lock-open' }] %}
                     {% for listMode in listModes %}
@@ -45,7 +40,7 @@
             {% endif %}
         </div>
         {% if game.formatted_completed_at is not null %}
-            <div class="text-center text-xl bg-neutral-700 py-4 bg-mint text-white">
+            <div class="text-center text-xl py-4 bg-mint text-white">
                 <div class="text-3xl text-white"><i class="fa-solid fa-check"></i></div>
                 <div>Completed</div>
                 {% if game.formatted_completed_at is not null %}
@@ -84,7 +79,7 @@
             setup() {
                 const listMode = ref('locked')
                 const tagMode =ref('all')
-                const searchbox = ref('')
+                const searchBox = ref('')
                 const originalAchievements = [{{ achievements|raw }}]
 
                 const achievedAchievements = computed(() => {
@@ -99,9 +94,9 @@
                         }
                     }).filter((achievement) => tagFilter(achievement))
                     .filter((b) => {
-                        if(searchbox.value.length === 0)
+                        if(searchBox.value.length === 0)
                             return true
-                        let searchValue = searchbox.value.toLowerCase()
+                        let searchValue = searchBox.value.toLowerCase()
                         let achievementDisplayName = b.display_name.toLowerCase()
                         let achievementDescription = b.description ? b.description.toLowerCase() : ''
                         return achievementDisplayName.includes(searchValue) || achievementDescription.includes(searchValue)
@@ -120,9 +115,9 @@
                 }
 
                 function highlight(name) {
-                    if(searchbox.value.length === 0)
+                    if(searchBox.value.length === 0)
                         return name
-                    return name ? name.replaceAll(new RegExp('(' + searchbox.value + ')', "ig"), '<span class="text-mint">$1</span>') : '';
+                    return name ? name.replaceAll(new RegExp('(' + searchBox.value + ')', "ig"), '<span class="text-mint">$1</span>') : '';
                 }
 
                 function checkTag(event) {
@@ -132,7 +127,7 @@
                 }
 
                 return {
-                    achievedAchievements, unachievedAchievements, listMode, searchbox, highlight, tagMode, originalAchievements, checkTag
+                    achievedAchievements, unachievedAchievements, listMode, searchBox, highlight, tagMode, originalAchievements, checkTag
                 }
             }
         }).mount('#app')
