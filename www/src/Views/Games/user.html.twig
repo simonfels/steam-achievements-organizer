@@ -39,13 +39,11 @@
                 </div>
             {% endif %}
         </div>
-        {% if game.formatted_completed_at is not null %}
+        {% if game.completed_at is not null %}
             <div class="text-center text-xl py-4 bg-mint text-white">
                 <div class="text-3xl text-white"><i class="fa-solid fa-check"></i></div>
                 <div>Completed</div>
-                {% if game.formatted_completed_at is not null %}
-                    <div class="text-white text-sm mt-1"><i class="fa-solid fa-calendar"></i> {{ game.formatted_completed_at }}</div>
-                {% endif %}
+                <div class="text-white text-sm mt-1"><i class="fa-solid fa-calendar"></i> {{ game.formatted_completed_at }}</div>
             </div>
         {% else %}
             {% verbatim %}
