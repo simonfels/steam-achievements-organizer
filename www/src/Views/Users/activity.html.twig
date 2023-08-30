@@ -37,24 +37,23 @@
             </table>
         </div>
         {% if show_date is not null %}
-            <h3>{{ show_date }}</h3>
+            <div class="text-center my-3">
+                <a class="mr-2" href="/users/activity.php?userid={{ user[0].id }}&date={{ show_date|date('U') - 60*60*24 }}"><i class="fa-solid fa-angle-left"></i></a>
+                {{ show_date|date('d.m.Y') }}
+                <a class="ml-2" href="/users/activity.php?userid={{ user[0].id }}&date={{ show_date|date('U') + 60*60*24 }}"><i class="fa-solid fa-angle-right"></i></a>
+            </div>
         {% endif %}
         {% if achievements is not empty %}
-            <div class="grid gap-2 grid-cols-1">
+            <div class="grid gap-4 grid-cols-1">
                 {% for game_name, game_achievements in achievements %}
-                    <h4>{{ game_name }}</h4>
-                    {% for achievement in game_achievements %}
-                        <div class="dark:bg-neutral-700 bg-neutral-300 p-2">
-                            <div class="flex">
-                                <div style="background-image: url('{{ achievement.icon }}');" class="w-14 h-14 bg-cover flex-none mr-2"></div>
-                                <div>
-                                    <p class="line-clamp-1">{{ achievement.display_name }}</p>
-                                    <p class="text-sm line-clamp-2 hover:line-clamp-none text-neutral-500 dark:text-neutral-400">{{ achievement.description }}</p>
-                                </div>
-                            </div>
-                            <div class="text-sm text-neutral-500 dark:text-neutral-400 mt-2">{{ achievement.formatted_unlocked_at('short') }}</div>
+                    <div>
+                        <div class="mb-2">{{ game_name }}</div>
+                        <div class="grid gap-1 grid-cols-3">
+                            {% for achievement in game_achievements %}
+                                {% include 'Users/activity_achievement.html.twig' with { 'hide_action': true } %}
+                            {% endfor %}
                         </div>
-                    {% endfor %}
+                    </div>
                 {% endfor %}
             </div>
         {% endif %}

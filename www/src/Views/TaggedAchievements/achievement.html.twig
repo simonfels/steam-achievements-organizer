@@ -1,0 +1,14 @@
+{% extends 'Components/achievement.html.twig' %}
+
+{% block achievement_wrapper %}
+    <div class="flex flex-col justify-between w-full">
+        {% block achievement_body %}
+            <div class="h-full">
+                <input type="checkbox" name="checked_ids[]" id="checked_ids_{{achievement.id}}" value="{{ achievement.id }}" class="peer hidden" {{ achievement.tagged ? 'checked' : '' }}>
+                <label class="peer-checked:border-mint border-2 border-neutral-700 bg-neutral-300 dark:bg-neutral-700 block pb-2 px-2 h-full" for="checked_ids_{{achievement.id}}">
+                    {{ parent() }}
+                </label>
+            </div>
+        {% endblock %}
+    </div>
+{% endblock %}

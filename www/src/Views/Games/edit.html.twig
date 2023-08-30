@@ -5,20 +5,6 @@
 {% endblock %}
 
 {% block content %}
-    <div class="flex flex-col justify-between w-full bg-neutral-800 p-2 rounded">
-        <div class="flex">
-            <div style="background-image: url('{{ achievement.icon }}'); width: 50px; height: 50px"
-                 class="bg-cover flex-none mr-2"></div>
-            <div>
-                <p class="text-lg font-bold line-clamp-1 text-neutral-300"
-                   title="<?php echo $achievement->display_name ?>">{{ achievement.display_name }}</p>
-                <form action="/games/update.php" method="POST">
-                    <label for="description">Description</label><br>
-                    <input name="description" id="description" placeholder="add description here" class="w-full text-black"><br>
-                    <input type="hidden" value="{{ achievement.id }}" name="achievement_id">
-                    <input type="submit">
-                </form>
-            </div>
-        </div>
-    </div>
+    <div class="max-w-md mx-auto">
+    {% include 'Games/Components/edit_achievement.html.twig' with { 'hide_description': true } %}
 {% endblock %}

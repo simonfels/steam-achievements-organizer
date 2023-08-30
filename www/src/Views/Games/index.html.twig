@@ -11,11 +11,11 @@
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
             {% verbatim %}
-                <a class="flex bg-neutral-800 p-2 justify-between" :href="'/games/show.php?gameid=' + game.id" v-for="game in games">
-                    <div class="text-lg text-white line-clamp-1 ml-2" title="{{ game.name }}" v-html="highlight(game.name)"></div>
+                <a class="flex dark:bg-neutral-700 bg-neutral-300 p-2 justify-between" :href="'/games/show.php?gameid=' + game.id" v-for="game in games">
+                    <div class="text-lg line-clamp-1 ml-2" :title="game.name" v-html="highlight(game.name)"></div>
                     <div class="ml-2 flex-none">
-                        <span class="p-1 text-xs bg-neutral-900 rounded">
-                            {{ game.total_achievements }} <i class="fa-solid fa-trophy text-yellow-400"></i>
+                        <span class="text-xs text-neutral-700 dark:text-neutral-300">
+                            {{ game.total_achievements }} <i class="fa-solid fa-trophy"></i>
                         </span>
                     </div>
                 </a>

@@ -49,7 +49,7 @@ class UsersController extends AbstractController {
             $date_period = new DatePeriod($start, DateInterval::createFromDateString('1 day'), $end);
             $dates = $user[1];
             $weekdays = array_fill_keys(range(1, 7), []);
-            $show_date = (!empty($date) ? DateTime::createFromFormat('U', $date)->format('d.m.Y') : null);
+            $show_date = (!empty($date) ? DateTime::createFromFormat('U', $date) : null);
             foreach($date_period as $date){
                 $weekday = $date->format('w');
                 $values = $this->color_code($dates[$date->format('U')] ?? 0, $date);

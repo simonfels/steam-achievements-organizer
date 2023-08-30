@@ -6,7 +6,7 @@
 
 {% block content %}
     <header class="ml-4">
-        <div class="text-neutral-300 text-2xl mb-2">{{ game.name }}</div>
+        <div class="text-2xl mb-2">{{ game.name }}</div>
         <form action="/tags/create.php" method="POST">
             <input type="hidden" name="game_id" value="{{ game.id }}">
             <label>Create Tag</label>
@@ -14,10 +14,10 @@
                 <div  :style="{ 'background-color': inputColor }" class="border-y border-l py-1 pl-2"><i class="fa-solid fa-hashtag"></i></div>
                 <input type="text" name="name" placeholder="Name of the Tag" class="border-y border-r px-2 text-sm text-white placeholder:text-neutral-200" :style="{ 'background-color': inputColor }">
                 <input type="color" name="background_color" class="w-8 h-8 border ml-2 mt-0.5" v-model="inputColor">
-                <button type="submit" class="text-sm border py-1 px-2 ml-3 leading-3"><i class="fa-solid fa-paper-plane"></i> Create</button>
+                <button type="submit" class="text-sm border border-dark dark:border-white py-1 px-2 ml-3 leading-3"><i class="fa-solid fa-paper-plane"></i> Create</button>
             </div>
         </form>
-        <div class="text-neutral-300 text-lg mb-2 mt-4"><i class="fa-solid fa-tags"></i> Tags</div>
+        <div class="text-lg mb-2 mt-4"><i class="fa-solid fa-tags"></i> Tags</div>
         <div class="flex">
             {% for tag in tags %}
                 <a  style="background-color: {{ tag.background_color }}"
@@ -29,10 +29,10 @@
         </div>
     </header>
     <div class="mt-4">
-        <div class="text-neutral-300 text-lg mb-2 ml-2">Achievements</div>
+        <div class="text-lg mb-2 ml-2">Achievements</div>
         <div class="grid gap-1 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
             {% for achievement in achievements %}
-                {% include 'Components/achievement.html.twig' %}
+                {% include 'Games/Components/show_achievement.html.twig' %}
             {% endfor %}
         </div>
     </div>

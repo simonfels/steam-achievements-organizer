@@ -22,6 +22,7 @@ class Achievement
     public ?string $tag_ids;
     public ?string $date_on;
     public ?string $user_name;
+    public ?bool $tagged;
 
     public function formatted_unlocked_at(string $format = 'long'): ?string
     {

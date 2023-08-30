@@ -8,10 +8,10 @@
     <script src="https://kit.fontawesome.com/ee8bf187fd.js" crossorigin="anonymous"></script>
     {% block head_content %}{% endblock %}
 </head>
-<body class="bg-white text-dark dark:bg-dark dark:text-white font-mono p-0 m-0">
+<body class="bg-white text-dark dark:bg-dark dark:text-white font-mono p-0 mx-3 my-0">
     {% include 'Layouts/color_switcher.html.twig' %}
     {% include 'Layouts/nav.html.twig' %}
-    <main class="xl:max-w-screen-xl xl:mx-auto mx-3">
+    <main class="xl:max-w-screen-xl lg:mx-auto lg:max-w-screen-lg mx-3">
         {% block content %}{% endblock %}
     </main>
     {% include 'Layouts/footer.html.twig' %}

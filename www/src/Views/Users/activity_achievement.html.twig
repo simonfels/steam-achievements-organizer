@@ -1,0 +1,6 @@
+{% extends 'Components/achievement.html.twig' %}
+
+{% block achievement_body %}
+    {{ parent() }}
+    <div class="text-xs text-neutral-600 dark:text-neutral-400">{{ achievement.formatted_unlocked_at('short') }}</div>
+{% endblock %}
