@@ -1,14 +1,15 @@
 {% extends 'Layouts/main.html.twig' %}
 
 {% block content %}
-    <div class="text-white text-2xl mb-2 ml-2 px-2 py-1 inline-block" style="background-color: {{ tag.background_color }}">
-        <i class="fa-solid fa-hashtag"></i> {{ tag.name }}
-    </div>
-    <div class="text-neutral-300 text-md mb-4 ml-2">Tag Achievements by clicking on them, when you're done click on "Finish"</div>
+    {% include 'Games/header.html.twig' %}
+    <div class="my-4 text-sm">Tag Achievements by clicking on them, when you're done click on "Finish"</div>
     <form action="/tagged_achievements/create.php" method="POST">
         <input type="hidden" name="tag_id" value="{{tag.id}}">
-        <div class="sticky top-0 text-center bg-neutral-950/60 backdrop-blur-sm mb-4">
-            <button type="submit" class="bg-green-500 text-white inline-block px-2 py-1"><i class="fa-solid fa-paper-plane"></i> Finish</button>
+        <div class="sticky top-0 bg-white dark:bg-dark py-2 flex">
+            <button type="submit" class="bg-mint inline-block px-2 py-1 shrink-0"><i class="fa-solid fa-paper-plane"></i> Finish</button>
+            <div class="w-full text-center">
+                {% include 'Components/tag.html.twig' with { 'tag_id': tag.id, 'tag_name': tag.name } %}
+            </div>
         </div>
         <div class="grid gap-1 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
             {% for achievement in achievements %}

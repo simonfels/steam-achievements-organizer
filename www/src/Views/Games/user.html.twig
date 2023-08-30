@@ -25,9 +25,9 @@
             </div>
             {% if tags|length > 0 %}
                 <div class="flex flex-row-reverse mt-1">
-                    <div class="flex">
+                    <div class="flex flex-wrap">
                         {% for tag in tags %}
-                            <div class="ml-1">
+                            <div class="ml-1 mb-1">
                                 <input type="radio" v-model="tagMode" class="hidden peer" value="{{ tag.id }}" id="tagMode{{ tag.id }}">
                                 <label for="tagMode{{ tag.id }}" class="h-full block px-3 peer-checked:bg-mint bg-neutral-300 dark:bg-neutral-700" @click.prevent="checkTag($event)">
                                     <i class="pointer-events-none fa-solid align-sub"></i>

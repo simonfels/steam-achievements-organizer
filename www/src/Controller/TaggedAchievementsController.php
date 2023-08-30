@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Helpers\DatabaseConnection;
 use App\DataModels\Tag;
 use App\DataModels\Achievement;
+use App\Models\GamesList;
 
 class TaggedAchievementsController extends AbstractController {
 
@@ -15,23 +16,18 @@ class TaggedAchievementsController extends AbstractController {
   }
 
   public function new(): void {
+    $games_list = new GamesList();
     $tag_id = @$_GET['tagid'];
 
     $tag = $this->databaseConnection->fetch('tags', 'id', $tag_id, Tag::class);
 
-    $achievements = $this->databaseConnection->fetchAll(Achievement::class, custom_sql: <<<SQL
-      SELECT achievements.*, ifnull(ta.tag_id, 0) tagged
-      FROM achievements
-      LEFT JOIN tagged_achievements ta
-        ON ta.achievement_id = achievements.id
-        AND ta.tag_id = $tag_id
-      WHERE game_id = {$tag->game_id}
-      ORDER BY achievements.id
-    SQL);
+    [$game, $achievements, $tags] = $games_list->findForTag($tag->game_id, $tag_id);
 
     $this->render('TaggedAchievements/new', [
       'achievements' => $achievements,
-      'tag' => $tag
+      'tag' => $tag,
+      'tags' => $tags,
+      'game' => $game
     ]);
   }
 
@@ -46,7 +42,7 @@ class TaggedAchievementsController extends AbstractController {
     }
 
     // Nicht selektierte Achievements löschen
-    $checked_ids_sql = "DELETE FROM tagged_achievements" . (!empty($checked_ids) ? ' WHERE id NOT IN (' . implode(", ", $checked_ids) . ')' : "");
+    $checked_ids_sql = "DELETE FROM tagged_achievements WHERE tag_id = " . $tag_id . (!empty($checked_ids) ? ' AND id NOT IN (' . implode(", ", $checked_ids) . ')' : "");
     $this->databaseConnection->pdo->exec($checked_ids_sql);
 
     // Selektierte Achievements inserten

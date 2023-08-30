@@ -24,7 +24,6 @@ final class Version20230805230006 extends AbstractMigration
                 id bigint NOT NULL AUTO_INCREMENT,
                 game_id bigint NOT NULL,
                 name varchar(200) NOT NULL,
-                background_color varchar(200) NOT NULL,
                 PRIMARY KEY (id)
             ) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_unicode_ci';
 

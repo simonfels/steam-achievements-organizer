@@ -5,46 +5,30 @@
 {% endblock %}
 
 {% block content %}
-    <header class="ml-4">
-        <div class="text-2xl mb-2">{{ game.name }}</div>
-        <form action="/tags/create.php" method="POST">
+    <header>
+        {% include 'Games/header.html.twig' %}
+        <div class="mb-2 mt-4"><i class="fa-solid fa-tags"></i> Tags</div>
+        <form action="/tags/create.php" method="POST" class="mt-2">
             <input type="hidden" name="game_id" value="{{ game.id }}">
-            <label>Create Tag</label>
-            <div class="flex mt-2" id="app">
-                <div  :style="{ 'background-color': inputColor }" class="border-y border-l py-1 pl-2"><i class="fa-solid fa-hashtag"></i></div>
-                <input type="text" name="name" placeholder="Name of the Tag" class="border-y border-r px-2 text-sm text-white placeholder:text-neutral-200" :style="{ 'background-color': inputColor }">
-                <input type="color" name="background_color" class="w-8 h-8 border ml-2 mt-0.5" v-model="inputColor">
-                <button type="submit" class="text-sm border border-dark dark:border-white py-1 px-2 ml-3 leading-3"><i class="fa-solid fa-paper-plane"></i> Create</button>
+            <div class="flex my-2 text-xs">
+                <input type="text" name="name" placeholder="Name of the Tag" class="p-2 text-dark dark:text-white bg-neutral-300 dark:bg-neutral-700">
+                <button type="submit" class="bg-neutral-300 dark:bg-neutral-700 py-1 px-2 ml-3"><i class="fa-solid fa-paper-plane"></i> Create</button>
             </div>
         </form>
-        <div class="text-lg mb-2 mt-4"><i class="fa-solid fa-tags"></i> Tags</div>
         <div class="flex">
             {% for tag in tags %}
-                <a  style="background-color: {{ tag.background_color }}"
-                    href="/tagged_achievements/new.php?{{ { "tagid": tag.id }|url_encode }}"
-                    class="text-sm py-1 px-2 text-white">
-                    <i class="fa-solid fa-hashtag"></i> {{ tag.name }}
+                <a href="/tagged_achievements/new.php?{{ { "tagid": tag.id }|url_encode }}">
+                    {% include 'Components/tag.html.twig' with { 'tag_id': tag.id, 'tag_name': tag.name } %}
                 </a>
             {% endfor %}
         </div>
     </header>
-    <div class="mt-4">
-        <div class="text-lg mb-2 ml-2">Achievements</div>
+    <div class="mt-5">
+        <div class="mb-2">Achievements</div>
         <div class="grid gap-1 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
             {% for achievement in achievements %}
                 {% include 'Games/Components/show_achievement.html.twig' %}
             {% endfor %}
         </div>
     </div>
-    <script>
-        const { createApp, ref, computed } = Vue
-    
-        createApp({
-            setup() {
-                const inputColor = ref('#000000')
-    
-                return { inputColor }
-            }
-        }).mount('#app')
-    </script>
 {% endblock %}
