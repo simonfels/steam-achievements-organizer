@@ -23,22 +23,18 @@
     - get user-achievements (calc percentage completed, mark game completed if 100%)
     - maybe mark games/etc. when they were fetched, for automation (fetch all games that haven't been fetched since 2 days, etc..)
 
-## STYLING TODOs
-
-### general
+### STYLING TODOs
 - [ ] logo entwickeln
 
-## DATABASE TODOs
-
-### general
+### DATABASE TODOs
 - [ ] log number of api calls to db (because of 100,000 per day limitation)
 
 ### TESTING TODOs
 - [ ] add code-quality checks using: php-cs, psalm
 - [ ] add tests and quality-checks to local & github-actions
-- [ ] maybe add prettier for tailwind/vue/html
 
 ## BACKLOG
+- maybe add prettier for tailwind/vue/html
 - display graphs for users/activity maybe
 - Fix Timezone-Offset Calculation @ users/activity (currently it is fixed at +02:00h)
 - scraper | add img_icon_url = http://media.steampowered.com/steamcommunity/public/images/apps/{appid}/{img_icon_url}.jpg

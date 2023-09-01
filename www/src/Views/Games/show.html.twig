@@ -5,30 +5,73 @@
 {% endblock %}
 
 {% block content %}
-    <header>
-        {% include 'Games/header.html.twig' %}
-        <div class="mb-2 mt-4"><i class="fa-solid fa-tags"></i> Tags</div>
-        <form action="/tags/create.php" method="POST" class="mt-2">
-            <input type="hidden" name="game_id" value="{{ game.id }}">
-            <div class="flex my-2 text-xs">
-                <input type="text" name="name" placeholder="Name of the Tag" class="p-2 text-dark dark:text-white bg-neutral-300 dark:bg-neutral-700">
-                <button type="submit" class="bg-neutral-300 dark:bg-neutral-700 py-1 px-2 ml-3"><i class="fa-solid fa-paper-plane"></i> Create</button>
-            </div>
-        </form>
-        <div class="flex">
+    <div id="app">
+        <side class="fixed top-0 left-2">
+            <div class="mb-2 mt-4"><i class="fa-solid fa-tags"></i> Tags</div>
+            <form action="/tags/create.php" method="POST" class="mt-2">
+                <input type="hidden" name="game_id" value="{{ game.id }}">
+                <div class="flex my-2 text-xs">
+                    <input type="text" name="name" placeholder="Name of the Tag" class="p-2 text-dark dark:text-white bg-neutral-300 dark:bg-neutral-700">
+                    <button type="submit" class="bg-neutral-300 dark:bg-neutral-700 py-1 px-2 ml-3"><i class="fa-solid fa-paper-plane"></i> Create</button>
+                </div>
+            </form>
             {% for tag in tags %}
-                <a href="/tagged_achievements/new.php?{{ { "tagid": tag.id }|url_encode }}">
-                    {% include 'Components/tag.html.twig' with { 'tag_id': tag.id, 'tag_name': tag.name } %}
-                </a>
+                <div class="w-70 flex justify-between mb-2">
+                    <a href="/tagged_achievements/new.php?{{ { "tagid": tag.id }|url_encode }}">
+                        {% include 'Components/tag.html.twig' with { 'tag_id': tag.id, 'tag_name': tag.name } %}
+                    </a>
+                    <div>
+                        <a><i class="fa-solid fa-pencil mr-2"></i></a>
+                        <a><i class="fa-solid fa-trash"></i></a>
+                    </div>
+                </div>
             {% endfor %}
-        </div>
-    </header>
-    <div class="mt-5">
-        <div class="mb-2">Achievements</div>
-        <div class="grid gap-1 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
-            {% for achievement in achievements %}
-                {% include 'Games/Components/show_achievement.html.twig' %}
-            {% endfor %}
+        </side>
+        <header>
+            {% include 'Games/header.html.twig' %}
+        </header>
+        <div class="mt-5">
+            <div class="mb-2">Achievements</div>
+            <div class="grid gap-1 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
+                {% include 'Components/vue_achievement.html.twig' %}
+            </div>
         </div>
     </div>
+    <script>
+        const { createApp, ref, computed } = Vue
+
+        createApp({
+            setup() {
+                const searchBox = ref('')
+                const originalAchievements = {{ achievements|json_encode()|raw }}
+
+                const unachievedAchievements = computed(() => {
+                    return originalAchievements.filter((ach) => {
+                        switch (listMode.value) {
+                            case 'achieved': return ach.achieved;
+                            case 'locked': return !ach.achieved;
+                        }
+                    }).filter((achievement) => tagFilter(achievement))
+                    .filter((b) => {
+                        if(searchBox.value.length === 0)
+                            return true
+                        let searchValue = searchBox.value.toLowerCase()
+                        let achievementDisplayName = b.display_name.toLowerCase()
+                        let achievementDescription = b.description ? b.description.toLowerCase() : ''
+                        return achievementDisplayName.includes(searchValue) || achievementDescription.includes(searchValue)
+                    })
+                })
+
+                function highlight(name) {
+                    if(searchBox.value.length === 0)
+                        return name
+                    return name ? name.replaceAll(new RegExp('(' + searchBox.value + ')', "ig"), '<span class="text-mint">$1</span>') : '';
+                }
+
+                return {
+                    unachievedAchievements, searchBox, highlight, originalAchievements
+                }
+            }
+        }).mount('#app')
+    </script>
 {% endblock %}
