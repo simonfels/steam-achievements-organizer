@@ -1,8 +1,11 @@
 {% extends 'Layouts/main.html.twig' %}
 
 {% block content %}
-    {% include 'Games/header.html.twig' %}
-    <div class="my-4 text-sm">Tag Achievements by clicking on them, when you're done click on "Finish"</div>
+    {% include 'Games/header.html.twig' with { 'breadcrumb': " - Tag: #{tag.name}" } %}
+    <div class="my-4 text-sm">
+        <div>Tag Achievements by clicking on them, when you're done click on "Finish"</div>
+        <div class="mt-2"><a href="/tags/delete.php?tagid={{ tag.id }}" class="px-2 py-1 bg-red-600 inline-block"><i class="fa-solid fa-trash mr-2"></i>Delete Tag</a></div>
+    </div>
     <form action="/tagged_achievements/create.php" method="POST">
         <input type="hidden" name="tag_id" value="{{tag.id}}">
         <div class="sticky top-0 bg-white dark:bg-dark py-2 flex">

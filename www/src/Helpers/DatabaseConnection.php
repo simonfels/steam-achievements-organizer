@@ -18,13 +18,12 @@ class DatabaseConnection
     }
 
     public function fetchAll(
-      $class = null,
-      string $table = null,
-      string $custom_sql = null,
-      int $pdoMode = null,
-      int $column = null
-    ): false|array
-    {
+        $class = null,
+        string $table = null,
+        string $custom_sql = null,
+        int $pdoMode = null,
+        int $column = null
+    ): false|array {
         $sql = $custom_sql ?? 'SELECT * FROM ' . $table;
         $query = $this->pdo->prepare($sql);
         $query->execute();

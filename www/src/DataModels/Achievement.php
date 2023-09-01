@@ -26,8 +26,9 @@ class Achievement
 
     public function formatted_unlocked_at(string $format = 'long'): ?string
     {
-        if (empty($this->unlocked_at))
+        if (empty($this->unlocked_at)) {
             return null;
+        }
 
         $datetime = DateTime::createFromFormat('U', $this->unlocked_at);
         $datetime->setTimezone(new DateTimeZone('Europe/Berlin'));
@@ -41,8 +42,9 @@ class Achievement
 
     public function formatted_date_on(): ?string
     {
-        if (empty($this->date_on))
+        if (empty($this->date_on)) {
             return null;
+        }
 
         $datetime = DateTime::createFromFormat('U', $this->date_on);
         $datetime->setTimezone(new DateTimeZone('Europe/Berlin'));

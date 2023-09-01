@@ -19,7 +19,7 @@ jobs:
       uses: php-actions/composer@v6
       with:
         php_version: "8.2"
-        command: install
+        dev: no
         args: --working-dir www
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4

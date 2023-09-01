@@ -38,6 +38,6 @@ class Game
 
     private function floordec($zahl): float|int
     {
-        return floor($zahl*pow(10, 2))/pow(10, 2);
+        return floor($zahl * pow(10, 2)) / pow(10, 2);
     }
 }

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Controller;
 
@@ -7,7 +9,7 @@ use Twig\Loader\FilesystemLoader;
 
 abstract class AbstractController
 {
-    protected function render($path, $variables = []):void
+    protected function render($path, $variables = []): void
     {
         $loader = new FilesystemLoader(__DIR__ . '/../Views');
         $twig = new Environment($loader);

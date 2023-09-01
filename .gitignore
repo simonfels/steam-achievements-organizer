@@ -2,3 +2,4 @@
 **/.env
 node_modules
 www/vendor
+www/.php-cs-fixer.cache

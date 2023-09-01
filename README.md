@@ -34,13 +34,11 @@
 - [ ] log number of api calls to db (because of 100,000 per day limitation)
 
 ### TESTING TODOs
-- [ ] add code-quality checks using: php-cs, php-cs-fixer, psalm
-- [ ] add tests
-- [ ] add tests and quality-checks to github-actions
+- [ ] add code-quality checks using: php-cs, psalm
+- [ ] add tests and quality-checks to local & github-actions
 - [ ] maybe add prettier for tailwind/vue/html
 
 ## BACKLOG
-- styling: try to modularize repetetive elements
 - display graphs for users/activity maybe
 - Fix Timezone-Offset Calculation @ users/activity (currently it is fixed at +02:00h)
 - scraper | add img_icon_url = http://media.steampowered.com/steamcommunity/public/images/apps/{appid}/{img_icon_url}.jpg
