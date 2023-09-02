@@ -56,8 +56,11 @@ class Achievement
     {
         $array_of_vars = get_object_vars($this);
         $array_of_vars["unlocked_at"] = $this->formatted_unlocked_at();
-        $array_of_vars["correct_icon"] = $this->achieved ? $this->icon : $this->icongray;
-        return json_encode($array_of_vars);
+        if(isset($this->achieved)) {
+            $array_of_vars["correct_icon"] = $this->achieved ? $this->icon : $this->icongray;
+        }
+        $array_of_vars["tag_ids"] = $this->getTagIds();
+        return $array_of_vars;
     }
 
     public function getTagIds(): array|null

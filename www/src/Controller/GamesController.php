@@ -27,25 +27,11 @@ class GamesController extends AbstractController
 
         if(!empty($game_id)) {
             [$game, $achievements, $tags] = $this->games_list->find($game_id);
-
             $this->render('Games/show', [
               'game' => $game,
-              'achievements' => $achievements,
-              'tags' => $tags
-            ]);
-        } else {
-            $this->render('Games/404');
-        }
-    }
-
-    public function edit(): void
-    {
-        $achievement_id = @$_GET['achievementid'];
-
-        if(!empty($achievement_id)) {
-
-            $this->render('Games/edit', [
-              'achievement' => $this->games_list->findAchievement($achievement_id),
+              'achievements' => json_encode(array_map(function ($achievement) { return $achievement->getVars(); }, $achievements)),
+              'tags' => $tags,
+              'json_tags' => json_encode($tags)
             ]);
         } else {
             $this->render('Games/404');
@@ -59,7 +45,7 @@ class GamesController extends AbstractController
 
         $achievement = $this->games_list->updateAchievement($achievement_id, $description);
 
-        header('Location: /games/show.php?' . http_build_query(['gameid' => $achievement->game_id]));
+        echo json_encode($achievement->getVars());
     }
 
     public function user(): void
@@ -75,7 +61,7 @@ class GamesController extends AbstractController
             $this->render('Games/user', [
               'game' => $game,
               'user' => $user,
-              'achievements' => implode(", ", array_map(function ($achievement) { return $achievement->getVars(); }, $achievements)),
+              'achievements' => json_encode(array_map(function ($achievement) { return $achievement->getVars(); }, $achievements)),
               'tags' => $tags
             ]);
         } else {

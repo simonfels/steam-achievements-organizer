@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/style.css">
+    <script src="https://unpkg.com/vue@3.3.4/dist/vue.global{{ dev ? '' : '.prod' }}.js"></script>
+    <script src="https://kit.fontawesome.com/ee8bf187fd.js" crossorigin="anonymous"></script>
+    {% block head_content %}{% endblock %}
+</head>
+<body class="bg-white text-dark dark:bg-dark dark:text-white font-mono">
+    {% include 'Layouts/color_switcher.html.twig' %}
+    {% include 'Layouts/nav.html.twig' %}
+    {% block main_container %}{% endblock %}
+    {% include 'Layouts/footer.html.twig' %}
+    <script src="/assets/magic.js"></script>
+</body>
+</html>

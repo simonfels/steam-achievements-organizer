@@ -1,39 +1,39 @@
-{% extends 'Layouts/main.html.twig' %}
+{% extends 'Layouts/full_width.html.twig' %}
 
 {% block head_content %}
     <title>Tracker | Games :: {{ game.name }}</title>
 {% endblock %}
 
 {% block content %}
-    <div id="app">
-        <side class="fixed top-0 left-2">
-            <div class="mb-2 mt-4"><i class="fa-solid fa-tags"></i> Tags</div>
-            <form action="/tags/create.php" method="POST" class="mt-2">
-                <input type="hidden" name="game_id" value="{{ game.id }}">
-                <div class="flex my-2 text-xs">
-                    <input type="text" name="name" placeholder="Name of the Tag" class="p-2 text-dark dark:text-white bg-neutral-300 dark:bg-neutral-700">
-                    <button type="submit" class="bg-neutral-300 dark:bg-neutral-700 py-1 px-2 ml-3"><i class="fa-solid fa-paper-plane"></i> Create</button>
-                </div>
-            </form>
-            {% for tag in tags %}
-                <div class="w-70 flex justify-between mb-2">
-                    <a href="/tagged_achievements/new.php?{{ { "tagid": tag.id }|url_encode }}">
-                        {% include 'Components/tag.html.twig' with { 'tag_id': tag.id, 'tag_name': tag.name } %}
-                    </a>
-                    <div>
-                        <a><i class="fa-solid fa-pencil mr-2"></i></a>
-                        <a><i class="fa-solid fa-trash"></i></a>
+    <header class="mb-4 mx-3">{% include 'Games/header.html.twig' %}</header>
+    <div id="app" class="mx-3">
+        <div class="sticky top-0 bg-white dark:bg-dark z-50 flex py-2">
+            {% include 'Components/searchbox.html.twig' %}
+        </div>
+        <div class="flex">
+            <aside class="grow-0 mr-2">
+                <h2 class="mb-2">Categories</h2>
+                <form action="/tags/create.php" method="POST" class="mb-2">
+                    <input type="hidden" name="game_id" value="{{ game.id }}">
+                    <div class="flex text-xs">
+                        <input type="text" name="name" placeholder="Name of the Tag" class="p-2 text-dark dark:text-white bg-neutral-300 dark:bg-neutral-700">
+                        <button type="submit" class="bg-neutral-300 dark:bg-neutral-700 py-1 px-2 ml-1"><i class="fa-solid fa-paper-plane"></i></button>
                     </div>
+                </form>
+                {% for tag in tags %}
+                    <div class="flex justify-between mb-1 bg-neutral-300 dark:bg-neutral-700 pr-2 pl-1 py-1">
+                        <a class="" href="/tagged_achievements/new.php?{{ { "tagid": tag.id }|url_encode }}">
+                            {% include 'Components/tag.html.twig' with { 'tag_id': tag.id, 'tag_name': tag.name } %}
+                        </a>
+                        <a href="/tags/delete.php?tagid={{ tag.id }}" onclick="return confirm('Are you sure?')"><i class="fa-solid fa-trash"></i></a>
+                    </div>
+                {% endfor %}
+            </aside>
+            <div class="grow">
+                <h2 class="mb-2">Achievements</h2>
+                <div class="grid gap-1 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
+                    {% include 'Components/vue_achievement.html.twig' %}
                 </div>
-            {% endfor %}
-        </side>
-        <header>
-            {% include 'Games/header.html.twig' %}
-        </header>
-        <div class="mt-5">
-            <div class="mb-2">Achievements</div>
-            <div class="grid gap-1 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
-                {% include 'Components/vue_achievement.html.twig' %}
             </div>
         </div>
     </div>
@@ -43,16 +43,19 @@
         createApp({
             setup() {
                 const searchBox = ref('')
-                const originalAchievements = {{ achievements|json_encode()|raw }}
+                const originalAchievements = ref({{ achievements|raw }})
+                const hide_description = false
+                const tags = {{ json_tags|raw }}
+                const descriptions = ref({})
 
-                const unachievedAchievements = computed(() => {
-                    return originalAchievements.filter((ach) => {
-                        switch (listMode.value) {
-                            case 'achieved': return ach.achieved;
-                            case 'locked': return !ach.achieved;
-                        }
-                    }).filter((achievement) => tagFilter(achievement))
-                    .filter((b) => {
+                originalAchievements.value.forEach(function(item) {
+                    if(item.hidden) {
+                        descriptions.value[item.id] = item.description
+                    }
+                })
+
+                const filteredAchievements = computed(() => {
+                    return originalAchievements.value.filter((b) => {
                         if(searchBox.value.length === 0)
                             return true
                         let searchValue = searchBox.value.toLowerCase()
@@ -68,8 +71,31 @@
                     return name ? name.replaceAll(new RegExp('(' + searchBox.value + ')', "ig"), '<span class="text-mint">$1</span>') : '';
                 }
 
+                function editDescription(event, id) {
+                    event.srcElement.parentNode.getElementsByTagName("form")[0].classList.toggle("hidden")
+                }
+
+                function onSubmit(event) {
+                    let form = event.target
+                    let url = event.target.action
+                    let description = event.target[0].value
+                    let achievement_id = event.target[1].value
+                    let formBody = new URLSearchParams("achievement_id=" + achievement_id + "&description=" + description)
+
+                    fetch(url, {
+                        method: "POST",
+                        body: formBody
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            let updated_achievement = originalAchievements.value.find(achievement => achievement.id === data.id)
+                            updated_achievement.description = data.description
+                            form.classList.toggle("hidden")
+                        })
+                }
+
                 return {
-                    unachievedAchievements, searchBox, highlight, originalAchievements
+                    filteredAchievements, searchBox, highlight, originalAchievements, hide_description, tags, editDescription, onSubmit, descriptions
                 }
             }
         }).mount('#app')

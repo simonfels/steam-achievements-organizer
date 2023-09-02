@@ -1,0 +1,5 @@
+{% verbatim %}
+    <div v-for="tag_id in achievement.tag_ids">
+        <div class="text-white text-xs px-2 py-1 inline-block" :style="'background-color: hsl(' + (tag_id * 30 % 360) + ', 50%, 50%)'">{{ tags[tag_id].name }}</div>
+    </div>
+{% endverbatim %}
