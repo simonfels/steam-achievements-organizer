@@ -3,8 +3,8 @@ module.exports = {
   content: ["./www/src/Views/**/*.html.twig"],
   theme: {
     fontFamily: {
-      'mono': ['VictorMono'],
-      'mono-bold': ['VictorMono-Bold']
+      'mono': ['Nunito-Medium'],
+      'mono-bold': ['Nunito-Bold']
     },
     extend: {
       animation: {

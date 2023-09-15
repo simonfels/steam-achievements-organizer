@@ -11,6 +11,7 @@
   - info: games that are not in the steam-store anymore will not be returned from GetOwnedGames (e.g. https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?appid=403570&key=${steamapikey}&steamid=76561197999852541)
 
 ### scraper
+- [ ] in general: improve performance and error handling
 - [ ] add error-handling for api-calls (there are sometimes games/achievements missing, when scraping)
 - [ ] call steam-api with parallel calls using curl_multi_exec / guzzle_http
   - try to benchmark with https://github.com/scottchiefbaker/php-benchmark to measure actual benefit
@@ -23,10 +24,21 @@
     - get user-achievements (calc percentage completed, mark game completed if 100%)
     - maybe mark games/etc. when they were fetched, for automation (fetch all games that haven't been fetched since 2 days, etc..)
 
+<<<<<<< Updated upstream
 ### STYLING TODOs
 - [ ] logo entwickeln
 
 ### DATABASE TODOs
+=======
+    - Splitten in zwei Prozesse:
+      - Allgemeine Daten holen (Game-Achievements)
+      - User Daten holen
+
+## STYLING TODOs
+- [ ] logo entwickeln
+
+## DATABASE TODOs
+>>>>>>> Stashed changes
 - [ ] log number of api calls to db (because of 100,000 per day limitation)
 
 ### TESTING TODOs
@@ -34,8 +46,20 @@
 - [ ] add tests and quality-checks to local & github-actions
 
 ## BACKLOG
+<<<<<<< Updated upstream
 - maybe add prettier for tailwind/vue/html
+=======
+- add hover texts to icon-only buttons (unlocked/not unlocked, 0% / 100% / other)
+- adjust achivement_id to be combination of game_id + system_name, that way it is no problem if we loose data, everthing can be restored over the steam-api
+- backup non-api data (tags, tagged_achievements)
+>>>>>>> Stashed changes
 - display graphs for users/activity maybe
+  - last finished game
+  - game that took the longest
+  - game that took the shortest
+  - 100% game with most achievements
+  - number of recently gained achievements (eg. 2 weeks)
+  - "current games" -> maybe add function to manually tag games as "current"
 - Fix Timezone-Offset Calculation @ users/activity (currently it is fixed at +02:00h)
 - scraper | add img_icon_url = http://media.steampowered.com/steamcommunity/public/images/apps/{appid}/{img_icon_url}.jpg
 - scraper | add option to resolve vanity-urls

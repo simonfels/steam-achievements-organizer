@@ -52,24 +52,17 @@ class DatabaseConnection
 
     public function insert(string $table, array $attributes, array $entries, array|null $updatedAttributes = null): void
     {
-        $insertMode = empty($updatedAttributes) ? 'INSERT IGNORE' : 'INSERT';
         $sqlAttributes = implode(', ', $attributes);
-        $sqlValues = implode(', ', array_map(function ($item) { return ':' . $item; }, $attributes));
-        $query = "$insertMode INTO $table ($sqlAttributes) VALUES ($sqlValues)";
-
-        if (!empty($updatedAttributes)) {
-            $updateValues = implode(', ', array_map(function ($attribute) { return "$attribute=VALUES($attribute)"; }, $updatedAttributes));
-            $query .= " ON DUPLICATE KEY UPDATE $updateValues";
-        }
+        $sqlValues = "(" . implode(', ', array_map(function ($item) { return ':' . $item; }, $attributes)) . ")";
+        
+        $query = empty($updatedAttributes) ? "INSERT IGNORE INTO $table ($sqlAttributes) VALUES $sqlValues" : $this->upsertQuery($table, $sqlAttributes, $sqlValues, $updatedAttributes);
 
         $this->pdo->prepare($query)->execute($entries);
     }
 
     public function import(string $table, array $items, array|null $updatedAttributes = null): void
     {
-        $insertMode = empty($updatedAttributes) ? 'INSERT IGNORE' : 'INSERT';
         $sqlAttributes = implode(', ', array_keys($items[0]));
-
         $sqlValues = implode(", ", array_map(function ($item) {
             $values = array_map(function ($value) {
                 return $value === null ? "NULL" : "\"" . addslashes($value) . "\"";
@@ -77,13 +70,14 @@ class DatabaseConnection
             return "(" . implode(", ", $values) . ")";
         }, $items));
 
-        $query = "$insertMode INTO $table ($sqlAttributes) VALUES $sqlValues";
-
-        if (!empty($updatedAttributes)) {
-            $updateValues = implode(', ', array_map(function ($attribute) { return "$attribute=VALUES($attribute)"; }, $updatedAttributes));
-            $query .= " ON DUPLICATE KEY UPDATE $updateValues";
-        }
+        $query = empty($updatedAttributes) ? "INSERT IGNORE INTO $table ($sqlAttributes) VALUES $sqlValues" : $this->upsertQuery($table, $sqlAttributes, $sqlValues, $updatedAttributes);
 
         $this->pdo->exec($query);
+    }
+
+    private function upsertQuery(string $table, string $sqlAttributes, string $sqlValues, array $updatedAttributes): string
+    {
+        $updateValuesQuery = implode(', ', array_map(function ($attribute) { return "$attribute=VALUES($attribute)"; }, $updatedAttributes));
+        return "INSERT INTO $table ($sqlAttributes) VALUES $sqlValues ON DUPLICATE KEY UPDATE $updateValuesQuery";
     }
 }

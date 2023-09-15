@@ -12,6 +12,16 @@
   src: url("/assets/fonts/VictorMono-Bold.ttf");
 }
 
+@font-face {
+  font-family: "Nunito-Medium";
+  src: url("/assets/fonts/Nunito/static/Nunito-Medium.ttf");
+}
+
+@font-face {
+  font-family: "Nunito-Bold";
+  src: url("/assets/fonts/Nunito/static/Nunito-Bold.ttf");
+}
+
 input[type=color]::-webkit-color-swatch-wrapper {
   padding: 0; 
 }

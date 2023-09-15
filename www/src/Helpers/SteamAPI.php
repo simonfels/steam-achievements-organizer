@@ -61,18 +61,12 @@ class SteamAPI
         }, $response["game"]["availableGameStats"]["achievements"]);
     }
 
-    public function fetchUser(string $user_id): array|false
+    public function fetchPlayer(string $user_id): PlayerDTO|false
     {
         $response = $this->apiCall(self::USER_URL, $this->buildParams(['steamids' => $user_id]));
 
-        if(!empty($players = $response["response"]["players"])) {
-            $player = $players[0];
-            return [
-              'id' => $player['steamid'],
-              'name' => $player['personaname'],
-              'steam_url' => $player['profileurl'],
-              'avatar_url' => $player['avatarfull']
-            ];
+        if(!empty($response["response"]["players"])) {
+            return PlayerDTO::fromApiResponse($response);
         } else {
             return false;
         }

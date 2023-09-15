@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Helpers\PlayerDTO;
 use App\Helpers\SteamAPI;
 use App\DataModels\User;
+use App\Repositories\PlayerRepository;
 use PDO;
 
 class Scraper extends AbstractModel
@@ -34,32 +36,33 @@ class Scraper extends AbstractModel
         return $users;
     }
 
-    public function scrapeUserData(string $user_id): bool
+    public function scrapeUserData(string $user_id): array
     {
-        $fetchedUser = $this->getSteamAPI()->fetchUser($user_id);
-        if($fetchedUser) {
-            $this->database_connection->insert('users', array_keys($fetchedUser), $fetchedUser, ['avatar_url', 'name']);
-            return true;
+        $fetchedUser = $this->getSteamAPI()->fetchPlayer($user_id);
+        $success = $fetchedUser !== false;
+
+        if($success) {
+            $playerRepository = new PlayerRepository();
+            $playerRepository->upsert($fetchedUser->getAttributes());
         }
-        return false;
+
+        return $this->returnArray($success, $user_id,'getUser');
     }
 
-    public function scrapeUserGames(string $user_id): bool
+    public function scrapeUserGames(string $user_id): array
     {
-        $fetched = $this->getSteamAPI()->fetchUserGames($user_id);
-        $fetchedGames = $fetched[0];
-        $fetchedUserGames = $fetched[1];
+        [$fetchedGames, $fetchedUserGames] = $this->getSteamAPI()->fetchUserGames($user_id);
+        $success = !empty($fetchedGames) && !empty($fetchedUserGames);
 
-        if(!empty($fetchedGames) && !empty($fetchedUserGames)) {
+        if($success) {
             $this->database_connection->import('games', $fetchedGames);
             $this->database_connection->import('user_games', $fetchedUserGames);
-
-            return true;
         }
-        return false;
+
+        return $this->returnArray($success, $user_id, 'getGames');
     }
 
-    public function scrapeGameAchievements(string $user_id, array $passedGameIds = null): bool
+    public function scrapeGameAchievements(string $user_id, array $passedGameIds = null): array
     {
         $user_games = $passedGameIds ?? $this->database_connection->fetchAll(custom_sql: "SELECT games.* FROM games JOIN user_games ON games.id = user_games.game_id WHERE user_games.user_id = $user_id", pdoMode: PDO::FETCH_COLUMN, column: 0);
         $game_ids = $user_games;
@@ -98,12 +101,24 @@ class Scraper extends AbstractModel
                 }
             }
         }
-        return true;
+
+        return $this->returnArray(true, $user_id, 'getAchievements');
     }
 
     private function getSteamAPI(): SteamAPI
     {
         $this->numberOfApiCalls++;
         return $this->steam_api;
+    }
+
+    private function returnArray(bool $success, string $user_id, string $operation): array
+    {
+        return [
+            'result' => $success,
+            'user_id' => $user_id,
+            'operation' => $operation,
+            'api_calls' => $this->numberOfApiCalls,
+            'users' => $this->allUsers()
+        ];
     }
 }
