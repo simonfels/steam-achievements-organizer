@@ -15,6 +15,7 @@ abstract class AbstractController
         $twig = new Environment($loader);
 
         $variables['dev'] = $_SERVER["SERVER_NAME"] === "localhost";
+        $variables['path'] = $path;
 
         echo $twig->render($path . '.html.twig', $variables);
     }

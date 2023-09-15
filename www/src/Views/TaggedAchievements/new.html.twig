@@ -9,7 +9,7 @@
     <form action="/tagged_achievements/create.php" method="POST">
         <input type="hidden" name="tag_id" value="{{tag.id}}">
         <div class="sticky top-0 bg-white dark:bg-dark py-2 flex">
-            <button type="submit" class="bg-mint inline-block px-2 py-1 shrink-0"><i class="fa-solid fa-paper-plane"></i> Finish</button>
+            <button type="submit" class=" dark:bg-lila inline-block px-2 py-1 shrink-0"><i class="fa-solid fa-paper-plane"></i> Finish</button>
             <div class="w-full text-center">
                 {% include 'Components/tag.html.twig' with { 'tag_id': tag.id, 'tag_name': tag.name } %}
             </div>

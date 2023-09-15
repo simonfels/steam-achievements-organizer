@@ -3,11 +3,11 @@
 {% endblock %}
 {% block subnav_nav %}
     <div class="mb-3 mt-1 flex text-sm">
-        <a href="/users/show.php?{{ {'userid': user.id}|url_encode }}" class="inline-block hover:opacity-70 text-neutral-500 dark:text-neutral-400">
+        <a href="/users/show.php?{{ {'userid': user.id}|url_encode }}" class="{{ path == 'Users/show' ? 'border-b-2 dark:border-lila border-mint' : 'text-neutral-500 dark:text-neutral-400' }} inline-block hover:opacity-70">
             <i class="fa-solid fa-trophy"></i>
             <span>Games</span>
         </a>
-        <a href="/users/activity.php?{{ {'userid': user.id}|url_encode }}" class="inline-block hover:opacity-70 text-neutral-500 dark:text-neutral-400 ml-3">
+        <a href="/users/activity.php?{{ {'userid': user.id}|url_encode }}" class="{{ path == 'Users/activity' ? 'border-b-2 dark:border-lila border-mint' : 'text-neutral-500 dark:text-neutral-400' }} inline-block hover:opacity-70 ml-3">
             <i class="fa-solid fa-calendar"></i>
             <span>Activity</span>
         </a>

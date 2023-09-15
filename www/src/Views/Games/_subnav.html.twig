@@ -4,7 +4,7 @@
     <div class="text-lg">
         {{ user.name }} - {{ game.name }}
         <a href="/scraper/game.php?{{ {'userid': user.id, 'gameid': game.id}|url_encode }}" title="refresh achievements">
-            <i class="fa-solid fa-repeat text-sm text-mint"></i>
+            <i class="fa-solid fa-repeat text-sm text-mint dark:text-lila"></i>
         </a>
     </div>
 {% endblock %}

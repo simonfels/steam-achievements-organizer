@@ -43,7 +43,7 @@
                 function highlight(name) {
                     if (searchBox.value.length === 0)
                         return name
-                    return name ? name.replaceAll(new RegExp('(' + searchBox.value + ')', "ig"), '<span class="text-mint">$1</span>') : '';
+                    return name ? name.replaceAll(new RegExp('(' + searchBox.value + ')', "ig"), '<span class="text-mint dark:text-lila">$1</span>') : '';
                 }
 
                 return {

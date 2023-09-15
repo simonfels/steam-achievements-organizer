@@ -6,7 +6,13 @@
 
 {% block content %}
     {% include 'Games/_subnav.html.twig' with { 'user': user, 'game': game } only %}
-
+    {% if game.completed_at is not null %}
+        <div class="text-center text-xl py-4 bg-mint dark:bg-lila ">
+            <div class="text-3xl "><i class="fa-solid fa-check"></i></div>
+            <div>Completed</div>
+            <div class=" text-sm mt-1"><i class="fa-solid fa-calendar"></i> {{ game.formatted_completed_at }}</div>
+        </div>
+    {% endif %}
     <div id="app">
         <div class="sticky top-0 bg-white dark:bg-dark z-50 py-2">
             <div class="flex">
@@ -16,7 +22,7 @@
                     {% for listMode in listModes %}
                         <div class="ml-1">
                             <input type="radio" value="{{ listMode.value }}" id="{{ listMode.value }}" v-model="listMode" class="hidden peer" />
-                            <label for="{{ listMode.value }}" class="h-full block px-3 peer-checked:bg-mint bg-neutral-300 dark:bg-neutral-700">
+                            <label for="{{ listMode.value }}" class="h-full block px-3 dark:peer-checked:bg-lila peer-checked:bg-mint bg-neutral-300 dark:bg-neutral-700">
                                 <i class="fa-solid {{ listMode.icon }} align-sub"></i>
                             </label>
                         </div>
@@ -29,7 +35,7 @@
                         {% for tag in tags %}
                             <div class="ml-1 mb-1">
                                 <input type="radio" v-model="tagMode" class="hidden peer" value="{{ tag.id }}" id="tagMode{{ tag.id }}">
-                                <label for="tagMode{{ tag.id }}" class="h-full block px-3 peer-checked:bg-mint bg-neutral-300 dark:bg-neutral-700" @click.prevent="checkTag($event)">
+                                <label for="tagMode{{ tag.id }}" class="h-full block px-3 dark:peer-checked:bg-lila peer-checked:bg-mint bg-neutral-300 dark:bg-neutral-700" @click.prevent="checkTag($event)">
                                     <i class="pointer-events-none fa-solid align-sub"></i>
                                     <span class="pointer-events-none inline-block py-2">{{ tag.name }}</span>
                                 </label>
@@ -39,36 +45,28 @@
                 </div>
             {% endif %}
         </div>
-        {% if game.completed_at is not null %}
-            <div class="text-center text-xl py-4 bg-mint text-white">
-                <div class="text-3xl text-white"><i class="fa-solid fa-check"></i></div>
-                <div>Completed</div>
-                <div class="text-white text-sm mt-1"><i class="fa-solid fa-calendar"></i> {{ game.formatted_completed_at }}</div>
-            </div>
-        {% else %}
-            {% verbatim %}
-                <div class="text-sm text-neutral-500 dark:text-neutral-400 mb-2 text-center">{{ unachievedAchievements.length }}/{{ achievedAchievements.length }} Achievements</div>
-                <div class="grid gap-1 grid-cols-1 md:grid-cols-2 2xl:grid-cols-3" v-if="unachievedAchievements.length > 0">
-                    <div class="flex" v-for="achievement in unachievedAchievements">
-                        <div class="flex flex-col justify-between bg-neutral-300 dark:bg-neutral-700 w-full pb-2 pr-2 text-xs text-neutral-600 dark:text-neutral-300">
-                            <div>
-                                <div class="flex mb-2 pl-2">
-                                    <div :style="{'background-image': `url(${achievement.correct_icon})`}" class="w-8 h-8 bg-cover flex-none transition-all"></div>
-                                    <div class="text-base line-clamp-1 px-2 pt-2 dark:text-white text-dark" v-html="highlight(achievement.display_name)"></div>
-                                </div>
-                                <div class="line-clamp-2 hover:line-clamp-none px-2 leading-5" v-html="highlight(achievement.description)"></div>
+        {% verbatim %}
+            <div class="text-sm text-neutral-500 dark:text-neutral-400 mb-2 text-center">{{ unachievedAchievements.length }}/{{ achievedAchievements.length }} Achievements</div>
+            <div class="grid gap-1 grid-cols-1 md:grid-cols-2 2xl:grid-cols-3" v-if="unachievedAchievements.length > 0">
+                <div class="flex" v-for="achievement in unachievedAchievements">
+                    <div class="flex flex-col justify-between bg-neutral-300 dark:bg-neutral-700 w-full pb-2 pr-2 text-sm text-neutral-600 dark:text-neutral-300">
+                        <div>
+                            <div class="flex mb-2 pl-2">
+                                <div :style="{'background-image': `url(${achievement.correct_icon})`}" class="w-8 h-8 bg-cover flex-none transition-all"></div>
+                                <div class="text-base line-clamp-1 px-2 pt-2 dark:text-white text-dark" v-html="highlight(achievement.display_name)"></div>
                             </div>
-                            <div class="text-right mt-2" v-if="achievement.unlocked_at">
-                                {{ achievement.unlocked_at }} <i class="fa-regular fa-clock"></i>
-                            </div>
+                            <div class="line-clamp-2 hover:line-clamp-none px-2" v-html="highlight(achievement.description)"></div>
+                        </div>
+                        <div class="text-right mt-2 text-xs" v-if="achievement.unlocked_at">
+                            {{ achievement.unlocked_at }} <i class="fa-regular fa-clock"></i>
                         </div>
                     </div>
                 </div>
-                <div class="text-center py-2 text-5xl text-red-500" v-else>
-                    <i class="fa-solid fa-fire animate-pulse"></i>
-                </div>
-            {% endverbatim %}
-        {% endif %}
+            </div>
+            <div class="text-center py-2 text-5xl text-red-500" v-else>
+                <i class="fa-solid fa-fire animate-pulse"></i>
+            </div>
+        {% endverbatim %}
     </div>
     <script>
         const { createApp, ref, computed } = Vue
@@ -115,7 +113,7 @@
                 function highlight(name) {
                     if(searchBox.value.length === 0)
                         return name
-                    return name ? name.replaceAll(new RegExp('(' + searchBox.value + ')', "ig"), '<span class="text-mint">$1</span>') : '';
+                    return name ? name.replaceAll(new RegExp('(' + searchBox.value + ')', "ig"), '<span class="bg-mint dark:bg-lila">$1</span>') : '';
                 }
 
                 function checkTag(event) {

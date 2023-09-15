@@ -12,7 +12,8 @@ module.exports = {
       },
       colors: {
         'dark': '#1c1c1c',
-        'mint': '#11eeb3'
+        'mint': '#11eeb3',
+        'lila': '#9253ff'
       }
     },
   },

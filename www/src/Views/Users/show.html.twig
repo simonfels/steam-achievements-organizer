@@ -5,16 +5,22 @@
 {% endblock %}
 
 {% block content %}
-    {% include 'Users/_subnav.html.twig' with { 'user': user } only %}
+    {% include 'Users/_subnav.html.twig' with { 'user': user, 'path': path } only %}
     <div id="app">
         <div class="sticky top-0 bg-white dark:bg-dark z-50 flex py-2">
             {% include 'Components/searchbox.html.twig' only %}
             <div class="flex text-xl">
-                {% set listModes = [{ 'value': 'none', 'icon': 'fa-battery-empty' }, { 'value': 'wip', 'icon': 'fa-battery-half' }, { 'value': 'completed', 'icon': 'fa-battery-full' }] %}
+                {% 
+                    set listModes = [
+                        { 'value': 'none', 'icon': 'fa-battery-empty', 'description': '0% Games'  },
+                        { 'value': 'wip', 'icon': 'fa-battery-half', 'description': '>0% Games' },
+                        { 'value': 'completed', 'icon': 'fa-battery-full', 'description': '100% Games' }
+                    ]
+                %}
                 {% for listMode in listModes %}
                     <div>
                         <input type="radio" value="{{ listMode.value }}" id="{{ listMode.value }}" v-model="listMode" class="hidden peer" />
-                        <label for="{{ listMode.value }}" class="h-full block px-3 peer-checked:bg-mint bg-neutral-300 dark:bg-neutral-700 ml-1">
+                        <label for="{{ listMode.value }}" class="h-full block px-3 peer-checked:bg-mint dark:peer-checked:bg-lila bg-neutral-300 dark:bg-neutral-700 ml-1" title="{{ listMode.description }}">
                             <i class="fa-solid {{ listMode.icon }} align-sub"></i>
                         </label>
                     </div>
@@ -26,7 +32,8 @@
             <div class="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-1">
                 <div v-for="game in games">
                     <a :href="'/games/user.php?gameid=' + game.id + '&userid=' + userId" class="flex">
-                        <div :style="{ backgroundColor: 'hsl(' + Math.floor(game.achievement_percent) * 1.64 + ', 86.7%, 50%)' }" class="w-2 shrink-0"></div>
+                        <div :style="{ backgroundColor: 'hsl(' + Math.floor(game.achievement_percent) * 1.64 + ', 86.7%, 50%)' }" class="w-2 shrink-0" v-if="game.achievement_percent < 100"></div>
+                        <div class="w-2 shrink-0 dark:bg-lila bg-mint" v-if="game.achievement_percent == 100"></div>
                         <div class="p-2 bg-neutral-300 dark:bg-neutral-700 grow">
                             <div class="line-clamp-1 mb-2">
                                 <span v-html="highlight(game.name)" :title="game.name"></span>
@@ -80,7 +87,7 @@
                 function highlight(name) {
                     if (searchBox.value.length === 0)
                         return name
-                    return name ? name.replaceAll(new RegExp('(' + searchBox.value + ')', "ig"), '<span class="text-mint">$1</span>') : '';
+                    return name ? name.replaceAll(new RegExp('(' + searchBox.value + ')', "ig"), '<span class="bg-mint dark:bg-lila">$1</span>') : '';
                 }
 
                 return {

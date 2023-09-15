@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-    {% include 'Users/_subnav.html.twig' with { 'user': user[0] } only %}
+    {% include 'Users/_subnav.html.twig' with { 'user': user[0], 'path': path } only %}
     <div class="max-w-7xl">
         <div class="m-3 hidden">
             <img class="w-40" src="{{ user[0].avatar_url }}">

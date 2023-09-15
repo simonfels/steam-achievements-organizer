@@ -23,17 +23,17 @@
                             <td class="text-right">{{ user.games_count }}</td>
                             <td class="text-right">{{ user.total_achievements }}</td>
                             <td class="p-0 border-l border-neutral-600 text-center">
-                                <a class="text-mint py-1 px-2 w-full border border-mint inline-block" @click="fetchAsync('/scraper/user.php?userid=' + user.id, $event)">
+                                <a class="text-mint dark:text-lila py-1 px-2 w-full border border-mint dark:border-lila inline-block" @click="fetchAsync('/scraper/user.php?userid=' + user.id, $event)">
                                     <i class="pointer-events-none fa-solid fa-user"></i>
                                 </a>
                             </td>
                             <td class="p-0 text-center">
-                                <a class="text-mint py-1 px-2 w-full border border-mint inline-block" @click="fetchAsync('/scraper/games.php?userid=' + user.id, $event)">
+                                <a class="text-mint dark:text-lila py-1 px-2 w-full border border-mint dark:border-lila inline-block" @click="fetchAsync('/scraper/games.php?userid=' + user.id, $event)">
                                     <i class="pointer-events-none fa-solid fa-gamepad"></i>
                                 </a>
                             </td>
                             <td class="p-0 text-center">
-                                <a class="text-mint py-1 px-2 w-full border border-mint inline-block" @click="fetchAsync('/scraper/achievements.php?userid=' + user.id, $event)">
+                                <a class="text-mint dark:text-lila py-1 px-2 w-full border border-mint dark:border-lila inline-block" @click="fetchAsync('/scraper/achievements.php?userid=' + user.id, $event)">
                                     <i class="pointer-events-none fa-solid fa-trophy"></i>
                                 </a>
                             </td>
@@ -93,6 +93,7 @@
                 
                 target.classList.toggle('pointer-events-none')
                 target.classList.toggle('bg-mint')
+                target.classList.toggle('dark:bg-lila')
                 child.replaceWith(newChild)
 
                 fetch(url)
@@ -100,6 +101,7 @@
                     .then(data => {
                         target.classList.toggle('pointer-events-none')
                         target.classList.toggle('bg-mint')
+                        target.classList.toggle('dark:bg-lila')
                         newChild.replaceWith(copyChild)
                         this.users = data["users"]
                         this.apiCalls.push({'url': url, 'operation':data['operation'],'result':data['result'],'api_calls':data['api_calls']})

@@ -38,7 +38,6 @@
 - [ ] add tests and quality-checks to local & github-actions
 
 ## BACKLOG
-<<<<<<< Updated upstream
 - maybe add prettier for tailwind/vue/html
 - add hover texts to icon-only buttons (unlocked/not unlocked, 0% / 100% / other)
 - adjust achivement_id to be combination of game_id + system_name, that way it is no problem if we loose data, everthing can be restored over the steam-api
