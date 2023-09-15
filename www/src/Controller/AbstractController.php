@@ -18,4 +18,10 @@ abstract class AbstractController
 
         echo $twig->render($path . '.html.twig', $variables);
     }
+
+    protected function renderJson(mixed $body): void
+    {
+        header('Content-Type: application/json');
+        echo json_encode($body);
+    }
 }
