@@ -24,22 +24,14 @@
     - get user-achievements (calc percentage completed, mark game completed if 100%)
     - maybe mark games/etc. when they were fetched, for automation (fetch all games that haven't been fetched since 2 days, etc..)
 
-<<<<<<< Updated upstream
 ### STYLING TODOs
 - [ ] logo entwickeln
 
 ### DATABASE TODOs
-=======
+- [ ] log number of api calls to db (because of 100,000 per day limitation)
     - Splitten in zwei Prozesse:
       - Allgemeine Daten holen (Game-Achievements)
       - User Daten holen
-
-## STYLING TODOs
-- [ ] logo entwickeln
-
-## DATABASE TODOs
->>>>>>> Stashed changes
-- [ ] log number of api calls to db (because of 100,000 per day limitation)
 
 ### TESTING TODOs
 - [ ] add code-quality checks using: php-cs, psalm
@@ -48,11 +40,9 @@
 ## BACKLOG
 <<<<<<< Updated upstream
 - maybe add prettier for tailwind/vue/html
-=======
 - add hover texts to icon-only buttons (unlocked/not unlocked, 0% / 100% / other)
 - adjust achivement_id to be combination of game_id + system_name, that way it is no problem if we loose data, everthing can be restored over the steam-api
 - backup non-api data (tags, tagged_achievements)
->>>>>>> Stashed changes
 - display graphs for users/activity maybe
   - last finished game
   - game that took the longest
