@@ -34,7 +34,7 @@ jobs:
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
         server-dir: ${{ secrets.FTP_SERVER_DIR }}
-        local-dir: ./www/
+        local-dir: ./www/public_html/
         protocol: ftps
         exclude: |
           **/.env*
