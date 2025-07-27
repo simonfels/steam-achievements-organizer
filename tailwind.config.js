@@ -7,9 +7,6 @@ module.exports = {
       'mono-bold': ['Nunito-Bold']
     },
     extend: {
-      animation: {
-        'spin-slow': 'spin 6s linear infinite',
-      },
       colors: {
         'dark': '#1c1c1c',
         'mint': '#11eeb3',

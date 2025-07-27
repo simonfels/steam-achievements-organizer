@@ -1,13 +1,9 @@
-{% set navigationPoints = ["games", "|", "users"] %}
+{% set navigationPoints = ["games", "users"] %}
 
 <nav class="w-full">
     <div class="flex justify-center my-4">
         {% for navigationPoint in navigationPoints %}
-            {% if navigationPoint == "|" %}
-                <div class="border-l border-black dark:border-white"></div>
-            {% else %}
-                <a href="/{{ navigationPoint }}" class="inline-block px-2 py-1 mx-2">{{ navigationPoint|title }}</a>
-            {% endif %}
+            <a href="/{{ navigationPoint }}" class="inline-block px-2 py-1 mx-2">{{ navigationPoint|title }}</a>
         {% endfor %}
     </div>
 </nav>

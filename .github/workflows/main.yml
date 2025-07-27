@@ -1,15 +1,21 @@
+name: 🚀 Deploy Website
 on:
   push:
     branches:
       - main
-name: 🚀 Deploy Website
+concurrency:
+  group: 'deploy'
+  cancel-in-progress: true
 jobs:
   web-deploy:
+    environment:
+      name: Website
+      url: https://achievements.fels.me
     name: 🔥 Deploy
     runs-on: ubuntu-latest
     steps:
     - name: 🚚 Get latest code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     - name: ♻️ Cache composer dependencies
       uses: actions/cache@v3
       with:
@@ -22,13 +28,14 @@ jobs:
         dev: no
         args: --working-dir www
     - name: 📂 Sync files
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
-        server: files.000webhost.com
+        server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        server-dir: /
+        server-dir: ${{ secrets.FTP_SERVER_DIR }}
         local-dir: ./www/
+        protocol: ftps
         exclude: |
           **/.env*
           **/.git*

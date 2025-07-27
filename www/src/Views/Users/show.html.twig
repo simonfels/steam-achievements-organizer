@@ -29,7 +29,7 @@
         </div>
         {% verbatim %}
             <div class="text-sm text-neutral-500 dark:text-neutral-400 mb-2 text-center">{{ games.length }}/{{ originalGames.length }} Games</div>
-            <div class="grid xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-1">
+            <div class="grid md:grid-cols-2 grid-cols-1 gap-1">
                 <div v-for="game in games">
                     <a :href="'/games/user.php?gameid=' + game.id + '&userid=' + userId" class="flex">
                         <div :style="{ backgroundColor: 'hsl(' + Math.floor(game.achievement_percent) * 1.64 + ', 86.7%, 50%)' }" class="w-2 shrink-0" v-if="game.achievement_percent < 100"></div>
@@ -55,7 +55,7 @@
 
         createApp({
             setup() {
-                const listMode = ref('wip') // wip, completed, none
+                const listMode = ref() // wip, completed, none
                 const searchBox = ref('')
                 const userId = '{{ user.id }}'
                 const originalGames = [{{ games|raw }}]
@@ -68,13 +68,13 @@
                         let result = false
 
                         if(listMode.value === 'wip')
-                            result ||= wip
+                            return result ||= wip
                         if(listMode.value === 'none')
-                            result ||= none
+                            return result ||= none
                         if(listMode.value === 'completed')
-                            result ||= completed
+                            return result ||= completed
 
-                        return result;
+                        return true;
                     }).filter((b) => {
                         if (searchBox.value.length === 0)
                             return true

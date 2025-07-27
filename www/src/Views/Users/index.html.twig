@@ -5,16 +5,15 @@
 {% endblock %}
 
 {% block content %}
-    {% for user in users %}
-            <a class="flex justify-between bg-neutral-300 dark:bg-neutral-700 dark:hover:bg-neutral-600 hover:bg-neutral-400 pr-2 mb-2" href="/users/show.php?{{ {"userid": user.id}|url_encode }}">
-                <div>
-                    <span class="inline-block py-1 px-2 dark:bg-neutral-600 bg-neutral-400"><i class="fa-solid fa-user"></i></span>
-                    <span class="text-lg">{{ user.name }}</span>
+    <div class="grid grid-cols-2 gap-4">
+        {% for user in users %}
+                <a class="flex flex-between border-2 dark:border-white border-dark p-4 rounded-full" href="/users/show.php?{{ {"userid": user.id}|url_encode }}">
+                    <span class="inline-block pl-4 pr-6 self-center text-2xl"><i class="fa-solid fa-user"></i></span>
+                    <div class="flex flex-col gap-1">
+                        <span class="text-lg">{{ user.name }}</span>
+                        <span class="text-sm">{{ user.achievementPercentage }}% ({{ user.achieved_achievements }} / {{ user.total_achievements }})</span>
                     </div>
-                <div class="text-right py-1">
-                    <span class="text-sm text-neutral-500 dark:text-neutral-400">({{ user.achieved_achievements }} / {{ user.total_achievements }})</span>
-                    {{ user.achievementPercentage }}%
-                </div>
-            </a>
-    {% endfor %}
+                </a>
+        {% endfor %}
+    </div>
 {% endblock %}
