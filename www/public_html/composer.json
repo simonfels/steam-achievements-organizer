@@ -2,7 +2,9 @@
   "require": {
     "twig/twig": "^3.0",
     "doctrine/migrations": "^3.6",
-    "guzzlehttp/guzzle": "^7.0"
+    "guzzlehttp/guzzle": "^7.0",
+    "slim/slim": "4.*",
+    "slim/twig-view": "3.4.1"
   },
   "require-dev": {
     "friendsofphp/php-cs-fixer": "^3.24"

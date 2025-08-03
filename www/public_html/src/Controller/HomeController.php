@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Psr\Http\Message\ResponseInterface as Response;
+
 class HomeController extends AbstractController
 {
-    public function index(): void
+    public function index(): Response
     {
-        $this->render('Home/index', []);
+        return $this->render('Home/index', []);
     }
 }

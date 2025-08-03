@@ -2,40 +2,38 @@
 
 namespace App\Controller;
 
-use App\DataModels\Achievement;
 use App\Models\GamesList;
 use App\Models\UsersList;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 class GamesController extends AbstractController
 {
-    private GamesList $games_list;
+    private GamesList $gamesList;
 
-    public function __construct()
+    public function __construct(protected Request $request, protected Response $response)
     {
-        $this->games_list = new GamesList();
+        parent::__construct($request, $response);
+        $this->gamesList = new GamesList();
     }
-    public function index(): void
+
+    public function index(): Response
     {
-        $this->render('Games/index', [
-          'games' => implode(", ", array_map(function ($game) { return $game->getVars(); }, $this->games_list->all()))
+        return $this->render('Games/index', [
+          'games' => implode(", ", array_map(function ($game) { return $game->getVars(); }, $this->gamesList->all()))
         ]);
     }
 
-    public function show(): void
+    public function show(?string $game_id): Response
     {
-        $game_id = @$_GET['gameid'];
-
-        if(!empty($game_id)) {
-            [$game, $achievements, $tags] = $this->games_list->find($game_id);
-            $this->render('Games/show', [
-              'game' => $game,
-              'achievements' => json_encode(array_map(function ($achievement) { return $achievement->getVars(); }, $achievements)),
-              'tags' => $tags,
-              'json_tags' => json_encode($tags)
-            ]);
-        } else {
-            $this->render('Games/404');
-        }
+        [$game, $achievements, $tags] = $this->gamesList->find($game_id);
+        
+        return $this->render('Games/show', [
+            'game' => $game,
+            'achievements' => json_encode(array_map(function ($achievement) { return $achievement->getVars(); }, $achievements)),
+            'tags' => $tags,
+            'json_tags' => json_encode($tags)
+        ]);
     }
 
     public function update(): void
@@ -43,7 +41,7 @@ class GamesController extends AbstractController
         $achievement_id = @$_POST['achievement_id'];
         $description = @$_POST['description'];
 
-        $achievement = $this->games_list->updateAchievement($achievement_id, $description);
+        $achievement = $this->gamesList->updateAchievement($achievement_id, $description);
 
         echo json_encode($achievement->getVars());
     }
@@ -54,9 +52,9 @@ class GamesController extends AbstractController
         $user_id = @$_GET['userid'];
 
         if(!empty($game_id) && !empty($user_id)) {
-            $users_list = new UsersList();
-            [$game, $achievements, $tags] = $this->games_list->findForUser($game_id, $user_id);
-            [$user, $_trash1, $_trash2, $games] = $users_list->find($user_id);
+            $usersList = new UsersList();
+            [$game, $achievements, $tags] = $this->gamesList->findForUser($game_id, $user_id);
+            [$user, $_trash1, $_trash2, $games] = $usersList->find($user_id);
 
             $this->render('Games/user', [
               'game' => $game,
