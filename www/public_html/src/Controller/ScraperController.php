@@ -54,9 +54,9 @@ class ScraperController extends AbstractController
         if (!empty($user_id) && !empty($game_id)) {
             $this->scraper->scrapeGameAchievements($user_id, [$game_id]);
             header("Location: /games/user.php?" . http_build_query(['userid' => $user_id, 'gameid' => $game_id]));
-         } else {
+        } else {
             header("Location: /users");
-         }
+        }
     }
 
     public function achievements(): void

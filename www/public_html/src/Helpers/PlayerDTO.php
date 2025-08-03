@@ -13,12 +13,13 @@ class PlayerDTO
         private readonly string $name,
         private readonly string $steamUrl,
         private readonly string $avatarUrl
-    ) {}
+    ) {
+    }
 
     public static function fromApiResponse(array $apiResponse)
     {
         $playerInformation = $apiResponse["response"]["players"][0];
-        
+
         $steamId = $playerInformation["steamid"];
         $name = $playerInformation["personaname"];
         $steamUrl = $playerInformation["profileurl"];

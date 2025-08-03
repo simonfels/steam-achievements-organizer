@@ -1,5 +1,5 @@
 .idea
 **/.env
 node_modules
-www/vendor
-www/.php-cs-fixer.cache
+www/public_html/vendor
+www/public_html/.php-cs-fixer.cache

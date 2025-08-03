@@ -1,4 +1,5 @@
 <?php
+
 extract(json_decode(file_get_contents(__DIR__ . '/.env'), true));
 
 return [

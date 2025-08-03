@@ -54,7 +54,7 @@ class DatabaseConnection
     {
         $sqlAttributes = implode(', ', $attributes);
         $sqlValues = "(" . implode(', ', array_map(function ($item) { return ':' . $item; }, $attributes)) . ")";
-        
+
         $query = empty($updatedAttributes) ? "INSERT IGNORE INTO $table ($sqlAttributes) VALUES $sqlValues" : $this->upsertQuery($table, $sqlAttributes, $sqlValues, $updatedAttributes);
 
         $this->pdo->prepare($query)->execute($entries);

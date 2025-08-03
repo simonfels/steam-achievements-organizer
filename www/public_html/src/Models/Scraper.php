@@ -46,7 +46,7 @@ class Scraper extends AbstractModel
             $playerRepository->upsert($fetchedUser->getAttributes());
         }
 
-        return $this->returnArray($success, $user_id,'getUser');
+        return $this->returnArray($success, $user_id, 'getUser');
     }
 
     public function scrapeUserGames(string $user_id): array
